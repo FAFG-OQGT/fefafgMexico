@@ -1,0 +1,31 @@
+table {
+  width: 100%;
+}
+
+.review-card .review-block > div {
+  padding-top: 15px;
+  padding-bottom: 10px;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 5px;
+  padding-right: 5px;
+
+
+}
+.review-block:hover  {
+    background-color: transparentize(#4680ff, 0.10);
+
+  
+  
+}
+
+.btn.btn-icon {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border-radius: 50%;
+  font-size: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}

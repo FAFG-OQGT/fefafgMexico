@@ -1,0 +1,31 @@
+ 
+
+.inputStyleFafg {
+    width: 2rem !important;
+    height: 2rem !important;
+    margin: 0.5rem !important;
+    font-size: 1rem !important;
+    border-radius: 4px !important;
+    border: 1px solid rgba(62,44,118,0.3) !important;
+    margin-bottom: 1rem !important;
+    
+}
+
+.inputStyleFafg:focus {
+    width: 2rem !important;
+    height: 2rem !important;
+    margin: 0.5rem !important;
+    font-size: 1rem !important;
+    border-radius: 4px !important;
+    border: 5px solid rgba(62,44,118)  !important;
+    margin-bottom: 1rem !important;
+}
+
+.margin-top--small > div {
+    flex-wrap: wrap !important;
+}
+
+.margin-top--small {
+    margin-top: 1rem !important;
+    margin-bottom: 1rem !important;
+}

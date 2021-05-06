@@ -1,0 +1,78 @@
+.borderRadSolid {
+  border-bottom: 2px rgb(18, 32, 102) solid;
+  border-right: 2px rgb(18, 32, 102) solid;
+  border-left: 2px rgb(18, 32, 102) solid;
+  border-top: 2px rgb(18, 32, 102) solid;
+  border-radius: 5px;
+  text-align: left;
+  padding-top: 0.5rem;
+  padding-bottom: 0.1rem;
+}
+
+.borderRadSolid > h5 {
+  color: black;
+}
+
+.borderRadSolid:hover {
+  background-color: #0b7d76;
+}
+.borderRadSolid:hover h5 {
+  color: white;
+}
+
+.borderRadSolidAlert {
+  border-bottom: 2px red solid;
+  border-right: 2px red solid;
+  border-left: 2px red solid;
+  border-top: 2px red solid;
+  border-radius: 5px;
+  text-align: left;
+  padding-top: 0.5rem;
+  padding-bottom: 0.1rem;
+}
+
+.borderRadSolidAlert:hover {
+  background-color: rgb(18, 32, 102);
+}
+.borderRadSolidAlert:hover h5 {
+  color: white;
+}
+
+.borderRadSeccion {
+  border: 1px rgb(225, 110, 53) solid;
+  /*border-radius: 5px;*/
+  align-items: center;
+  justify-content: center;
+}
+
+hr {
+  align-items: center;
+
+  background-color: rgb(18, 32, 102);
+}
+
+.modalHeaderToken {
+  background-color: #122066;
+  color: white;
+}
+.modalHeaderToken > h5 {
+  color: white;
+}
+.modalHeaderToken > button {
+  color: white;
+}
+.modalHeaderToken > button:hover {
+  color: #122066;
+}
+
+#modalToken .modal-content {
+  min-height: 80vh;
+  border: 4px #122066 solid;
+  border-top-left-radius: calc(0.3rem - 1px);
+  border-top-right-radius: calc(0.3rem - 1px);
+}
+#modalToken  {
+
+  border-top-left-radius: calc(0.3rem - 1px);
+  border-top-right-radius: calc(0.3rem - 1px);
+}

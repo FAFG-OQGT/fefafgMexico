@@ -1,0 +1,28 @@
+.btn.btn-icon {
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border-radius: 50%;
+    font-size: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn {
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+
+thead, tbody {
+    text-align: center;
+}
+
+.table.table-sm td, .table.table-sm th{
+    padding-left: .3rem;
+    padding-right: .3rem;
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+    font-size: 10px;
+}

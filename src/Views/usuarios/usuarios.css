@@ -1,0 +1,19 @@
+.btn.btn-icon {
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border-radius: 50%;
+    font-size: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn {
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+thead {
+    text-align: center;
+}

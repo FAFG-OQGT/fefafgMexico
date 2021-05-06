@@ -1,0 +1,111 @@
+.rowFiltros {
+  position: relative;
+  padding: 0rem 1.25rem;
+  margin-bottom: 0.1rem;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+  font-size: 10px;
+}
+ 
+
+.rowFiltros-control{
+  font-size: 10px;
+  height: 15px;
+  padding: 0rem 0rem;
+
+}
+.rowFiltros-primary {
+  color: #091135;
+  
+}
+
+.btn.btn-icon {
+  width: 35px;
+  height: 35px;
+  padding: 0;
+  border-radius: 50%;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn {
+  margin-right: 5px;
+}
+
+.pagination {
+  
+  margin-right: 0;
+  margin-bottom: 0;
+}
+
+
+
+thead {
+  text-align: center; 
+}
+
+tbody {
+  text-align: center; 
+}
+
+
+.cellBorder{
+  border-right: 2px solid black;
+  border-left: 2px solid black;
+}
+
+.table.table-sm td, .table.table-sm th{
+  padding-left: .3rem;
+  padding-right: .3rem;
+  padding-top: .5rem;
+  padding-bottom: .5rem;
+}
+
+
+.bordeSeccion {
+  border-bottom: .5px rgb(70, 143, 179) solid;
+  /*border-radius: 5px;*/
+  align-items: center;
+  justify-content: center;
+}
+.btnSeccion{
+  padding-top: .5rem;
+  padding-bottom:0.1rem;
+}
+.btnSeccion:hover{
+  background-color: rgb(70, 143, 179);
+  padding-top:0.5rem;
+  padding-bottom:0.1rem;
+}
+
+.btnSeccionGraph{
+  border-color: #4680ff;
+  padding-top:1rem;
+  padding-bottom:0.1rem;
+}
+
+.btnSeccionGraph:hover{
+  background-color: rgb(197,217,235,1); 
+  padding-bottom:0.1rem;
+}
+
+
+.bordeSeccion-warning {
+  border-bottom: .5px #ffba57 solid;
+  /*border-radius: 5px;*/
+  align-items: center;
+  justify-content: center;
+}
+.btnSeccion-warning{
+  padding-top: .5rem;
+  padding-bottom:0.1rem;
+}
+.btnSeccion-warning:hover{
+  background-color: #ffba57; 
+  padding-top:0.5rem;
+  padding-bottom:0.1rem;
+}
+
+ 

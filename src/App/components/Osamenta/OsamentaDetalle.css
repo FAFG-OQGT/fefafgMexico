@@ -1,0 +1,23 @@
+.bordeSeccion {
+  border-bottom: .5px rgb(70, 143, 179) solid;
+  /*border-radius: 5px;*/
+  align-items: center;
+  justify-content: center;
+}
+
+
+.borderVictimaDetalle {
+  border-bottom: .5px rgb(70, 143, 179) solid;
+  /*border-radius: 5px;*/
+  align-items: center;
+  justify-content: center;
+}
+.btnSeccion{
+  padding-top: .5rem;
+  padding-bottom:0.1rem;
+}
+.btnSeccion:hover{
+  background-color: rgb(70, 143, 179);
+  padding-top:0.5rem;
+  padding-bottom:0.1rem;
+}

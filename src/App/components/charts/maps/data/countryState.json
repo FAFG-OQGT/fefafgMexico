@@ -1,0 +1,23 @@
+[
+  {
+    "GID_0": "geo-66",
+    "country": "Guatemala",
+    "statesFile": "https://mapsoqsolutions.s3.amazonaws.com/GuatemalaStates.json",
+    "center": [-90, 16],
+    "zoom": 3,
+    "rotate": [90, -12, 0],
+    "scale": 2250
+  },
+  {
+    "GID_0": "geo-102",
+    "country": "Mexico",
+    "statesFile": "https://mapsoqsolutions.s3.amazonaws.com/mexicoStates.json",
+    "center": [-99, 19],
+    "zoom": 1,
+    "rotate": [99, -19, 0],
+    "scale": 1500,
+    "municipality": {
+      "statesFile": "https://mapsoqsolutions.s3.amazonaws.com/mexicoMunicipality.json"
+    }
+  }
+]

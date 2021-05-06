@@ -1,0 +1,7 @@
+.cardRoles {
+    border-width: 5px;
+}
+
+.rdl-control,.rdl-listbox,.react-dual-listbox {
+    height: 100%;
+  }

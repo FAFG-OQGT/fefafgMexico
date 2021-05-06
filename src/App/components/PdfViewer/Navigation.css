@@ -1,0 +1,7 @@
+nav .pagination .page-link {
+}
+
+nav .pagination .page-link:hover {
+    background: white;
+    color: rgb(18, 32, 102) ;
+}

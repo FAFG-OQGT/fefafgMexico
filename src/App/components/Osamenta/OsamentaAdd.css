@@ -1,0 +1,6 @@
+.borderRadSolid {
+  border-bottom: 2px rgb(18, 32, 102) solid;
+  /*border-radius: 5px;*/
+  align-items: center;
+  justify-content: center;
+}

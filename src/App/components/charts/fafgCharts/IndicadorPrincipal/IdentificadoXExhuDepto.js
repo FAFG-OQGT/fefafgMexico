@@ -32,7 +32,7 @@ function IdentificadoXExhuDepto(props) {
       );
     });
     rows.push(
-      <tr>
+      <tr key={`TRMAPEXHU${props.tipo}`}>
         <td>Total</td>
         <td>{sum}</td>
         <td>{sumPor}</td>
@@ -59,7 +59,7 @@ function IdentificadoXExhuDepto(props) {
         </Card.Header>
         <Card.Body>
           <Row className={"align-items-top h-100"}>
-            <Col sm={6}>
+            <Col sm={8}>
               {datag3 !== undefined && (
                 <Map2
                   selectItem={false}
@@ -68,7 +68,7 @@ function IdentificadoXExhuDepto(props) {
                 ></Map2>
               )}
             </Col>
-            <Col sm={6}>
+            <Col sm={4}>
               {datag3 !== undefined && (
                 <Table
                   id={`TB-gmapa${props.tipo}`}

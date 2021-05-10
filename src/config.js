@@ -11,7 +11,7 @@ export default {
   headerFixedLayout: false,
   boxLayout: false,
   timeOut: 1000 * 60 * 15,
-  urlApi: "http://localhost:3100",
+  urlApi: "http://apicrih.oqsolutionsgt.com",
   modulo: "1",
   maxSizeCoincidencia: 10e6,
   maxSizeSmih: 10e6,

@@ -135,7 +135,7 @@ function Login(props) {
                   />
                 </center>
                 <h1 className="text-white my-4 text-center title-auth">
-                  Sistema DID CRIH - Coahuila
+                  Sistema Operativo de Identificaciones - CRIH 
                 </h1>
               </div>
             </div>

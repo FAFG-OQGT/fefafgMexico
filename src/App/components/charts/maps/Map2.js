@@ -19,20 +19,20 @@ import geoDeptoLabel from "./data/deptos.json";
 import { rgb } from "chroma-js";
 
 import countryStateList from "./data/countryState.json";
+import mexico from "./data/mexicoStates.json";
 
 import "./map2.css"
 
 
 const Map2 = ({ selectItem = false, refId, data }) => {
   const [defaultMap, setdefaultMap] = useState(1);//niel del mapa 0 mundo/pais - 1 estados/departamentos - 2 municipios
-  const [center, setCenter] = useState([-100, 20]);
-  const [szoom, setsZoom] = useState(1);
+  const [center, setCenter] = useState([-99, 24]);
+  const [szoom, setsZoom] = useState(.75);
   const [srotate, setrotate] = useState([99, -19, 0]);
   const [sscale, setscale] = useState(1500);
   const [content, setContent] = useState("");
   const [selectedMap, setselectedMap] = useState("geo-102");
-  const geoWorld =
-    "https://mapsoqsolutions.s3.amazonaws.com/mexicoStates.json";
+  const geoWorld = mexico;
   const [geoUrl, setgeoUrl] = useState(geoWorld);
 
   const getMapSelected = () => {
@@ -68,18 +68,20 @@ const Map2 = ({ selectItem = false, refId, data }) => {
       <Spring
         from={{ zoom: .5 }}
         to={{ zoom: szoom }}
-        config={config.slow}
+        config={config.default}
         id={`spring${refId}`}
       >
         {(styles) => (
           <ComposableMap
             id={`ComposableM${refId}`}
             data-for={`graph${refId}`}
+            height={400}
             data-tip=""
             projectionConfig={{
               rotate: srotate,
               scale: sscale,
             }}
+
           >
             <ZoomableGroup
               center={center}

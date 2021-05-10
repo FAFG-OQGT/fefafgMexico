@@ -18,10 +18,6 @@ const Victima = React.lazy(() => import('./Views/identificados/catalogos/Victima
 const IdentificadosSmih = React.lazy(() => import('./Views/identificados/identificados/smih/identificados'));
 const IdentificadosSmIhEdit = React.lazy(() => import('./Views/identificados/identificados/smih/IdentificadosEdit.js'));
 
-const identificadosOsteologico = React.lazy(() => import('./Views/identificados/identificados/osteologico/identificados'));
-const identificadosOsteologicoEdit = React.lazy(() => import('./Views/identificados/identificados/osteologico/IdentificadosEdit.js'));
-
-
 
 const ReporteCoincidencia = React.lazy(() => import('./Views/reportes/reporteCoincidencia.js'));
 const ReporteISmih = React.lazy(() => import('./Views/reportes/reporteISmih.js'));
@@ -43,8 +39,6 @@ const routes = [
     { path: '/victimas', exact: true, name: 'Victima', component: Victima } ,
     { path: '/identificadosSmIh', exact: true, name: 'Identificados SmIh', component: IdentificadosSmih },
     { path: '/identificadosSmIhEdit', exact: true, name: 'Editar identificado', component: IdentificadosSmIhEdit } ,
-    { path: '/identificadosOsteologico', exact: true, name: 'Identificados Osteologico', component: identificadosOsteologico },
-    { path: '/identificadosOsteologicoEdit', exact: true, name: 'Editar identificado', component: identificadosOsteologicoEdit } 
 
 
 ];

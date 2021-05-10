@@ -58,88 +58,53 @@ function Home(props) {
           </Card>
         </Col>
         <Col xl={4} md={4}>
-          <Card className="bg-c-blue order-card">
-            <Card.Body>
-              <h6 className="text-white">Identificado Osteologico</h6>
-              <h2 className="text-white">{dataI2.valor}</h2>
-              <p className="m-b-0">
-                {dataI2.porcentaje}
-                <i className="feather icon-percent m-l-10" />
-              </p>
-              <i className="card-icon feather icon-users" />
-            </Card.Body>
-          </Card>
+
         </Col>
         <Col xl={4} md={4}>
-          <Card className="bg-c-yellow order-card">
-            <Card.Body>
-              <h6 className="text-white">Total identificados</h6>
-              <h2 className="text-white">{dataI3.valor}</h2>
-              <p className="m-b-0">
-                {dataI3.porcentaje}
-                <i className="feather icon-percent m-l-10" />
-              </p>
-              <i className="card-icon feather icon-users" />
-            </Card.Body>
-          </Card>
+
         </Col>
       </Row>
       <Row>
         <CoincidenciaXTipo></CoincidenciaXTipo>
-        <SmIhVsOsteologico></SmIhVsOsteologico>
         <IdentificadoXSexo
           tipo="SMIH"
           titulo="Sexo por Id. SmIh"
         ></IdentificadoXSexo>
-      </Row>
-      <br></br>
-      <Row>
-        <IdentificadoXSexo
-          tipo="OST"
-          titulo="Sexo por Id. Osteologico"
-        ></IdentificadoXSexo>
-        <IdentificadoXGrupoEtario
-          tipo="OST"
-          titulo="Grupo Etario por Id. Ost."
-        ></IdentificadoXGrupoEtario>
         <IdentificadoXGrupoEtario
           tipo="SMIH"
           titulo="Grupo Etario por Id. SmIh"
         ></IdentificadoXGrupoEtario>
       </Row>
       <br></br>
+
       <Row>
         <IdentificadoXTipoContexto></IdentificadoXTipoContexto>
-      </Row>
-      <br></br>
-      <Row>
-        <IdentificadoXAno
-          tipo="OST"
-          titulo="Ost. desaparecido x Año"
-          color={0}
-          sm={6}
-          md={6}
-          xl={6}
-          height={100}
-        ></IdentificadoXAno>
         <IdentificadoXAno
           tipo="SMIH"
           titulo="SmIh. desaparecido x Año"
           color={2}
-          sm={6}
-          md={6}
-          xl={6}
+          sm={8}
+          md={8}
+          xl={8}
           height={100}
         ></IdentificadoXAno>
       </Row>
+
       <br></br>
       <Row>
         <IdentificadoXDesaDepto titulo="Desaparecido Id. SmIh" tipo="SMIH">
           {" "}
         </IdentificadoXDesaDepto>
+
       </Row>
       <br></br>
-    
+      <Row>
+        <IdentificadoXExhuDepto titulo="Exhumacion Id. SmIh" tipo="SMIH">
+          {" "}
+        </IdentificadoXExhuDepto>
+
+      </Row>
+
     </Aux>
   );
 }

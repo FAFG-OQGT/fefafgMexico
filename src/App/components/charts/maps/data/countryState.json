@@ -12,7 +12,7 @@
     "GID_0": "geo-102",
     "country": "Mexico",
     "statesFile": "https://mapsoqsolutions.s3.amazonaws.com/mexicoStates.json",
-    "center": [-99, 19],
+    "center": [-99, 24],
     "zoom": 1,
     "rotate": [99, -19, 0],
     "scale": 1500,

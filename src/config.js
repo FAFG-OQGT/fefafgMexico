@@ -12,6 +12,7 @@ export default {
   boxLayout: false,
   timeOut: 1000 * 60 * 15,
   urlApi: "http://apicrih.oqsolutionsgt.com",
+  //urlApi: "http://localhost:3100",
   modulo: "1",
   maxSizeCoincidencia: 10e6,
   maxSizeSmih: 10e6,

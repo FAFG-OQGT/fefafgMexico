@@ -19,7 +19,6 @@ import geoDeptoLabel from "./data/deptos.json";
 import { rgb } from "chroma-js";
 
 import countryStateList from "./data/countryState.json";
-import mexico from "./data/mexicoStates.json";
 
 import "./map2.css"
 
@@ -32,7 +31,7 @@ const Map2 = ({ selectItem = false, refId, data }) => {
   const [sscale, setscale] = useState(1500);
   const [content, setContent] = useState("");
   const [selectedMap, setselectedMap] = useState("geo-102");
-  const geoWorld = mexico;
+  const geoWorld ="https://mapsoqsolutions.s3.amazonaws.com/mexicoStates.json";
   const [geoUrl, setgeoUrl] = useState(geoWorld);
 
   const getMapSelected = () => {
@@ -63,6 +62,12 @@ const Map2 = ({ selectItem = false, refId, data }) => {
     return () => {
     }
   }, [selectedMap])
+
+  useEffect(() => {
+
+    return () => {
+    }
+  }, [])
   return (
     <div>
       <Spring
@@ -95,114 +100,118 @@ const Map2 = ({ selectItem = false, refId, data }) => {
               >
                 {({ geographies }) => (
                   <>
-                    {geographies.map((geo, proj) => (
-                      <Geography
-                        key={geo.rsmKey}
-                        geography={geo}
-                        projection={proj}
-                        onClick={() => { onClickMap(geo, proj) }}
-                        onMouseEnter={() => {
-                          if (defaultMap === 1) {
-                            const cur = geoDeptoLabel.find(
-                              (s) => s.val === geo.properties.ID && s.GID_0 === selectedMap
-                            );
-                            if (cur) {
-                              const datCur = data.find((s) => s.id === cur.idBd);
-                              if (datCur !== undefined)
-                                setContent({
-                                  nombre: `${cur.nombre}`,
-                                  cantidad: datCur.cantidad,
-                                  porcentaje: datCur.porcentaje,
-                                });
-                              else
-                                setContent({
-                                  nombre: `${cur.nombre}`,
-                                  cantidad: 0,
-                                  porcentaje: 0,
-                                });
-                            } else {
-
+                    {
+                      geographies.map((geo, proj) => {
+                        /* console.log(geoCentroid(geo), geo.properties.ID,geo.properties.NAME_1)
+                        */
+                        return (
+                          <Geography
+                            key={geo.rsmKey}
+                            geography={geo}
+                            projection={proj}
+                            onMouseEnter={() => {
+                              if (defaultMap === 1) {
+                                const cur = geoDeptoLabel.find(
+                                  (s) => s.val === geo.properties.ID
+                                );
+                                const datCur = data.find((s) => s.id === cur.idBd);
+                                if (datCur !== undefined)
+                                  setContent({
+                                    nombre: `${cur.nombre}`,
+                                    cantidad: datCur.cantidad,
+                                    porcentaje: datCur.porcentaje,
+                                  });
+                                else
+                                  setContent({
+                                    nombre: `${cur.nombre}`,
+                                    cantidad: 0,
+                                    porcentaje: 0,
+                                  });
+                              }
+                            }}
+                            onMouseLeave={() => {
                               setContent("");
+                            }}
+                            style={
+                              !(geo.rsmKey === selectedMap)
+                                ? {
+                                  default: {
+                                    fill: "#0b7d76",
+                                    outline: "#fff",
+                                  },
+                                  hover: {
+                                    fill: "#122066",
+                                    stroke: "#000",
+                                  },
+                                  focus: {
+                                    fill: "#f2cd30",
+                                    outline: "none",
+                                  },
+                                }
+                                : {
+                                  default: {
+                                    fill: "#f2cd30",
+                                    outline: "#fff",
+                                  },
+                                  hover: {
+                                    fill: "#f2cd30",
+                                    stroke: "#000",
+                                  },
+                                  focus: {
+                                    fill: "#122066",
+                                    outline: "none",
+                                  },
+                                }
                             }
-                          }
-                        }}
-                        onMouseLeave={() => {
-                          setContent("");
-                        }}
-                        style={
-                          !(geo.rsmKey === selectedMap)
-                            ? {
-                              default: {
-                                fill: "#0b7d76",
-                                outline: "#fff",
-                              },
-                              hover: {
-                                fill: "#122066",
-                                stroke: "#000",
-                              },
-                              focus: {
-                                fill: "#f2cd30",
-                                outline: "none",
-                              },
-                            }
-                            : {
-                              default: {
-                                fill: "#f2cd30",
-                                outline: "#fff",
-                              },
-                              hover: {
-                                fill: "#f2cd30",
-                                stroke: "#000",
-                              },
-                              focus: {
-                                fill: "#122066",
-                                outline: "none",
-                              },
-                            }
-                        }
-                      />
-                    ))}
-                    {defaultMap >= 0 &&
-                      geographies.map((geo) => {
-                        const centroid = geoCentroid(geo);
-                        const cur = geoDeptoLabel.find((s) => s.val === geo.properties.ID && s.GID_0 === selectedMap);
-                        const datCur = data.find((s) => s.id === cur.idBd);
-                        if (cur !== undefined) {
-                          return (
-                            <Marker
-                              coordinates={centroid}
-                              key={`marker${refId}${geo.properties.ID}`}
-                            >
-                              {datCur && (
-                                <g
-                                  fill="none"
-                                  stroke="#ff3333"
-                                  strokeWidth="2"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  transform="translate(-6, -6)"
-                                >
-                                  <circle cx="6" cy="6" r="5" fill="none"
-                                    stroke="#ff3333" />
+                          />
 
-                                </g>
-                              )}
+                        )
+                      }
 
-                              <text
-                                y="2"
-                                fontSize={4}
-                                textAnchor="middle"
-                                fill={"#fff"}
-                              >
-                                {cur.id}
-                              </text>
-                            </Marker>
-                          );
-                        }
-                      })}
+                      )}
+
                   </>
                 )}
               </Geographies>
+              {geoDeptoLabel && (
+                <>
+                  {
+                    geoDeptoLabel.map((item) => {
+                      const cur = data.find((s) => s.id === item.idBd);
+                      return (
+                        <Marker
+                          coordinates={item.coordenadas}
+                          key={`marker${refId}${item.idBd}`}
+                        >
+                          {cur && (
+                            <g
+                              fill="none"
+                              stroke="#ff3333"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              transform="translate(-6, -6)"
+                            >
+                              <circle cx="6" cy="6" r="5" fill="none"
+                                stroke="#ff3333" />
+
+                            </g>
+                          )}
+                          <text
+                            y="2"
+                            fontSize={4}
+                            textAnchor="middle"
+                            fill={"#fff"}
+                          >
+                            {item.id}
+                          </text>
+                        </Marker>
+                      )
+                    })
+                  }
+                </>
+              )
+              }
             </ZoomableGroup>
           </ComposableMap>
         )}

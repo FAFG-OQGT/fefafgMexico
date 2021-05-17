@@ -8,7 +8,7 @@ import Aux from "../../../../hoc/_Aux";
 import DEMO from "../../../../store/constant";
 import * as actionTypes from "../../../../store/actions";
 
-import logo from '../../../../assets/images/logoCRIH.png';
+import logo from '../../../../assets/images/logoCrih.png';
 
 
 class NavBar extends Component {

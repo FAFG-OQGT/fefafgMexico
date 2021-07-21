@@ -708,7 +708,7 @@ function ReporteIOst(props) {
             Header: "Osamenta",
             Cell: ({row}) => (
               <div className="text-center">
-                {`FAFG-${row.original.Osamenta.casoId}-${row.original.Osamenta.fosaDet}-${row.original.Osamenta.osamentaDet}`}
+                {`CRIH-${row.original.Osamenta.casoId}-${row.original.Osamenta.fosaDet}-${row.original.Osamenta.osamentaDet}`}
               </div>
             ),
           },
@@ -805,7 +805,7 @@ function ReporteIOst(props) {
         dataTemp.push({
           IdentificadoOstId: row.identificadoOstId,
           SesionIdentificacion: row.sesionIdentificacion,
-          Osamenta: `FAFG-${row.Osamenta.casoId}-${row.Osamenta.fosaDet}-${row.Osamenta.osamentaDet}`,
+          Osamenta: `CRIH-${row.Osamenta.casoId}-${row.Osamenta.fosaDet}-${row.Osamenta.osamentaDet}`,
           CodigoVictima: row.Victima.codigoVictima,
           NombreVictima: row.Victima.nombreVictima,
           Sexo: !(row.Sexo === "" || row.Sexo === null)

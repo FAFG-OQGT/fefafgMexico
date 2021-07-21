@@ -157,7 +157,7 @@ function CoincidenciaList(props) {
                   onClick={(e) => props.onabrirModal("Osamenta", row.original)}
                   variant={"info"}
                 >
-                  {`FAFG-${row.original.Osamenta.casoId}-${row.original.Osamenta.fosaDet}-${row.original.Osamenta.osamentaDet}`}
+                  {`CRIH-${row.original.Osamenta.casoId}-${row.original.Osamenta.fosaDet}-${row.original.Osamenta.osamentaDet}`}
                 </Badge>
               </div>
             ),

@@ -184,7 +184,7 @@ function OsamentaEdit({osamenta, onEditDone, oncerrarModal, mensajeAlerta}) {
                 <Row>
                   <Col xs="6">
                     <Form.Group>
-                      <Form.Label>Caso FAFG</Form.Label>
+                      <Form.Label>Caso CRIH</Form.Label>
                       <TextInput
                         type="number"
                         id="casoId"

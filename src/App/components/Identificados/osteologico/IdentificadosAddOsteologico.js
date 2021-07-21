@@ -318,7 +318,7 @@ function IdentificadosAddOsteologico(props) {
 
   const onSelectOsamenta = (osamenta_elemento) => {
     setosamentaDescripcion(
-      `FAFG-${osamenta_elemento.casoId}-${osamenta_elemento.fosaDet}-${osamenta_elemento.osamentaId}`
+      `CRIH-${osamenta_elemento.casoId}-${osamenta_elemento.fosaDet}-${osamenta_elemento.osamentaId}`
     );
     setosamentaId(osamenta_elemento.osamentaId);
   };
@@ -342,7 +342,7 @@ function IdentificadosAddOsteologico(props) {
 
   const onSelectVictima = (victima_elemento) => {
     setvictimaDescripcion(
-      `FAFG-${victima_elemento.codigoVictima}-${victima_elemento.nombreVictima}`
+      `CRIH-${victima_elemento.codigoVictima}-${victima_elemento.nombreVictima}`
     );
     setvictimaId(victima_elemento.victimaId);
   };

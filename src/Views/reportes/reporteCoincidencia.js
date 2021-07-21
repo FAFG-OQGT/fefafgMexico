@@ -451,7 +451,7 @@ function ReporteCoincidencia(props) {
             Header: "Osamenta",
             Cell: ({row}) => (
               <div className="text-center">
-                {`FAFG-${row.original.Osamenta.casoId}-${row.original.Osamenta.fosaDet}-${row.original.Osamenta.osamentaDet}`}
+                {`CRIH-${row.original.Osamenta.casoId}-${row.original.Osamenta.fosaDet}-${row.original.Osamenta.osamentaDet}`}
               </div>
             ),
           },
@@ -586,7 +586,7 @@ function ReporteCoincidencia(props) {
             ? `${moment(row.fechaConfExc).format("YYYY-MM-DD")}`
             : null,
 
-          Osamenta: `FAFG-${row.Osamenta.casoId}-${row.Osamenta.fosaDet}-${row.Osamenta.osamentaDet}`,
+          Osamenta: `CRIH-${row.Osamenta.casoId}-${row.Osamenta.fosaDet}-${row.Osamenta.osamentaDet}`,
           OsamentaSexoAdn: !(row.Osamenta.SexoAdn === null)
             ? row.Osamenta.SexoAdn.descripcion
             : null,

@@ -479,14 +479,14 @@ function CoincidenciaCasoEdit(props) {
 
   const onSelectOsamenta = (osamenta_elemento) => {
     setosamentaDescripcion(
-      `FAFG-${osamenta_elemento.casoId}-${osamenta_elemento.fosaDet}-${osamenta_elemento.osamentaDet}`
+      `CRIH-${osamenta_elemento.casoId}-${osamenta_elemento.fosaDet}-${osamenta_elemento.osamentaDet}`
     );
     setosamentaId(osamenta_elemento.osamentaId);
   };
 
   const onSelectVictima = (victima_elemento) => {
     setvictimaDescripcion(
-      `FAFG-${victima_elemento.codigoVictima}-${victima_elemento.nombreVictima}`
+      `CRIH-${victima_elemento.codigoVictima}-${victima_elemento.nombreVictima}`
     );
     setvictimaId(victima_elemento.victimaId);
   };
@@ -530,10 +530,10 @@ function CoincidenciaCasoEdit(props) {
       setosamentaId(dataCaso.osamentaId);
       setvictimaId(dataCaso.victimaId);
       setosamentaDescripcion(
-        `FAFG-${dataCaso.Osamenta.casoId}-${dataCaso.Osamenta.fosaDet}-${dataCaso.Osamenta.osamentaDet}`
+        `CRIH-${dataCaso.Osamenta.casoId}-${dataCaso.Osamenta.fosaDet}-${dataCaso.Osamenta.osamentaDet}`
       );
       setvictimaDescripcion(
-        `FAFG-${dataCaso.Victima.codigoVictima}-${dataCaso.Victima.nombreVictima}`
+        `CRIH-${dataCaso.Victima.codigoVictima}-${dataCaso.Victima.nombreVictima}`
       );
       setlri(dataCaso.lr);
       setapriori(dataCaso.apriori);

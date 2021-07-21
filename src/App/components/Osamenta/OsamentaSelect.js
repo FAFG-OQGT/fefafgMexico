@@ -42,7 +42,7 @@ function OsamentaSelect(props) {
         Header: "Osamenta",
         accessor: (d) => {
             
-            return `FAFG-${d.casoId}-${d.fosaDet}-${d.osamentaDet}`;
+            return `CRIH-${d.casoId}-${d.fosaDet}-${d.osamentaDet}`;
           },
       },
      {

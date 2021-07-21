@@ -89,7 +89,7 @@ function IdentificadosEditSmih(props) {
   //OSAMENTA
   const [osamentaId, setosamentaId] = useState(data.osamentaId);
   const [osamentaDescripcion, setosamentaDescripcion] = useState(
-    `FAFG-${data.Osamenta.casoId}-${data.Osamenta.fosaDet}-${data.Osamenta.osamentaDet}`
+    `CRIH-${data.Osamenta.casoId}-${data.Osamenta.fosaDet}-${data.Osamenta.osamentaDet}`
   );
   //VICTIMA
   const [victimaId, setvictimaId] = useState(data.victimaId);
@@ -425,7 +425,7 @@ function IdentificadosEditSmih(props) {
 
   const onSelectOsamenta = (osamenta_elemento) => {
     setosamentaDescripcion(
-      `FAFG-${osamenta_elemento.casoId}-${osamenta_elemento.fosaDet}-${osamenta_elemento.osamentaId}`
+      `CRIH-${osamenta_elemento.casoId}-${osamenta_elemento.fosaDet}-${osamenta_elemento.osamentaId}`
     );
     setosamentaId(osamenta_elemento.osamentaId);
   };

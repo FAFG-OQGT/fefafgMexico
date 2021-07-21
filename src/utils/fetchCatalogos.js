@@ -57,7 +57,7 @@ const apiFetchOsamentas= async (token) => {
     var roots = res.data.data.rows.map(function (row) {
       return {
         value: row.osamentaId,
-        label: `[${row.osamentaId}] FAFG-${row.casoId}-${row.fosaDet}-${row.osamentaDet}`,
+        label: `[${row.osamentaId}] CRIH-${row.casoId}-${row.fosaDet}-${row.osamentaDet}`,
         data: row
       };
     });

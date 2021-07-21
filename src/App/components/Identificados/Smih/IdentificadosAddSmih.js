@@ -356,14 +356,14 @@ function IdentificadosAddSmih(props) {
 
   const onSelectOsamenta = (osamenta_elemento) => {
     setosamentaDescripcion(
-      `FAFG-${osamenta_elemento.casoId}-${osamenta_elemento.fosaDet}-${osamenta_elemento.osamentaId}`
+      `CRIH-${osamenta_elemento.casoId}-${osamenta_elemento.fosaDet}-${osamenta_elemento.osamentaId}`
     );
     setosamentaId(osamenta_elemento.osamentaId);
   };
 
   const onSelectVictima = (victima_elemento) => {
     setvictimaDescripcion(
-      `FAFG-${victima_elemento.codigoVictima}-${victima_elemento.nombreVictima}`
+      `CRIH-${victima_elemento.codigoVictima}-${victima_elemento.nombreVictima}`
     );
     setvictimaId(victima_elemento.victimaId);
   };
@@ -439,7 +439,7 @@ function IdentificadosAddSmih(props) {
                 <Row className="">
                   <Col sm>
                     <Form.Group>
-                      <Form.Label>Caso FAFG</Form.Label>
+                      <Form.Label>Caso CRIH</Form.Label>
                       <TextInput
                         name="casoIdentificado"
                         id="casoIdentificado"

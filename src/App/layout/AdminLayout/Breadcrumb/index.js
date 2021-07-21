@@ -146,7 +146,7 @@ class Breadcrumb extends Component {
       }
     }
 
-    document.title = title + " |  FAFG";
+    document.title = title + " |  CRIH";
 
     return <Aux>{breadcrumb}</Aux>;
   }

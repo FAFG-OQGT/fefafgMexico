@@ -1,8 +1,8 @@
 {
-  "name": "fafgdid-v1.0.0",
+  "name": "crihdid-v1.0.0",
   "version": "8.0.2",
   "private": true,
-  "homepage": "http://fafg.oqsolutionsgt.com/",
+  "homepage": "http://crih.oqsolutionsgt.com/",
   "dependencies": {
     "@ckeditor/ckeditor5-build-balloon": "^12.3.0",
     "@ckeditor/ckeditor5-build-classic": "^12.3.0",

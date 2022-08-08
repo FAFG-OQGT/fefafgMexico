@@ -15,8 +15,7 @@ import TablaGenerica from "../../App/components/TablaGenerica/TablaGenerica";
 import config from "../../config";
 
 import {apiCatalogo} from "../../utils/fetchCatalogos";
-
-import {JsonToExcel} from "react-json-excel";
+import ExportToExcel from "../../App/components/exportExcel/ExportToExcel";
 
 import "./reportes.css";
 import {IdentificadoSmih} from "../../App/components/charts/fafgCharts/Coincidencia/IdentificadoSmih";
@@ -43,55 +42,7 @@ function ReporteISmih(props) {
     );
   };
 
-  const filename = "reporteISmih",
-    fields = {
-      IdentificadoSmihId: "IdentificadoSmihId",
-      SesionIdentificacion: "SesionIdentificacion",
-      Osamenta: "Osamenta",
-      CodigoVictima: "CodigoVictima",
-      NombreVictima: "NombreVictima",
-      CoincidenciaId: "CoincidenciaId",
-      Lr: "Lr",
-      Apriori: "Apriori",
-      Posterior: "Posterior",
-      MarcadoresStr: "MarcadoresStr",
-      fechaNotificacionDid: "fechaNotificacionDid",
-      fechaConfExc: "fechaConfExc",
-      Sexo: "Sexo",
-      GrupoEtario: "GrupoEtario",
-      GrupoEtnolinguistico: "GrupoEtnolinguistico",
-      TipoCasoDid: "TipoCasoDid",
-      EdadAM: "EdadAM",
-      ValorEdadAM: "ValorEdadAM",
-      AnotacionAM: "AnotacionAM",
-      RangoMinimoPM: "RangoMinimoPM",
-      RangoMaximoPM: "RangoMaximoPM",
-      ValorPM: "ValorPM",
-      AnotacionPM: "AnotacionPM",
-      TraumaCirc: "TraumaCirc",
-      DatosOdont: "DatosOdont",
-      RegionAnatomica: "RegionAnatomica",
-      AnotacionDatosOdont: "AnotacionDatosOdont",
-      ResumenHecho: "ResumenHecho",
-      Observaciones: "Observaciones",
-      DesaparicionAldea: "DesaparicionAldea ",
-      DesaparicionMunicipio: "DesaparicionMuni",
-      DesaparicionDepartamento: "DesaparicionDepto",
-      DesaparicionDia: "DesaparicionDia",
-      DesaparicionMes: "DesaparicionMes",
-      DesaparicionAnio: "DesaparicionAnio",
-      FechaCoincidencia: "FechaCoincidencia",
-      FechaConfirmacion: "FechaConfirmacion",
-      FechaInfoFamilia: "FechaInfoFamilia",
-      FechaDictamen: "FechaDictamen",
-      FechaInhumacion: "FechaInhumacion",
-      fechaEntrevistaAM: "fechaEntrevistaAM",
-      FechaAnalisisOst: "FechaAnalisisOst",
-      FechaReporteDid: "FechaReporteDid",
-      fechaReporteGenetica: "fechaReporteGenetica",
-      Usuario: "Usuario",
-    },
-    text = <i className="feather icon-download"></i>;
+  const filename = "reporteISmih" 
 
   const user = useContext(userContext);
   const [data, setData] = React.useState([]);
@@ -2906,13 +2857,9 @@ function ReporteISmih(props) {
                           <ul className="pagination ">
                             <li className="paginate_Button page-item">
                               {dataDownload.length > 0 && (
-                                <JsonToExcel
-                                  data={dataDownload}
-                                  fileformat="csv"
-                                  className="btn-icon btn btn-outline-success btn-sm"
-                                  filename={filename}
-                                  fields={fields}
-                                  text={text}
+                                <ExportToExcel
+                                  apiData={dataDownload}
+                                  fileName={filename}
                                 />
                               )}
                             </li>

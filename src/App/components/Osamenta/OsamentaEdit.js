@@ -8,68 +8,110 @@ import Datetime from "react-datetime";
 import {apiCatalogo} from "../../../utils/fetchCatalogos";
 import "./OsamentaEdit.css";
 import CoordinateInput from "react-coordinate-input";
-import {renderInputFecha,validDate} from "../Utils/fechas";
+import {renderInputFecha, validDate} from "../Utils/fechas";
 import {
   ValidationForm,
   TextInput,
-  SelectGroup,
+  SelectGroup
 } from "react-bootstrap4-form-validation";
-function OsamentaEdit({osamenta, onEditDone, oncerrarModal, mensajeAlerta}) {
- 
+function OsamentaEdit({
+  osamenta,
+  onEditDone,
+  oncerrarModal,
+  mensajeAlerta,
+  osamentaIdUpdate,
+  actualizar = false
+}) {
   //CONTEXT LOAD
   const user = useContext(userContext);
   const configReq = {
-    headers: {Authorization: `Bearer ${user.token}`},
+    headers: {Authorization: `Bearer ${user.token}`}
   }; //DEFINICION DE ESTADOS
   const [comboDepto, setcomboDepto] = useState();
   const [comboMunicipio, setcomboMunicipio] = useState();
   //DEFINICION DE ESTADOS
-  const [osamentaId] = useState(osamenta.osamentaId);
-  const [sexoadnid, setsexoadnid] = useState(
-    osamenta.sexoAdnId === null ? "" : osamenta.sexoAdnId
-  );
-  const [casoId, setcasoId] = useState(osamenta.casoId);
-  const [fosaDet, setfosaDet] = useState(osamenta.fosaDet);
-  const [osamentaDet, setosamentaDet] = useState(osamenta.osamentaDet);
-  const [locisAlelosUtiles, setlocisAlelosUtiles] = useState(
-    osamenta.locisAlelosUtiles
-  );
+  const [osamentaId, setosamentaId] = useState();
+  const [sexoadnid, setsexoadnid] = useState();
+  const [casoId, setcasoId] = useState();
+  const [fosaDet, setfosaDet] = useState();
+  const [osamentaDet, setosamentaDet] = useState();
+  const [locisAlelosUtiles, setlocisAlelosUtiles] = useState();
 
-  const [fechaIngresoLab, setfechaIngresoLab] = useState(
-    osamenta.fechaIngresoLab === null
-      ? ""
-      : moment(osamenta.fechaIngresoLab).utc()
-  );
-  const [fechaIngresoMFiSys, setfechaIngresoMFiSys] = useState(
-    osamenta.fechaIngresoMFiSys === null
-      ? ""
-      : moment(osamenta.fechaIngresoMFiSys).utc()
-  );
+  const [fechaIngresoLab, setfechaIngresoLab] = useState();
+  const [fechaIngresoMFiSys, setfechaIngresoMFiSys] = useState();
 
-  const [estadoId, setestadoId] = useState(osamenta.estadoId);
+  const [estadoId, setestadoId] = useState();
   const [comboSexoId, setcomboSexoId] = useState();
 
   //DATOS DE EXHUMACION
-  const [coordenadasExhumacion, setcoordenadasExhumacion] = useState(
-    osamenta.coordenadasExhumacion === null
-      ? ""
-      : osamenta.coordenadasExhumacion
-  );
-  const [exhumacionAldea, setexhumacionAldea] = useState(
-    osamenta.exhumacionAldea === null ? "" : osamenta.exhumacionAldea
-  );
-  const [exhumacionDeptoId, setexhumacionDeptoId] = useState(
-    osamenta.exhumacionDeptoId === null ? "" : osamenta.exhumacionDeptoId
-  );
-  const [exhumacionMuniId, setexhumacionMuniId] = useState(
-    osamenta.exhumacionMuniId === null ? "" : osamenta.exhumacionMuniId
-  );
+  const [coordenadasExhumacion, setcoordenadasExhumacion] = useState();
+  const [exhumacionAldea, setexhumacionAldea] = useState();
+  const [exhumacionDeptoId, setexhumacionDeptoId] = useState();
+  const [exhumacionMuniId, setexhumacionMuniId] = useState();
 
-  const [fechaExhumacion, setfechaExhumacion] = useState(
-    osamenta.fechaExhumacion === null
-      ? ""
-      : moment(osamenta.fechaExhumacion).utc()
-  );
+  const [fechaExhumacion, setfechaExhumacion] = useState();
+
+  const fetch = async () => {
+    try {
+      const res = await axios.get(
+        `${config.urlApi}/osamenta/${osamentaIdUpdate}`,
+        configReq
+      );
+      let dataT = res.data.data;
+
+      setosamentaId(dataT.osamentaId);
+      setsexoadnid(dataT.sexoAdnId === null ? "" : dataT.sexoAdnId);
+      setcasoId(dataT.casoId);
+      setfosaDet(dataT.fosaDet);
+      setosamentaDet(dataT.osamentaDet);
+      setlocisAlelosUtiles(dataT.locisAlelosUtiles);
+
+      setfechaIngresoLab(
+        dataT.fechaIngresoLab === null
+          ? ""
+          : moment(dataT.fechaIngresoLab).utc()
+      );
+      setfechaIngresoMFiSys(
+        dataT.fechaIngresoMFiSys === null
+          ? ""
+          : moment(dataT.fechaIngresoMFiSys).utc()
+      );
+
+      setestadoId(dataT.estadoId);
+      //DATOS DE EXHUMACION
+      setcoordenadasExhumacion(
+        dataT.coordenadasExhumacion === null ? "" : dataT.coordenadasExhumacion
+      );
+      setexhumacionAldea(
+        dataT.exhumacionAldea === null ? "" : dataT.exhumacionAldea
+      );
+      setexhumacionDeptoId(
+        dataT.exhumacionDeptoId === null ? "" : dataT.exhumacionDeptoId
+      );
+      setexhumacionMuniId(
+        dataT.exhumacionMuniId === null ? "" : dataT.exhumacionMuniId
+      );
+
+      setfechaExhumacion(
+        dataT.fechaExhumacion === null
+          ? ""
+          : moment(dataT.fechaExhumacion).utc()
+      );
+    } catch (error) {
+      if (error.response.status === 400) {
+        if (error.response.data.error) {
+          const dataError = error.response.data;
+          console.log(`${dataError.codigo} - ${dataError.data}`);
+        } else {
+          console.log(
+            `${error.response.status} - ${error.response.statusText}`
+          );
+        }
+      } else {
+        console.log(`${error.response.status} - ${error.response.statusText}`);
+      }
+    }
+  };
 
   const handleCloseEdit = (e) => {
     e.preventDefault();
@@ -97,7 +139,7 @@ function OsamentaEdit({osamenta, onEditDone, oncerrarModal, mensajeAlerta}) {
           ? moment(fechaExhumacion).format("YYYY-MM-DD")
           : null,
         coordenadasExhumacion: coordenadasExhumacion,
-        estadoId: estadoId,
+        estadoId: estadoId
       };
       const res = await axios.put(
         `${config.urlApi}/osamenta/${data.osamentaId}`,
@@ -173,7 +215,7 @@ function OsamentaEdit({osamenta, onEditDone, oncerrarModal, mensajeAlerta}) {
                 setFocusOnError={true}
                 defaultErrorMessage={{
                   required: "El campo es requerido.",
-                  minLength: "Ingresar por lo menos {minLength} caracteres",
+                  minLength: "Ingresar por lo menos {minLength} caracteres"
                 }}
               >
                 <Row>
@@ -191,12 +233,16 @@ function OsamentaEdit({osamenta, onEditDone, oncerrarModal, mensajeAlerta}) {
                         name="casoId"
                         placeholder="Ingresar caso"
                         required
-                        validator={(value) => (value && value>0)?true:false}
-                        errorMessage={{required:"Ingrese valor numerico.", validator: "Ingrese un numero mayor a 0."}}
+                        validator={(value) =>
+                          value && value > 0 ? true : false
+                        }
+                        errorMessage={{
+                          required: "Ingrese valor numerico.",
+                          validator: "Ingrese un numero mayor a 0."
+                        }}
                         value={casoId}
                         onChange={(e) => setcasoId(e.target.value)}
                       />
-                      
                     </Form.Group>
                   </Col>
                   <Col xs="6">
@@ -254,14 +300,13 @@ function OsamentaEdit({osamenta, onEditDone, oncerrarModal, mensajeAlerta}) {
                         dateFormat="DD/MM/YYYY"
                         timeFormat={false}
                         inputProps={{
-                          placeholder: "Fecha Ingreso a laboratorio",
+                          placeholder: "Fecha Ingreso a laboratorio"
                         }}
                         value={fechaIngresoLab}
                         onChange={(e) => {
                           setfechaIngresoLab(e);
                         }}
                         isValidDate={validDate}
-
                         renderInput={renderInputFecha}
                       />
                     </Form.Group>
@@ -276,7 +321,7 @@ function OsamentaEdit({osamenta, onEditDone, oncerrarModal, mensajeAlerta}) {
                         dateFormat="DD/MM/YYYY"
                         timeFormat={false}
                         inputProps={{
-                          placeholder: "Fecha Ingreso M-FISys",
+                          placeholder: "Fecha Ingreso M-FISys"
                         }}
                         value={fechaIngresoMFiSys}
                         onChange={(e) => {
@@ -343,7 +388,7 @@ function OsamentaEdit({osamenta, onEditDone, oncerrarModal, mensajeAlerta}) {
                         dateFormat="DD/MM/YYYY"
                         timeFormat={false}
                         inputProps={{
-                          placeholder: "Fecha de exhumacion",
+                          placeholder: "Fecha de exhumacion"
                         }}
                         value={fechaExhumacion}
                         onChange={(e) => {
@@ -460,16 +505,18 @@ function OsamentaEdit({osamenta, onEditDone, oncerrarModal, mensajeAlerta}) {
 
                 <Row>
                   <Col className=" d-flex justify-content-center">
-                    <Button
-                      key="btnSaveEditPerson"
-                      name="btnSaveEditPerson"
-                      type="submit"
-                      variant="outline-primary"
-                      size="md"
-                    >
-                      <i className="feather icon-save" />
-                      Guardar
-                    </Button>
+                    {actualizar === true && (
+                      <Button
+                        key="btnSaveEditPerson"
+                        name="btnSaveEditPerson"
+                        type="submit"
+                        variant="outline-primary"
+                        size="md"
+                      >
+                        <i className="feather icon-save" />
+                        Guardar
+                      </Button>
+                    )}
 
                     <Button
                       key="btnCancelEditPerson"

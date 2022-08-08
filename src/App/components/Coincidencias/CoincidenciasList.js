@@ -8,7 +8,7 @@ import {
   OverlayTrigger,
   Popover,
   Tooltip,
-  ProgressBar,
+  ProgressBar
 } from "react-bootstrap";
 
 import config from "../../../config";
@@ -25,6 +25,7 @@ function CoincidenciaList(props) {
   const user = useContext(userContext);
   const [data, setData] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
+  const [accesos, setAccesos] = React.useState(props.accesos);
 
   const [pageCount, setPageCount] = React.useState(0);
   const [totalRegisters, settotalRegisters] = useState(0);
@@ -130,8 +131,11 @@ function CoincidenciaList(props) {
               <div className="text-center">
                 <Link
                   to={{
-                    pathname: "/coincidenciasCaso",
-                    query: {backUrl: "/coincidencias", dataCaso: row.original},
+                    pathname: config.baseApp + "/coincidenciasCaso",
+                    query: {
+                      backUrl: config.baseApp + "/coincidencias",
+                      dataCaso: row.original
+                    }
                   }}
                 >
                   {" "}
@@ -140,13 +144,13 @@ function CoincidenciaList(props) {
                   </Badge>
                 </Link>
               </div>
-            ),
+            )
           },
           {
             Header: "F. Coin.",
             accessor: (d) => {
               return moment(d.fechaCoincidencia).utc().format("DD-MM-YYYY");
-            },
+            }
           },
           {
             Header: "Osamenta",
@@ -160,7 +164,7 @@ function CoincidenciaList(props) {
                   {`CRIH-${row.original.Osamenta.casoId}-${row.original.Osamenta.fosaDet}-${row.original.Osamenta.osamentaDet}`}
                 </Badge>
               </div>
-            ),
+            )
           },
           {
             Header: "Victima",
@@ -174,7 +178,7 @@ function CoincidenciaList(props) {
                   {row.original.Victima.codigoVictima}
                 </Badge>
               </div>
-            ),
+            )
           },
           {
             Header: "Nombre",
@@ -182,7 +186,7 @@ function CoincidenciaList(props) {
               <div className="text-center">
                 {row.original.Victima.nombreVictima}
               </div>
-            ),
+            )
           },
           {
             Header: "Donantes",
@@ -237,36 +241,36 @@ function CoincidenciaList(props) {
                   </Badge>
                 </OverlayTrigger>
               </div>
-            ),
-          },
-        ],
+            )
+          }
+        ]
       },
       {
         Header: "Estadístico",
         style: {
           borderRight: "2px solid black",
-          borderLeft: "2px solid black",
+          borderLeft: "2px solid black"
         },
         columns: [
           {
             Header: "INDICE FILIACION",
             accessor: "lr",
             style: {
-              borderLeft: "2px solid black",
-            },
+              borderLeft: "2px solid black"
+            }
           },
           {
             Header: "Apriori",
-            accessor: "apriori",
+            accessor: "apriori"
           },
           {
             Header: "Posterior",
             accessor: "posterior",
             style: {
-              borderRight: "2px solid black",
-            },
-          },
-        ],
+              borderRight: "2px solid black"
+            }
+          }
+        ]
       },
 
       {
@@ -277,12 +281,12 @@ function CoincidenciaList(props) {
 
             accessor: (d) => {
               return moment(d.fechaConfExc).utc().format("DD-MM-YYYY");
-            },
+            }
           },
 
           {
             Header: "Estado",
-            accessor: "EstadoCoincidencia.descripcion",
+            accessor: "EstadoCoincidencia.descripcion"
           } /*
           {
             Header: "Cromosoma Y",
@@ -301,7 +305,7 @@ function CoincidenciaList(props) {
               let tipocaso =
                 d.TipoCasoDid === null ? "" : d.TipoCasoDid.descripcion;
               return tipocaso;
-            },
+            }
           },
           {
             Header: "Contexto",
@@ -309,9 +313,16 @@ function CoincidenciaList(props) {
               let TipoContexto =
                 d.TipoContexto === null ? "" : d.TipoContexto.descripcion;
               return TipoContexto;
-            },
+            }
           },
-
+          {
+            Header: "Responsable",
+            accessor: (d) => {
+              let Responsablev =
+                d.Responsable === null ? "" : d.Responsable.usuario;
+              return Responsablev;
+            }
+          },
           {
             Header: "Progreso",
             className: "vertical-align:middle",
@@ -333,95 +344,109 @@ function CoincidenciaList(props) {
                   />
                 </div>
               );
-            },
+            }
           },
           {
             Header: "Acciones",
             accessor: (row) => {
               return (
                 <div>
-                  <OverlayTrigger
-                    placement="top"
-                    overlay={
-                      <Tooltip id={`tooltip-top`}>Notas laboratorio</Tooltip>
-                    }
-                  >
-                    <Button
-                      type="submit"
-                      className="btn-icon"
-                      variant="outline-primary"
-                      size="sm"
-                      onClick={(e) =>
-                        props.onabrirModal("NotaLaboratorio", row)
+                  {accesos.verNotasLaboratorio === true && (
+                    <OverlayTrigger
+                      placement="top"
+                      overlay={
+                        <Tooltip id={`tooltip-top`}>Notas laboratorio</Tooltip>
                       }
                     >
-                      <i className="feather icon-activity" />
-                    </Button>
-                  </OverlayTrigger>
-                  <OverlayTrigger
-                    placement="top"
-                    overlay={
-                      <Tooltip id={`tooltip-top`}>Anotaciones DID</Tooltip>
-                    }
-                  >
-                    <Button
-                      type="submit"
-                      className="btn-icon"
-                      variant="outline-danger"
-                      size="sm"
-                      onClick={(e) => props.onabrirModal("AnotacionesDID", row)}
-                    >
-                      <i className="feather icon-edit" />
-                    </Button>
-                  </OverlayTrigger>
-                  <OverlayTrigger
-                    placement="top"
-                    overlay={
-                      <Tooltip id={`tooltip-top`}>
-                        Seguimiento Solicitudes DID
-                      </Tooltip>
-                    }
-                  >
-                    <Button
-                      type="submit"
-                      className="btn-icon"
-                      variant="outline-secondary"
-                      size="sm"
-                      onClick={(e) => props.onabrirModal("SeguimientoDID", row)}
-                    >
-                      <i className="feather icon-eye" />
-                    </Button>
-                  </OverlayTrigger>
-                  <OverlayTrigger
-                    placement="top"
-                    overlay={<Tooltip id={`tooltip-top`}>Archivos</Tooltip>}
-                  >
-                    <Button
-                      type="submit"
-                      className="btn-icon"
-                      variant="outline-success"
-                      size="sm"
-                      onClick={(e) =>
-                        props.onabrirModal("ArchivosCoincidencia", row)
+                      <Button
+                        type="submit"
+                        className="btn-icon"
+                        variant="outline-primary"
+                        size="sm"
+                        onClick={(e) =>
+                          props.onabrirModal("NotaLaboratorio", row)
+                        }
+                      >
+                        <i className="feather icon-activity" />
+                      </Button>
+                    </OverlayTrigger>
+                  )}
+                  {accesos.verAnotaciones === true && (
+                    <OverlayTrigger
+                      placement="top"
+                      overlay={
+                        <Tooltip id={`tooltip-top`}>Anotaciones DID</Tooltip>
                       }
                     >
-                      <i className="feather icon-folder" />
-                    </Button>
-                  </OverlayTrigger>
-                  <OverlayTrigger
-                    placement="top"
-                    overlay={<Tooltip id={`tooltip-top`}>FIO</Tooltip>}
-                  >
-                    <Button
-                      type="submit"
-                      className="btn-icon"
-                      variant="outline-success"
-                      size="sm"
-                      onClick={(e) => props.onabrirModal("FIO", row)}
+                      <Button
+                        type="submit"
+                        className="btn-icon"
+                        variant="outline-danger"
+                        size="sm"
+                        onClick={(e) =>
+                          props.onabrirModal("AnotacionesDID", row)
+                        }
+                      >
+                        <i className="feather icon-edit" />
+                      </Button>
+                    </OverlayTrigger>
+                  )}
+                  {accesos.verSeguimientoSolicitud === true && (
+                    <OverlayTrigger
+                      placement="top"
+                      overlay={
+                        <Tooltip id={`tooltip-top`}>
+                          Seguimiento Solicitudes DID
+                        </Tooltip>
+                      }
                     >
-                      <i className="feather icon-file" />
-                    </Button>
-                  </OverlayTrigger>
+                      <Button
+                        type="submit"
+                        className="btn-icon"
+                        variant="outline-secondary"
+                        size="sm"
+                        onClick={(e) =>
+                          props.onabrirModal("SeguimientoDID", row)
+                        }
+                      >
+                        <i className="feather icon-eye" />
+                      </Button>
+                    </OverlayTrigger>
+                  )}
+                  {accesos.verArchivo === true && (
+                    <OverlayTrigger
+                      placement="top"
+                      overlay={<Tooltip id={`tooltip-top`}>Archivos</Tooltip>}
+                    >
+                      <Button
+                        type="submit"
+                        className="btn-icon"
+                        variant="outline-success"
+                        size="sm"
+                        onClick={(e) =>
+                          props.onabrirModal("ArchivosCoincidencia", row)
+                        }
+                      >
+                        <i className="feather icon-folder" />
+                      </Button>
+                    </OverlayTrigger>
+                  )}
+                  {accesos.verFio === true && (
+                    <OverlayTrigger
+                      placement="top"
+                      overlay={<Tooltip id={`tooltip-top`}>FIO</Tooltip>}
+                    >
+                      <Button
+                        type="submit"
+                        className="btn-icon"
+                        variant="outline-success"
+                        size="sm"
+                        onClick={(e) => props.onabrirModal("FIO", row)}
+                      >
+                        <i className="feather icon-file" />
+                      </Button>
+                    </OverlayTrigger>
+                  )}
                   <OverlayTrigger
                     placement="top"
                     overlay={<Tooltip id={`tooltip-top`}>FIO</Tooltip>}
@@ -436,7 +461,7 @@ function CoincidenciaList(props) {
                       <i className="feather icon-printer" />
                     </Button>
                   </OverlayTrigger>
-                  
+
                   <OverlayTrigger
                     placement="top"
                     overlay={<Tooltip id={`tooltip-top`}>Coincidencia</Tooltip>}
@@ -453,15 +478,15 @@ function CoincidenciaList(props) {
                   </OverlayTrigger>
                 </div>
               );
-            },
-          },
-        ],
-      },
+            }
+          }
+        ]
+      }
     ],
     []
   );
   const configReq = {
-    headers: {Authorization: `Bearer ${user.token}`},
+    headers: {Authorization: `Bearer ${user.token}`}
   };
   const fetchCoincidencias = async (
     pageSize,
@@ -517,8 +542,6 @@ function CoincidenciaList(props) {
     }
     return () => {};
   }, [props.reset]);
-
-
 
   return (
     <div className="animated fadeIn">

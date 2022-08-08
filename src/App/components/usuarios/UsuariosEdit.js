@@ -6,7 +6,7 @@ import axios from "axios";
 import {
   ValidationForm,
   TextInput,
-  SelectGroup,
+  SelectGroup
 } from "react-bootstrap4-form-validation";
 import validator from "validator";
 import {apiCatalogo} from "../../../utils/fetchCatalogos";
@@ -16,11 +16,12 @@ function UsuariosEdit({
   onEditarDone,
   onCerrarModalEdita,
   mensajeAlerta,
+  actualizar
 }) {
   //CONTEXT LOAD
   const userI = useContext(userContext);
   const configReq = {
-    headers: {Authorization: `Bearer ${userI.token}`},
+    headers: {Authorization: `Bearer ${userI.token}`}
   };
   //DEFINICION DE ESTADOS
   const [usuarioId] = useState(usuario.usuarioId);
@@ -53,7 +54,7 @@ function UsuariosEdit({
       var roots = res.data.data.map(function (row) {
         return {
           value: row.personaId,
-          label: "[" + row.personaId + "] " + row.nombre,
+          label: "[" + row.personaId + "] " + row.nombre
         };
       });
       return roots;
@@ -78,7 +79,7 @@ function UsuariosEdit({
         email: email,
         estadoId: estadoId,
         personaId: personaId,
-        puestoId: puestoId == "" || puestoId == 0 ? null : puestoId,
+        puestoId: puestoId == "" || puestoId == 0 ? null : puestoId
       };
       const res = await axios.put(
         `${config.urlApi}/usuario/${data.usuarioId}`,
@@ -138,7 +139,7 @@ function UsuariosEdit({
                 setFocusOnError
                 defaultErrorMessage={{
                   required: "El campo es requerido.",
-                  minLength: "Ingresar por lo menos {minLength} caracteres",
+                  minLength: "Ingresar por lo menos {minLength} caracteres"
                 }}
               >
                 <Row>
@@ -167,7 +168,7 @@ function UsuariosEdit({
                         validator={validator.isEmail}
                         errorMessage={{
                           required: "El campo es requerido",
-                          validator: "Correo electronico invalido.",
+                          validator: "Correo electronico invalido."
                         }}
                         placeholder="Ingresar correo electronico"
                         value={email}
@@ -246,16 +247,17 @@ function UsuariosEdit({
                 </Row>
                 <Row>
                   <Col className=" d-flex justify-content-center">
-                    <Button
-                      key="btnSaveEditPerson"
-                      type="submit"
-                      variant="outline-primary"
-                      size="md"
-                    >
-                      <i className="feather icon-save" />
-                      Guardar
-                    </Button>
-
+                    {actualizar === true && (
+                      <Button
+                        key="btnSaveEditPerson"
+                        type="submit"
+                        variant="outline-primary"
+                        size="md"
+                      >
+                        <i className="feather icon-save" />
+                        Guardar
+                      </Button>
+                    )}
                     <Button
                       key="btnCancelEditPerson"
                       onClick={handleCloseEditUsuario}

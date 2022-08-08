@@ -16,6 +16,8 @@ function ArchivosListPrincipal({
   reset,
   setreset,
   mensajeAlerta,
+  descargaArchivo = false,
+  eliminarArchivo = false
 }) {
   const treeviewRef = useRef(null);
 
@@ -32,7 +34,7 @@ function ArchivosListPrincipal({
   const [loadingDownload, setloadingDownload] = useState(false);
   const [dataFiles, setdataFiles] = useState([]);
   const configReq = {
-    headers: {Authorization: `Bearer ${userf.token}`},
+    headers: {Authorization: `Bearer ${userf.token}`}
   };
 
   const fetchFileDownload = async (urlPath, fileName) => {
@@ -43,7 +45,7 @@ function ArchivosListPrincipal({
         configReq
       );
       var blob = new Blob([
-        Uint8Array.from(Buffer.from(res.data.data.Body.data)),
+        Uint8Array.from(Buffer.from(res.data.data.Body.data))
       ]);
       fileDownload(blob, fileName);
     } catch (error) {}
@@ -54,7 +56,7 @@ function ArchivosListPrincipal({
     try {
       var data = {
         key: urlPath,
-        coincidenciaId: coincidencia,
+        coincidenciaId: coincidencia
       };
       const res = await axios.post(
         `${config.urlApi}/identificadoSmih/deleteArchivo`,
@@ -163,7 +165,7 @@ function ArchivosListPrincipal({
         padres.push({
           id: list[i].id,
           padreDescripcion: list[i].padreDescripcion,
-          padrePath: list[i].padrePath,
+          padrePath: list[i].padrePath
         });
     }
     padres.forEach((element) => {
@@ -177,7 +179,7 @@ function ArchivosListPrincipal({
             identificadoDocumentoId: elementList.identificadoDocumentoId,
             tipoDocumento: elementList.tipoDocumento,
             urlDocumento: elementList.urlDocumento,
-            mimetype: elementList.mimetype,
+            mimetype: elementList.mimetype
           });
       });
       roots.push({
@@ -187,7 +189,7 @@ function ArchivosListPrincipal({
         expanded: true,
         text: element.padreDescripcion,
 
-        children: childrens,
+        children: childrens
       });
     });
 
@@ -209,7 +211,7 @@ function ArchivosListPrincipal({
               padrePath: d.Documento.RepoDoc.path,
               tipoDocumento: d.Documento.descripcion,
               urlDocumento: d.urlDocumento,
-              mimetype: d.mimetype,
+              mimetype: d.mimetype
             });
           });
         }
@@ -235,6 +237,20 @@ function ArchivosListPrincipal({
       case "download":
         setloadingDownload(true);
         fetchFileDownload(item.urlDocumento, item.text);
+        var re = /(?:\.([^.]+))?$/;
+        var ext = re.exec(item.text)[1];
+        var nombreNuevo = item.tipoDocumento.replace(/\s/g, "");
+        nombreNuevo.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+        nombreNuevo =
+          nombreNuevo +
+          "_C" +
+          coincidenciaId +
+          "_IS" +
+          IdentificadoId +
+          "." +
+          ext;
+        fetchFileDownload(item.urlDocumento, nombreNuevo);
         break;
       case "delete":
         setloadingDownload(true);
@@ -286,6 +302,7 @@ function ArchivosListPrincipal({
     return () => {};
   }, [bytesDataFile]);
   const actionButtons = [
+    descargaArchivo === true && (
     <Button
       type="button"
       name="download"
@@ -294,7 +311,8 @@ function ArchivosListPrincipal({
       size="sm"
     >
       <i className="feather icon-download" />
-    </Button>,
+    </Button>
+    ),
     <Button
       type="button"
       name="preview"
@@ -304,6 +322,7 @@ function ArchivosListPrincipal({
     >
       <i className="feather icon-eye" />
     </Button>,
+    eliminarArchivo === true && (
     <Button
       type="button"
       name="delete"
@@ -312,7 +331,8 @@ function ArchivosListPrincipal({
       size="sm"
     >
       <i className="feather icon-x" />
-    </Button>,
+    </Button>
+    )
   ];
 
   const NoActionButtons = [<RecontraMiniLoader></RecontraMiniLoader>];

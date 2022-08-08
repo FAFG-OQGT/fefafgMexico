@@ -11,16 +11,23 @@ import {renderInputFecha, validDate} from "../Utils/fechas";
 import {
   ValidationForm,
   TextInput,
-  SelectGroup,
+  SelectGroup
 } from "react-bootstrap4-form-validation";
 
 import "./VictimaEdit.css";
 
-function VictimaEdit({victima, onEditDone, oncerrarModal, mensajeAlerta}) {
+function VictimaEdit({
+  victima,
+  onEditDone,
+  oncerrarModal,
+  mensajeAlerta,
+  victimaUpdateId,
+  actualizar = false
+}) {
   //CONTEXT LOAD
   const user = useContext(userContext);
   const configReq = {
-    headers: {Authorization: `Bearer ${user.token}`},
+    headers: {Authorization: `Bearer ${user.token}`}
   };
   //DEFINICION DE ESTADOS
   const [comboDepto, setcomboDepto] = useState();
@@ -28,46 +35,26 @@ function VictimaEdit({victima, onEditDone, oncerrarModal, mensajeAlerta}) {
   const [comboTipodocumento, setcomboTipodocumento] = useState();
 
   //GENERALES
-  const [victimaId, setvictimaId] = useState(victima.victimaId);
-  const [codigoVictima, setcodigoVictima] = useState(victima.codigoVictima);
-  const [nombreVictima, setnombreVictima] = useState(victima.nombreVictima);
-  const [noDocumento, setnoDocumento] = useState(
-    victima.noDocumento === null ? "" : victima.noDocumento
-  );
-  const [estadoId, setestadoId] = useState(victima.estadoId);
+  const [victimaId, setvictimaId] = useState();
+  const [codigoVictima, setcodigoVictima] = useState();
+  const [nombreVictima, setnombreVictima] = useState();
+  const [noDocumento, setnoDocumento] = useState();
+  const [estadoId, setestadoId] = useState();
 
-  const [tipoDocumentoId, settipoDocumentoId] = useState(
-    victima.tipoDocumentoId === null ? "" : victima.tipoDocumentoId
-  );
-  const [residenciaAldea, setresidenciaAldea] = useState(
-    victima.residenciaAldea === null ? "" : victima.residenciaAldea
-  );
-  const [residenciaDeptoId, setresidenciaDeptoId] = useState(
-    victima.residenciaDeptoId === null ? "" : victima.residenciaDeptoId
-  );
-  const [residenciaMuniId, setresidenciaMuniId] = useState(
-    victima.residenciaMuniId === null ? "" : victima.residenciaMuniId
-  );
+  const [tipoDocumentoId, settipoDocumentoId] = useState();
+  const [residenciaAldea, setresidenciaAldea] = useState();
+  const [residenciaDeptoId, setresidenciaDeptoId] = useState();
+  const [residenciaMuniId, setresidenciaMuniId] = useState();
 
   //DATOS DEL HECHO
-  const [diaHecho, setdiaHecho] = useState(victima.diaHecho);
-  const [mesHecho, setmesHecho] = useState(victima.mesHecho);
-  const [anioHecho, setanioHecho] = useState(victima.anioHecho);
-  const [lugarHechoAldea, setlugarHechoAldea] = useState(
-    victima.lugarHechoAldea === null ? "" : victima.lugarHechoAldea
-  );
-  const [lugarHechoDeptoId, setlugarHechoDeptoId] = useState(
-    victima.lugarHechoDeptoId === null ? "" : victima.lugarHechoDeptoId
-  );
-  const [lugarHechoMuniId, setlugarHechoMuniId] = useState(
-    victima.lugarHechoMuniId === null ? "" : victima.lugarHechoMuniId
-  );
+  const [diaHecho, setdiaHecho] = useState();
+  const [mesHecho, setmesHecho] = useState();
+  const [anioHecho, setanioHecho] = useState();
+  const [lugarHechoAldea, setlugarHechoAldea] = useState();
+  const [lugarHechoDeptoId, setlugarHechoDeptoId] = useState();
+  const [lugarHechoMuniId, setlugarHechoMuniId] = useState();
 
-  const [fechaNacimientoVictima, setfechaNacimientoVictima] = useState(
-    victima.fechaNacimientoVictima === null
-      ? ""
-      : moment(victima.fechaNacimientoVictima).utc()
-  );
+  const [fechaNacimientoVictima, setfechaNacimientoVictima] = useState();
 
   const handleCloseEdit = (e) => {
     e.preventDefault();
@@ -93,7 +80,7 @@ function VictimaEdit({victima, onEditDone, oncerrarModal, mensajeAlerta}) {
 
         estadoId: estadoId,
         noDocumento: noDocumento,
-        tipoDocumentoId: tipoDocumentoId === "" ? null : tipoDocumentoId,
+        tipoDocumentoId: tipoDocumentoId === "" ? null : tipoDocumentoId
       };
       const res = await axios.put(
         `${config.urlApi}/victima/${victimaId}`,
@@ -196,7 +183,70 @@ function VictimaEdit({victima, onEditDone, oncerrarModal, mensajeAlerta}) {
     }
   };
 
+  const fetch = async () => {
+    try {
+      const res = await axios.get(
+        `${config.urlApi}/victima/${victimaUpdateId}`,
+        configReq
+      );
+      let dataT = res.data.data;
+
+      setvictimaId(dataT.victimaId);
+      setcodigoVictima(dataT.codigoVictima);
+      setnombreVictima(dataT.nombreVictima);
+      setnoDocumento(dataT.noDocumento === null ? "" : dataT.noDocumento);
+      setestadoId(dataT.estadoId);
+
+      settipoDocumentoId(
+        dataT.tipoDocumentoId === null ? "" : dataT.tipoDocumentoId
+      );
+      setresidenciaAldea(
+        dataT.residenciaAldea === null ? "" : dataT.residenciaAldea
+      );
+      setresidenciaDeptoId(
+        dataT.residenciaDeptoId === null ? "" : dataT.residenciaDeptoId
+      );
+      setresidenciaMuniId(
+        dataT.residenciaMuniId === null ? "" : dataT.residenciaMuniId
+      );
+
+      //DATOS DEL HECHO
+      setdiaHecho(dataT.diaHecho);
+      setmesHecho(dataT.mesHecho);
+      setanioHecho(dataT.anioHecho);
+      setlugarHechoAldea(
+        dataT.lugarHechoAldea === null ? "" : dataT.lugarHechoAldea
+      );
+      setlugarHechoDeptoId(
+        dataT.lugarHechoDeptoId === null ? "" : dataT.lugarHechoDeptoId
+      );
+      setlugarHechoMuniId(
+        dataT.lugarHechoMuniId === null ? "" : dataT.lugarHechoMuniId
+      );
+
+      setfechaNacimientoVictima(
+        dataT.fechaNacimientoVictima === null
+          ? ""
+          : moment(dataT.fechaNacimientoVictima).utc()
+      );
+    } catch (error) {
+      if (error.response.status === 400) {
+        if (error.response.data.error) {
+          const dataError = error.response.data;
+          console.log(`${dataError.codigo} - ${dataError.data}`);
+        } else {
+          console.log(
+            `${error.response.status} - ${error.response.statusText}`
+          );
+        }
+      } else {
+        console.log(`${error.response.status} - ${error.response.statusText}`);
+      }
+    }
+  };
+
   useEffect(() => {
+    fetch();    
     fetchCatalogo("departamento");
     fetchCatalogo("municipio");
     fetchCatalogo("tipoDocumento");
@@ -223,7 +273,7 @@ function VictimaEdit({victima, onEditDone, oncerrarModal, mensajeAlerta}) {
                 setFocusOnError={true}
                 defaultErrorMessage={{
                   required: "El campo es requerido.",
-                  minLength: "Ingresar por lo menos {minLength} caracteres",
+                  minLength: "Ingresar por lo menos {minLength} caracteres"
                 }}
               >
                 <Row>
@@ -325,7 +375,7 @@ function VictimaEdit({victima, onEditDone, oncerrarModal, mensajeAlerta}) {
                         dateFormat="DD/MM/YYYY"
                         timeFormat={false}
                         inputProps={{
-                          placeholder: "Fecha nacimiento",
+                          placeholder: "Fecha nacimiento"
                         }}
                         value={fechaNacimientoVictima}
                         onChange={(e) => {
@@ -624,17 +674,18 @@ function VictimaEdit({victima, onEditDone, oncerrarModal, mensajeAlerta}) {
                 </Row>
                 <Row>
                   <Col className=" d-flex justify-content-center">
-                    <Button
-                      key="btnSaveEditPerson"
-                      name="btnSaveEditPerson"
-                      type="submit"
-                      variant="outline-primary"
-                      size="md"
-                    >
-                      <i className="feather icon-save" />
-                      Guardar
-                    </Button>
-
+                    {actualizar === true && (
+                      <Button
+                        key="btnSaveEditPerson"
+                        name="btnSaveEditPerson"
+                        type="submit"
+                        variant="outline-primary"
+                        size="md"
+                      >
+                        <i className="feather icon-save" />
+                        Guardar
+                      </Button>
+                    )}
                     <Button
                       key="btnCancelEditPerson"
                       name="btnCancelEditPerson"

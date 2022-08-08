@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Row, Col, Button,Modal } from "react-bootstrap";
+import React, {useState, useEffect, useContext} from "react";
+import {Row, Col, Button, Modal} from "react-bootstrap";
 import Aux from "../../hoc/_Aux";
 import Card from "../../App/components/MainCard";
 import UsuariosList from "../../App/components/usuarios/UsuariosList";
@@ -7,15 +7,45 @@ import UsuariosNuevo from "../../App/components/usuarios/UsuariosNuevo";
 import UsuariosEditar from "../../App/components/usuarios/UsuariosEdit";
 import CambioContrasena from "../../App/components/usuarios/cambioContrasena";
 import CambioPerfil from "../../App/components/usuarios/cambioPerfil";
+import {apiFetchAccesoXObjeto} from "../../utils/fetchCatalogos";
+import userContext from "../../context/userContext";
 
-import MensajeAlerta from "../../App/components/MensajeAlerta/MensajeAlerta"
+import MensajeAlerta from "../../App/components/MensajeAlerta/MensajeAlerta";
 //css
 import "./usuarios.css";
 
 //css
 import "./usuarios.css";
- 
+
 function Usuarios(props) {
+  const user = useContext(userContext);
+
+  const [accesos, setAccesos] = useState({
+    actualizar: false,
+    ver: false,
+    agregar: false,
+    eliminar: false,
+    verArchivo: false,
+    agregarArchivo: false,
+    eliminarArchivo: false,
+    descargarArchivo: false,
+    verAnotaciones: false,
+    agregarAnotaciones: false,
+    verSeguimientoSolicitud: false,
+    agregarSeguimientoSolicitud: false,
+    verNotasLaboratorio: false,
+    agregarNotasLaboratorio: false,
+    verFio: false,
+    editarFio: false,
+    verDonantes: false,
+    editarDonantes: false
+  });
+
+  const fetchAccesos = async () => {
+    var data = await apiFetchAccesoXObjeto(user.token, user.usuarioId, 5);
+    var Raccesos = data[0];
+    setAccesos(Raccesos.accesos);
+  };
   //const user = useContext(userContext);
   const [resetList, setresetList] = useState(false);
 
@@ -32,7 +62,6 @@ function Usuarios(props) {
   const [modalCambioRol, setmodalCambioRol] = useState(false);
   const [onCambioRol, setoncambioRol] = useState(false);
 
-
   const abrirModalNuevo = (valor) => {
     setmodalNuevoUsuario(valor);
   };
@@ -40,18 +69,12 @@ function Usuarios(props) {
 
   const onNuevoDone = (val) => setonNuevoUsuario(val);
 
-
-
-
   const onEditarDone = (val) => setoneditarUsuario(val);
   const onCerrarModalEdita = () => setmodaleditarUsuario(false);
   const onabrirModalEdit = (usuarioToEdit) => {
     setmodaleditarUsuario(true);
     setusuarioEditar(usuarioToEdit);
   };
-
-
-
 
   const onabrirModalCambio = (usuarioToEdit) => {
     setmodalCambioCon(true);
@@ -64,16 +87,13 @@ function Usuarios(props) {
   };
 
   const onCerrarModalCambio = () => setmodalCambioCon(false);
-  
+
   const onCambioConDone = (val) => setoncambioCon(val);
 
   const onCerrarModalRol = () => setmodalCambioRol(false);
-  
+
   const onCambioRolDone = (val) => setoncambioRol(val);
 
-
-
-  
   useEffect(() => {
     if (onNuevoUsuario) {
       onCerrarModalNuevo();
@@ -91,7 +111,6 @@ function Usuarios(props) {
   }, [oneditarUsuario]);
 
   useEffect(() => {
-
     if (onCambioRol) {
       onCerrarModalRol();
       setoncambioRol(false);
@@ -106,6 +125,10 @@ function Usuarios(props) {
       setresetList(false);
     }
   }, [onCambioCon]);
+  useEffect(() => {
+    fetchAccesos();
+    return () => {};
+  }, []);
   return (
     <div className="animated fadeIn">
       <Aux>
@@ -113,27 +136,29 @@ function Usuarios(props) {
           <Col>
             <Card title="Usuarios" isOption>
               <Col xl={12}>
-                <Row>
-                  <Col>
-                    <Button
-                      key="btnSaveAddUser"
-                      variant="outline-success"
-                      size="sm"
-                      onClick={(e) => abrirModalNuevo(true)}
-
-                    >
-                      <i className="feather icon-plus" />
-                      Agregar
-                    </Button>
-                  </Col>
-                </Row>
+              {accesos && accesos.agregar === true && (
+                  <Row>
+                    <Col>
+                      <Button
+                        key="btnSaveAddUser"
+                        variant="outline-success"
+                        size="sm"
+                        onClick={(e) => abrirModalNuevo(true)}
+                      >
+                        <i className="feather icon-plus" />
+                        Agregar
+                      </Button>
+                    </Col>
+                  </Row>
+                )}
                 <UsuariosList
                   reset={resetList}
                   setresetList={(val) => setresetList(val)}
                   onabrirModalEdit={onabrirModalEdit}
-                  onabrirModalCambio ={onabrirModalCambio}
+                  onabrirModalCambio={onabrirModalCambio}
                   onabrirModalCambioRol={onabrirModalCambioRol}
-                  mensajeAlerta ={MensajeAlerta}
+                  mensajeAlerta={MensajeAlerta}
+                  actualizar={accesos.actualizar}
                 ></UsuariosList>
               </Col>
             </Card>
@@ -154,12 +179,12 @@ function Usuarios(props) {
             onNuevoDone={onNuevoDone}
             onCerrarModalNuevo={onCerrarModalNuevo}
             mensajeAlerta={MensajeAlerta}
+            agregar={accesos.agregar}
           />
         </Modal.Body>
       </Modal>
-  
+
       <Modal
-        
         size="lg"
         show={modaleditarUsuario}
         onHide={() => setmodaleditarUsuario(false)}
@@ -173,6 +198,7 @@ function Usuarios(props) {
             onEditarDone={onEditarDone}
             onCerrarModalEdita={onCerrarModalEdita}
             mensajeAlerta={MensajeAlerta}
+            actualizar={accesos.actualizar}
           />
         </Modal.Body>
       </Modal>
@@ -183,7 +209,9 @@ function Usuarios(props) {
         onHide={() => setmodalCambioCon(false)}
       >
         <Modal.Header closeButton>
-          <Modal.Title as="h5">Cambio contraseña [{usuarioEditar.usuario}]</Modal.Title>
+          <Modal.Title as="h5">
+            Cambio contraseña [{usuarioEditar.usuario}]
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <CambioContrasena
@@ -191,18 +219,20 @@ function Usuarios(props) {
             onCambioConDone={onCambioConDone}
             onCerrarModalCambio={onCerrarModalCambio}
             mensajeAlerta={MensajeAlerta}
+            actualizar={accesos.actualizar}
           />
         </Modal.Body>
       </Modal>
 
-      
       <Modal
         size="md"
         show={modalCambioRol}
         onHide={() => setmodalCambioRol(false)}
       >
         <Modal.Header closeButton>
-          <Modal.Title as="h5">Cambio de perfil [{usuarioEditar.usuario}]</Modal.Title>
+          <Modal.Title as="h5">
+            Cambio de perfil [{usuarioEditar.usuario}]
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <CambioPerfil
@@ -210,6 +240,7 @@ function Usuarios(props) {
             onCambioRolDone={onCambioRolDone}
             onCerrarModalRol={onCerrarModalRol}
             mensajeAlerta={MensajeAlerta}
+            actualizar={accesos.actualizar}
           />
         </Modal.Body>
       </Modal>

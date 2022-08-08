@@ -7,6 +7,7 @@ import MainCard from "../../../../App/components/MainCard";
 import {Link} from "react-router-dom";
 import IdentificadosEditSmih from "../../../../App/components/Identificados/Smih/IdentificadosEditSmih";
 
+import config from "../../../../config";
 function IdentificadosEdit(props) {
   //VIEW OR PAGE STATES
 
@@ -30,11 +31,12 @@ function IdentificadosEdit(props) {
 
   const onEditDone = (valor) => {
     if (valor == true) {
-      props.history.push("/identificadosSmIh");
+      props.history.push(config.baseApp + "/identificadosSmIh");
     }
   };
   useEffect(() => {
-    if (dataTemp === null) props.history.push("/identificadosSmIh");
+    if (dataTemp === null)
+      props.history.push(config.baseApp + "/identificadosSmIh");
 
     return () => {};
   }, [dataTemp]);

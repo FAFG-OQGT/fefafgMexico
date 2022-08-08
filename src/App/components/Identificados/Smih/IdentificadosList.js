@@ -7,7 +7,7 @@ import {
   Badge,
   OverlayTrigger,
   Tooltip,
-  ProgressBar,
+  ProgressBar
 } from "react-bootstrap";
 
 import config from "../../../../config";
@@ -285,11 +285,11 @@ function IdentificadosList(props) {
               <div className="text-center">
                 <Link
                   to={{
-                    pathname: "/identificadosSmIhEdit",
+                    pathname: config.baseApp + "/identificadosSmIhEdit",
                     query: {
-                      backUrl: "/identificadosSmIh",
-                      dataCaso: row.original,
-                    },
+                      backUrl: config.baseApp + "/identificadosSmIh",
+                      dataCaso: row.original
+                    }
                   }}
                 >
                   <Badge className="btn" variant={"primary"}>
@@ -299,11 +299,11 @@ function IdentificadosList(props) {
                   </Badge>
                 </Link>
               </div>
-            ),
+            )
           },
           {
             Header: "Coincidencia",
-            accessor: "coincidenciaId",
+            accessor: "coincidenciaId"
           },
 
           {
@@ -318,7 +318,7 @@ function IdentificadosList(props) {
                   {`CRIH-${row.original.Osamenta.casoId}-${row.original.Osamenta.fosaDet}-${row.original.Osamenta.osamentaDet}`}
                 </Badge>
               </div>
-            ),
+            )
           },
           {
             Header: "Victima",
@@ -332,21 +332,21 @@ function IdentificadosList(props) {
                   {row.original.Victima.codigoVictima}
                 </Badge>
               </div>
-            ),
+            )
           },
           {
             Header: "Nombre",
-            accessor: "Victima.nombreVictima",
+            accessor: "Victima.nombreVictima"
           },
           {
-            Header: "LRI",
+            Header: "PP",
             accessor: (d) => {
               if (d.Coincidencia === null) {
                 return "--";
               } else {
-                return d.Coincidencia.lr;
+                return d.Coincidencia.posterior;
               }
-            },
+            }
           },
           {
             Header: "Fam. Informados",
@@ -356,7 +356,7 @@ function IdentificadosList(props) {
               } else {
                 return moment(d.fechaInfoFamilia).utc().format("DD-MM-YYYY");
               }
-            },
+            }
           },
           {
             Header: "F. Confirmación",
@@ -366,17 +366,17 @@ function IdentificadosList(props) {
               } else {
                 return moment(d.fechaConfirmacion).utc().format("DD-MM-YYYY");
               }
-            },
+            }
           },
           {
             Header: "F. Inhumación",
             accessor: (d) => {
-              if (d.fechaConfirmacion === null) {
+              if (d.fechaInhumacion === null) {
                 return "---";
               } else {
-                return moment(d.fechaConfirmacion).utc().format("DD-MM-YYYY");
+                return moment(d.fechaInhumacion).utc().format("DD-MM-YYYY");
               }
-            },
+            }
           },
           {
             Header: "F. Antemortem",
@@ -386,7 +386,7 @@ function IdentificadosList(props) {
               } else {
                 return moment(d.fechaEntrevistaAM).utc().format("DD-MM-YYYY");
               }
-            },
+            }
           },
           {
             Header: "F. Reporte Did",
@@ -396,7 +396,7 @@ function IdentificadosList(props) {
               } else {
                 return moment(d.fechaReporteDid).utc().format("DD-MM-YYYY");
               }
-            },
+            }
           },
           {
             Header: "F. Genetica",
@@ -408,7 +408,7 @@ function IdentificadosList(props) {
                   .utc()
                   .format("DD-MM-YYYY");
               }
-            },
+            }
           },
           {
             Header: "F. A. Osteo.",
@@ -418,7 +418,7 @@ function IdentificadosList(props) {
               } else {
                 return moment(d.fechaAnalisisOst).utc().format("DD-MM-YYYY");
               }
-            },
+            }
           },
           {
             Header: "F. Dictamen Idt.",
@@ -428,7 +428,7 @@ function IdentificadosList(props) {
               } else {
                 return moment(d.fechaDictamen).utc().format("DD-MM-YYYY");
               }
-            },
+            }
           },
           {
             Header: "Progreso",
@@ -451,7 +451,7 @@ function IdentificadosList(props) {
                   />
                 </div>
               );
-            },
+            }
           },
           {
             Header: "Acciones",
@@ -490,15 +490,15 @@ function IdentificadosList(props) {
                   </OverlayTrigger>
                 </div>
               );
-            },
-          },
-        ],
-      },
+            }
+          }
+        ]
+      }
     ],
     []
   );
   const configReq = {
-    headers: {Authorization: `Bearer ${user.token}`},
+    headers: {Authorization: `Bearer ${user.token}`}
   };
   const fetchIdentificados = async (
     pageSize,
@@ -554,7 +554,6 @@ function IdentificadosList(props) {
     return () => {};
   }, [props.reset]);
 
-  
   return (
     <div className="animated fadeIn">
       <Aux>

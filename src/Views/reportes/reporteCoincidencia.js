@@ -11,46 +11,22 @@ import axios from "axios";
 import moment from "moment";
 
 import userContext from "../../context/userContext";
-
+import ExportToExcel from "../../App/components/exportExcel/ExportToExcel";
 import TablaGenerica from "../../App/components/TablaGenerica/TablaGenerica";
 import config from "../../config";
 
 import {apiCatalogo} from "../../utils/fetchCatalogos";
-import {JsonToExcel} from "react-json-excel";
 import {renderInputFecha, validDate} from "../../App/components/Utils/fechas";
 import {
   ValidationForm,
   TextInput,
-  SelectGroup,
+  SelectGroup
 } from "react-bootstrap4-form-validation";
 import "./reportes.css";
 import {GraficasCoincidencia} from "../../App/components/charts/fafgCharts/Coincidencia/index";
 
 function ReporteCoincidencia(props) {
-  const filename = "reporteCoincidencias",
-    fields = {
-      coincidenciaId: "coincidenciaId",
-      EstadoCoincidencia: "EstadoCoincidencia",
-      fechaCoincidencia: "fechaCoincidencia",
-      fechaNotificacionDid: "fechaNotificacionDid",
-      fechaConfExc: "fechaConfExc",
-      Osamenta: "Osamenta",
-      OsamentaSexoAdn: "OsamentaSexoAdn",
-      codigoVictima: "codigoVictima",
-      nombreVictima: "nombreVictima",
-      lr: "lr",
-      apriori: "apriori",
-      posterior: "posterior",
-      marcadoresStr: "marcadoresStr",
-      BaseInfo: "BaseInfo",
-      ProgramaIdent: "ProgramaIdent",
-      EstadoInvestigacion: "EstadoInvestigacion",
-      CromosomaY: "CromosomaY",
-      TipoContexto: "TipoContexto",
-      CalidadPerfil: "CalidadPerfil",
-      Usuario: "Usuario",
-    },
-    text = <i className="feather icon-download"></i>;
+  const filename = "reporteCoincidencias";
 
   const user = useContext(userContext);
   const [data, setData] = React.useState([]);
@@ -131,7 +107,6 @@ function ReporteCoincidencia(props) {
     setfechaConfExcIni("");
     setfechaConfExcFin("");
     setinitPage(false);
-    
   };
   const porcentajeCoincidencia = (row) => {
     let conteoVacio = 0;
@@ -225,7 +200,7 @@ function ReporteCoincidencia(props) {
     fetchData(10, 0, "", user.token);
   };
   const configReq = {
-    headers: {Authorization: `Bearer ${user.token}`},
+    headers: {Authorization: `Bearer ${user.token}`}
   };
 
   const fetchCoincidenciasTemp = async (
@@ -280,7 +255,7 @@ function ReporteCoincidencia(props) {
           : null,
         fechaConfExcFin: !(fechaConfExcFin === "")
           ? `'${moment(fechaConfExcFin).format("YYYY-MM-DD")}'`
-          : null,
+          : null
       };
 
       const res = await axios.post(
@@ -367,7 +342,7 @@ function ReporteCoincidencia(props) {
           : null,
         fechaConfExcFin: !(fechaConfExcFin === "")
           ? `'${moment(fechaConfExcFin).format("YYYY-MM-DD")}'`
-          : null,
+          : null
       };
       const res = await axios.post(
         `${config.urlApi}/reporte/coincidencia`,
@@ -439,13 +414,13 @@ function ReporteCoincidencia(props) {
         columns: [
           {
             Header: "Id",
-            accessor: "coincidenciaId",
+            accessor: "coincidenciaId"
           },
           {
             Header: "F. Coin.",
             accessor: (d) => {
               return moment(d.fechaCoincidencia).utc().format("DD-MM-YYYY");
-            },
+            }
           },
           {
             Header: "Osamenta",
@@ -453,44 +428,44 @@ function ReporteCoincidencia(props) {
               <div className="text-center">
                 {`CRIH-${row.original.Osamenta.casoId}-${row.original.Osamenta.fosaDet}-${row.original.Osamenta.osamentaDet}`}
               </div>
-            ),
+            )
           },
           {
             Header: "Victima",
-            accessor: "Victima.codigoVictima",
+            accessor: "Victima.codigoVictima"
           },
           {
             Header: "Nombre",
-            accessor: "Victima.nombreVictima",
-          },
-        ],
+            accessor: "Victima.nombreVictima"
+          }
+        ]
       },
       {
         Header: "Estadístico",
         style: {
           borderRight: "2px solid black",
-          borderLeft: "2px solid black",
+          borderLeft: "2px solid black"
         },
         columns: [
           {
             Header: "INDICE FILIACION",
             accessor: "lr",
             style: {
-              borderLeft: "2px solid black",
-            },
+              borderLeft: "2px solid black"
+            }
           },
           {
             Header: "Apriori",
-            accessor: "apriori",
+            accessor: "apriori"
           },
           {
             Header: "Posterior",
             accessor: "posterior",
             style: {
-              borderRight: "2px solid black",
-            },
-          },
-        ],
+              borderRight: "2px solid black"
+            }
+          }
+        ]
       },
 
       {
@@ -501,12 +476,12 @@ function ReporteCoincidencia(props) {
 
             accessor: (d) => {
               return moment(d.fechaConfExc).utc().format("DD-MM-YYYY");
-            },
+            }
           },
 
           {
             Header: "Estado",
-            accessor: "EstadoCoincidencia.descripcion",
+            accessor: "EstadoCoincidencia.descripcion"
           } /*
           {
             Header: "Cromosoma Y",
@@ -525,7 +500,7 @@ function ReporteCoincidencia(props) {
               let tipocaso =
                 d.TipoCasoDid === null ? "" : d.TipoCasoDid.descripcion;
               return tipocaso;
-            },
+            }
           },
           {
             Header: "Contexto",
@@ -533,7 +508,7 @@ function ReporteCoincidencia(props) {
               let TipoContexto =
                 d.TipoContexto === null ? "" : d.TipoContexto.descripcion;
               return TipoContexto;
-            },
+            }
           },
           {
             Header: "Progreso",
@@ -542,10 +517,10 @@ function ReporteCoincidencia(props) {
               var porcentaje = porcentajeCoincidencia(row);
 
               return <div className="text-center">{porcentaje}</div>;
-            },
-          },
-        ],
-      },
+            }
+          }
+        ]
+      }
     ],
     []
   );
@@ -611,7 +586,7 @@ function ReporteCoincidencia(props) {
           )
             ? row.CalidadPerfil.descripcion
             : "",
-          Usuario: row.Usuario.usuario,
+          Usuario: row.Usuario.usuario
         });
       });
     }
@@ -652,7 +627,7 @@ function ReporteCoincidencia(props) {
                         defaultErrorMessage={{
                           required: "El campo es requerido.",
                           minLength:
-                            "Ingresar por lo menos {minLength} caracteres",
+                            "Ingresar por lo menos {minLength} caracteres"
                         }}
                       >
                         <Row className="rowFiltros rowFiltros-primary">
@@ -1188,8 +1163,7 @@ function ReporteCoincidencia(props) {
                                             dateFormat="DD/MM/YYYY"
                                             timeFormat={false}
                                             inputProps={{
-                                              placeholder:
-                                                "Fecha Coincidencia ",
+                                              placeholder: "Fecha Coincidencia "
                                             }}
                                             value={fechaCoincidenciaIni}
                                             onChange={(e) => {
@@ -1212,8 +1186,7 @@ function ReporteCoincidencia(props) {
                                             dateFormat="DD/MM/YYYY"
                                             timeFormat={false}
                                             inputProps={{
-                                              placeholder:
-                                                "Fecha Coincidencia ",
+                                              placeholder: "Fecha Coincidencia "
                                             }}
                                             value={fechaCoincidenciaFin}
                                             onChange={(e) => {
@@ -1238,8 +1211,7 @@ function ReporteCoincidencia(props) {
                                             dateFormat="DD/MM/YYYY"
                                             timeFormat={false}
                                             inputProps={{
-                                              placeholder:
-                                                "Fecha Notificacion ",
+                                              placeholder: "Fecha Notificacion "
                                             }}
                                             value={fechaNotificacionDidIni}
                                             onChange={(e) => {
@@ -1262,8 +1234,7 @@ function ReporteCoincidencia(props) {
                                             dateFormat="DD/MM/YYYY"
                                             timeFormat={false}
                                             inputProps={{
-                                              placeholder:
-                                                "Fecha Notificacion ",
+                                              placeholder: "Fecha Notificacion "
                                             }}
                                             value={fechaNotificacionDidFin}
                                             onChange={(e) => {
@@ -1289,7 +1260,7 @@ function ReporteCoincidencia(props) {
                                             dateFormat="DD/MM/YYYY"
                                             timeFormat={false}
                                             inputProps={{
-                                              placeholder: "Fecha Conf/Exc",
+                                              placeholder: "Fecha Conf/Exc"
                                             }}
                                             value={fechaConfExcIni}
                                             onChange={(e) => {
@@ -1310,7 +1281,7 @@ function ReporteCoincidencia(props) {
                                             dateFormat="DD/MM/YYYY"
                                             timeFormat={false}
                                             inputProps={{
-                                              placeholder: "Fecha Conf/Exc",
+                                              placeholder: "Fecha Conf/Exc"
                                             }}
                                             value={fechaConfExcFin}
                                             onChange={(e) => {
@@ -1358,13 +1329,9 @@ function ReporteCoincidencia(props) {
                               <ul className="pagination ">
                                 <li className="paginate_Button page-item">
                                   {dataDownload.length > 0 && (
-                                    <JsonToExcel
-                                      data={dataDownload}
-                                      fileformat="csv"
-                                      className="btn-icon btn btn-outline-success btn-sm"
-                                      filename={filename}
-                                      fields={fields}
-                                      text={text}
+                                    <ExportToExcel
+                                      apiData={dataDownload}
+                                      fileName={filename}
                                     />
                                   )}
                                 </li>

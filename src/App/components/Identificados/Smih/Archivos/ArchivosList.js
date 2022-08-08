@@ -15,6 +15,8 @@ function ArchivosList({
   reset,
   setreset,
   mensajeAlerta,
+  descargaArchivo = false,
+  eliminarArchivo = false
 }) {
   const treeviewRef = useRef(null);
 
@@ -32,7 +34,7 @@ function ArchivosList({
   const [loadingDownload, setloadingDownload] = useState(false);
   const [dataFiles, setdataFiles] = useState([]);
   const configReq = {
-    headers: {Authorization: `Bearer ${userf.token}`},
+    headers: {Authorization: `Bearer ${userf.token}`}
   };
 
   const fetchFileDownload = async (urlPath, fileName) => {
@@ -43,7 +45,7 @@ function ArchivosList({
         configReq
       );
       var blob = new Blob([
-        Uint8Array.from(Buffer.from(res.data.data.Body.data)),
+        Uint8Array.from(Buffer.from(res.data.data.Body.data))
       ]);
       fileDownload(blob, fileName);
     } catch (error) {}
@@ -54,7 +56,7 @@ function ArchivosList({
     try {
       var data = {
         key: urlPath,
-        coincidenciaId: coincidencia,
+        coincidenciaId: coincidencia
       };
       const res = await axios.post(
         `${config.urlApi}/identificadoSmih/deleteArchivo`,
@@ -163,7 +165,7 @@ function ArchivosList({
         padres.push({
           id: list[i].id,
           padreDescripcion: list[i].padreDescripcion,
-          padrePath: list[i].padrePath,
+          padrePath: list[i].padrePath
         });
     }
     padres.forEach((element) => {
@@ -177,7 +179,7 @@ function ArchivosList({
             identificadoDocumentoId: elementList.identificadoDocumentoId,
             tipoDocumento: elementList.tipoDocumento,
             urlDocumento: elementList.urlDocumento,
-            mimetype: elementList.mimetype,
+            mimetype: elementList.mimetype
           });
       });
       roots.push({
@@ -187,7 +189,7 @@ function ArchivosList({
         expanded: true,
         text: element.padreDescripcion,
 
-        children: childrens,
+        children: childrens
       });
     });
 
@@ -209,7 +211,7 @@ function ArchivosList({
               padrePath: d.Documento.RepoDoc.path,
               tipoDocumento: d.Documento.descripcion,
               urlDocumento: d.urlDocumento,
-              mimetype: d.mimetype,
+              mimetype: d.mimetype
             });
           });
         }
@@ -234,7 +236,20 @@ function ArchivosList({
     switch (buttonName) {
       case "download":
         setloadingDownload(true);
-        fetchFileDownload(item.urlDocumento, item.text);
+        var re = /(?:\.([^.]+))?$/;
+        var ext = re.exec(item.text)[1];
+        var nombreNuevo = item.tipoDocumento.replace(/\s/g, "");
+        nombreNuevo.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+        nombreNuevo =
+          nombreNuevo +
+          "_C" +
+          coincidenciaId +
+          "_IS" +
+          IdentificadoId +
+          "." +
+          ext;
+        fetchFileDownload(item.urlDocumento, nombreNuevo);
         break;
       case "delete":
         setloadingDownload(true);
@@ -295,15 +310,17 @@ function ArchivosList({
     return () => {};
   }, [bytesDataFile]);
   const actionButtons = [
-    <Button
-      type="button"
-      name="download"
-      className="btn-icon-files"
-      variant="outline-primary"
-      size="sm"
-    >
-      <i className="feather icon-download" />
-    </Button>,
+    descargaArchivo === true && (
+      <Button
+        type="button"
+        name="download"
+        className="btn-icon-files"
+        variant="outline-primary"
+        size="sm"
+      >
+        <i className="feather icon-download" />
+      </Button>
+    ),
     <Button
       type="button"
       name="preview"
@@ -313,15 +330,17 @@ function ArchivosList({
     >
       <i className="feather icon-eye" />
     </Button>,
-    <Button
-      type="button"
-      name="delete"
-      className="btn-icon-files"
-      variant="outline-danger"
-      size="sm"
-    >
-      <i className="feather icon-x" />
-    </Button>,
+    eliminarArchivo === true && (
+      <Button
+        type="button"
+        name="delete"
+        className="btn-icon-files"
+        variant="outline-danger"
+        size="sm"
+      >
+        <i className="feather icon-x" />
+      </Button>
+    )
   ];
 
   const NoActionButtons = [<RecontraMiniLoader></RecontraMiniLoader>];

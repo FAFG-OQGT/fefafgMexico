@@ -1,9 +1,12 @@
-import React, { useState, useEffect, useContext } from "react";
-import { Row, Col, Button, Modal } from "react-bootstrap";
+import React, {useState, useEffect, useContext} from "react";
+import {Row, Col, Button, Modal} from "react-bootstrap";
 import Aux from "../../../hoc/_Aux";
 import MainCard from "../../../App/components/MainCard";
 import CoincidenciasList from "../../../App/components/Coincidencias/CoincidenciasList";
 import CoincidenciaCasoAdd from "../../../App/components/CoincidenciaCaso/CoincidenciaCasoAdd";
+
+import VictimaEdit from "../../../App/components/Victima/VictimaEdit";
+import OsamentaEdit from "../../../App/components/Osamenta/OsamentaEdit";
 
 import VictimaDetalle from "../../../App/components/Victima/VictimaDetalle";
 import OsamentaDetalle from "../../../App/components/Osamenta/OsamentaDetalle";
@@ -22,19 +25,55 @@ import PreviewReportePdf from "../../../App/components/ReportePdf/PreviewReporte
 
 import userContext from "../../../context/userContext";
 
-import MensajeAlerta from "../../../App/components/MensajeAlerta/MensajeAlerta"
+import MensajeAlerta from "../../../App/components/MensajeAlerta/MensajeAlerta";
+import {apiFetchAccesoXObjeto} from "../../../utils/fetchCatalogos";
 //css
 import "./coincidencias.css";
 
-
-
 function Coincidencias(props) {
   const userI = useContext(userContext);
-  const USUARIOS_CON_ACCESO = [1, 2, 3, 4, 5, 6, 8];
+  const [accesos, setAccesos] = useState({
+    actualizar: false,
+    ver: false,
+    agregar: false,
+    eliminar: false,
+    verArchivo: false,
+    agregarArchivo: false,
+    eliminarArchivo: false,
+    descargarArchivo: false,
+    verAnotaciones: false,
+    agregarAnotaciones: false,
+    verSeguimientoSolicitud: false,
+    agregarSeguimientoSolicitud: false,
+    verNotasLaboratorio: false,
+    agregarNotasLaboratorio: false,
+    verFio: false,
+    editarFio: false,
+    verDonantes: false,
+    editarDonantes: false
+  });
+  const [accesosVictima, setaccesosVictima] = useState({
+    actualizar: false
+  });
+  const [accesosOsamenta, setaccesosOsamenta] = useState({
+    actualizar: false
+  });
+  const fetchAccesos = async () => {
+    var data = await apiFetchAccesoXObjeto(userI.token, userI.usuarioId, 9);
+    var Raccesos = data[0];
+    setAccesos(Raccesos.accesos);
+  };
 
-
-  const [permisoAgregar, setpermisoAgregar] = useState(false);
-
+  const fetchAccesosVictima = async () => {
+    var data = await apiFetchAccesoXObjeto(userI.token, userI.usuarioId, 7);
+    var Raccesos = data[0];
+    setaccesosVictima(Raccesos.accesos);
+  };
+  const fetchAccesosOsamenta = async () => {
+    var data = await apiFetchAccesoXObjeto(userI.token, userI.usuarioId, 8);
+    var Raccesos = data[0];
+    setaccesosOsamenta(Raccesos.accesos);
+  };
   const [resetList, setresetList] = useState(false);
   const [onedit, setonedit] = useState(false);
 
@@ -48,12 +87,10 @@ function Coincidencias(props) {
 
   const [modalAnotacionesDID, setmodalAnotacionesDID] = useState(false);
   const [modalSeguimientoDID, setmodalSeguimientoDID] = useState(false);
-  const [modalArchivosCoincidencia, setmodalArchivosCoincidencia] = useState(
-    false
-  );
-  const [modalAgregarCoincidencia, setmodalAgregarCoincidencia] = useState(
-    false
-  );
+  const [modalArchivosCoincidencia, setmodalArchivosCoincidencia] =
+    useState(false);
+  const [modalAgregarCoincidencia, setmodalAgregarCoincidencia] =
+    useState(false);
 
   const [modalFio, setmodalFio] = useState(false);
   const [modalPrintFio, setmodalPrintFio] = useState(false);
@@ -131,12 +168,11 @@ function Coincidencias(props) {
   }, [onedit]);
 
   useEffect(() => {
-    if (userI.usuarioId < 9) {
-      setpermisoAgregar(true)
-    }
-    return () => {
-    }
-  }, [])
+    fetchAccesos();
+    fetchAccesosVictima();
+    fetchAccesosOsamenta();
+    return () => {};
+  }, []);
 
   return (
     <div className="animated fadeIn" id="containerCoincidencias">
@@ -145,7 +181,7 @@ function Coincidencias(props) {
           <Col>
             <MainCard title="Coincidencias" isOption>
               <Col xl={12}>
-                {permisoAgregar && (
+                {accesos && accesos.agregar === true && (
                   <Row>
                     <Col>
                       <Button
@@ -157,16 +193,19 @@ function Coincidencias(props) {
                         }}
                       >
                         <i className="feather icon-plus" />
-                      Agregar
-                    </Button>
+                        Agregar
+                      </Button>
                     </Col>
                   </Row>
                 )}
-                <CoincidenciasList
-                  onabrirModal={onabrirModal}
-                  reset={resetList}
-                  setresetList={(val) => setresetList(val)}
-                ></CoincidenciasList>
+                {accesos && accesos.ver === true && (
+                  <CoincidenciasList
+                    onabrirModal={onabrirModal}
+                    reset={resetList}
+                    setresetList={(val) => setresetList(val)}
+                    accesos={accesos}
+                  ></CoincidenciasList>
+                )}
               </Col>
             </MainCard>
           </Col>
@@ -178,26 +217,26 @@ function Coincidencias(props) {
           modalOsamenta
             ? "lg"
             : modalVictima
-              ? "lg"
-              : modalDonante
-                ? "md"
-                : modalNotLab
-                  ? "lg"
-                  : modalAnotacionesDID
-                    ? "lg"
-                    : modalSeguimientoDID
-                      ? "lg"
-                      : modalAgregarCoincidencia
-                        ? "xl"
-                        : modalArchivosCoincidencia
-                          ? "xl"
-                          : modalFio
-                            ? "xl"
-                            : modalPrintFio
-                              ? "xl"
-                              : modalPrintReporte
-                                ? "xl"
-                                : "md"
+            ? "lg"
+            : modalDonante
+            ? "md"
+            : modalNotLab
+            ? "lg"
+            : modalAnotacionesDID
+            ? "lg"
+            : modalSeguimientoDID
+            ? "lg"
+            : modalAgregarCoincidencia
+            ? "xl"
+            : modalArchivosCoincidencia
+            ? "xl"
+            : modalFio
+            ? "xl"
+            : modalPrintFio
+            ? "xl"
+            : modalPrintReporte
+            ? "xl"
+            : "md"
         }
         show={modal}
         onHide={oncerrarModal}
@@ -207,63 +246,90 @@ function Coincidencias(props) {
             {modalOsamenta
               ? `Osamenta | Coincidencia : [${dataSelect.coincidenciaId}]`
               : modalVictima
-                ? `Victima | Coincidencia : [${dataSelect.coincidenciaId}]`
-                : modalDonante
-                  ? `Donante | Coincidencia : [${dataSelect.coincidenciaId}]`
-                  : modalNotLab
-                    ? `Nota Laboratorio | Coincidencia : [${dataSelect.coincidenciaId}]`
-                    : modalAnotacionesDID
-                      ? `Anotaciones DID | Coincidencia : [${dataSelect.coincidenciaId}]`
-                      : modalSeguimientoDID
-                        ? `Seguimiento Solicitudes DID | Coincidencia : [${dataSelect.coincidenciaId}]`
-                        : modalAgregarCoincidencia
-                          ? "Crear nueva coincidencia"
-                          : modalArchivosCoincidencia
-                            ? `Archivos de coincidencia : [${dataSelect.coincidenciaId}]`
-                            : modalFio
-                              ? `Fio de coincidencia : [${dataSelect.coincidenciaId}]`
-                              : modalPrintFio
-                                ? `Fio de coincidencia : [${dataSelect.coincidenciaId}]`
-                                : modalPrintReporte
-                                  ? `Reporte coincidencia : [${dataSelect.coincidenciaId}]`
-                                  : ""}
+              ? `Victima | Coincidencia : [${dataSelect.coincidenciaId}]`
+              : modalDonante
+              ? `Donante | Coincidencia : [${dataSelect.coincidenciaId}]`
+              : modalNotLab
+              ? `Nota Laboratorio | Coincidencia : [${dataSelect.coincidenciaId}]`
+              : modalAnotacionesDID
+              ? `Anotaciones DID | Coincidencia : [${dataSelect.coincidenciaId}]`
+              : modalSeguimientoDID
+              ? `Seguimiento Solicitudes DID | Coincidencia : [${dataSelect.coincidenciaId}]`
+              : modalAgregarCoincidencia
+              ? "Crear nueva coincidencia"
+              : modalArchivosCoincidencia
+              ? `Archivos de coincidencia : [${dataSelect.coincidenciaId}]`
+              : modalFio
+              ? `Fio de coincidencia : [${dataSelect.coincidenciaId}]`
+              : modalPrintFio
+              ? `Fio de coincidencia : [${dataSelect.coincidenciaId}]`
+              : modalPrintReporte
+              ? `Reporte coincidencia : [${dataSelect.coincidenciaId}]`
+              : ""}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {modalVictima && (
-            <VictimaDetalle
-              victimaId={dataSelect.victimaId}
-              isDisabled={true}
-            ></VictimaDetalle>
-          )}
           {modalAgregarCoincidencia && (
             <CoincidenciaCasoAdd
               onEditDone={onEditDone}
               mensajeAlerta={MensajeAlerta}
             ></CoincidenciaCasoAdd>
           )}
-          {modalOsamenta && (
-            <OsamentaDetalle
-              osamentaId={dataSelect.osamentaId}
-              isDisabled={true}
-            ></OsamentaDetalle>
-          )}
-          {modalDonante && (
+          {modalVictima &&
+            accesosVictima &&
+            (accesosVictima.actualizar === true ? (
+              <VictimaEdit
+                victimaUpdateId={dataSelect.victimaId}
+                mensajeAlerta={MensajeAlerta}
+                onEditDone={onEditDone}
+                isDisabled={true}
+                oncerrarModal={oncerrarModal}
+                actualizar={accesosOsamenta.actualizar}
+              ></VictimaEdit>
+            ) : (
+              <VictimaDetalle
+                victimaId={dataSelect.victimaId}
+                isDisabled={true}
+                oncerrarModal={oncerrarModal}
+              ></VictimaDetalle>
+            ))}
+          {modalOsamenta &&
+            accesosOsamenta &&
+            (accesosOsamenta.actualizar === true ? (
+              <OsamentaEdit
+                osamentaIdUpdate={dataSelect.osamentaId}
+                mensajeAlerta={MensajeAlerta}
+                onEditDone={onEditDone}
+                isDisabled={true}
+                oncerrarModal={oncerrarModal}
+                actualizar={accesosOsamenta.actualizar}
+              ></OsamentaEdit>
+            ) : (
+              <OsamentaDetalle
+                osamentaId={dataSelect.osamentaId}
+                isDisabled={true}
+                oncerrarModal={oncerrarModal}
+              ></OsamentaDetalle>
+            ))}
+
+          {modalDonante && accesos && accesos.verDonantes === true && (
             <DonanteListEdit
               CoincidenciaId={dataSelect.coincidenciaId}
               DonanteCoincidencia={dataSelect.DonanteCoincidencia}
               onEditDone={onEditDone}
               mensajeAlerta={MensajeAlerta}
+              editarDonantes={accesos.editarDonantes}
             ></DonanteListEdit>
           )}
-
-          {modalNotLab && (
+          {modalNotLab && accesos && accesos.verNotasLaboratorio && (
             <div>
-              <NotasLaboratorioAdd
-                CoincidenciaId={dataSelect.coincidenciaId}
-                onEditDone={onEditDone}
-                mensajeAlerta={MensajeAlerta}
-              ></NotasLaboratorioAdd>
+              {accesos.agregarNotasLaboratorio && (
+                <NotasLaboratorioAdd
+                  CoincidenciaId={dataSelect.coincidenciaId}
+                  onEditDone={onEditDone}
+                  mensajeAlerta={MensajeAlerta}
+                ></NotasLaboratorioAdd>
+              )}
               <NotasLaboratorioList
                 CoincidenciaId={dataSelect.coincidenciaId}
                 onEditDone={onEditDone}
@@ -271,13 +337,15 @@ function Coincidencias(props) {
               ></NotasLaboratorioList>
             </div>
           )}
-          {modalAnotacionesDID && (
+          {modalAnotacionesDID && accesos && accesos.verAnotaciones && (
             <div>
-              <AnotacionesDidAdd
-                CoincidenciaId={dataSelect.coincidenciaId}
-                onEditDone={onEditDone}
-                mensajeAlerta={MensajeAlerta}
-              ></AnotacionesDidAdd>
+              {accesos.agregarAnotaciones && (
+                <AnotacionesDidAdd
+                  CoincidenciaId={dataSelect.coincidenciaId}
+                  onEditDone={onEditDone}
+                  mensajeAlerta={MensajeAlerta}
+                ></AnotacionesDidAdd>
+              )}
               <AnotacionesDidList
                 CoincidenciaId={dataSelect.coincidenciaId}
                 onEditDone={onEditDone}
@@ -285,13 +353,15 @@ function Coincidencias(props) {
               ></AnotacionesDidList>
             </div>
           )}
-          {modalSeguimientoDID && (
+          {modalSeguimientoDID && accesos && accesos.verSeguimientoSolicitud && (
             <div>
-              <SeguimientoDidAdd
-                CoincidenciaId={dataSelect.coincidenciaId}
-                onEditDone={onEditDone}
-                mensajeAlerta={MensajeAlerta}
-              ></SeguimientoDidAdd>
+              {accesos.agregarSeguimientoSolicitud && (
+                <SeguimientoDidAdd
+                  CoincidenciaId={dataSelect.coincidenciaId}
+                  onEditDone={onEditDone}
+                  mensajeAlerta={MensajeAlerta}
+                ></SeguimientoDidAdd>
+              )}
               <SeguimientoDidList
                 CoincidenciaId={dataSelect.coincidenciaId}
                 onEditDone={onEditDone}
@@ -299,23 +369,25 @@ function Coincidencias(props) {
               ></SeguimientoDidList>
             </div>
           )}
-          {modalArchivosCoincidencia && (
+          {modalArchivosCoincidencia && accesos && accesos.verArchivo && (
             <div>
               <ArchivosListPrincipal
                 CoincidenciaId={dataSelect.coincidenciaId}
                 preview={false}
                 mensajeAlerta={MensajeAlerta}
+                descargaArchivo={accesos.descargarArchivo}
+                eliminarArchivo={accesos.eliminarArchivo}
               ></ArchivosListPrincipal>
             </div>
           )}
-
-          {modalFio && (
+          {modalFio && accesos && accesos.verFio && (
             <div>
               <FioUpdate
                 CoincidenciaId={dataSelect.coincidenciaId}
                 mensajeAlerta={MensajeAlerta}
                 onEditDone={onEditDone}
                 oncerrarModal={oncerrarModal}
+                editarFio={accesos.editarFio}
               ></FioUpdate>
             </div>
           )}

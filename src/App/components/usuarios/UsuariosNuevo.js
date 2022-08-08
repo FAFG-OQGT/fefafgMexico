@@ -6,16 +6,21 @@ import config from "../../../config";
 import {
   ValidationForm,
   TextInput,
-  SelectGroup,
+  SelectGroup
 } from "react-bootstrap4-form-validation";
 import validator from "validator";
 import {apiCatalogo} from "../../../utils/fetchCatalogos";
 
-function UsuariosNuevo({onNuevoDone, onCerrarModalNuevo, mensajeAlerta}) {
+function UsuariosNuevo({
+  onNuevoDone,
+  onCerrarModalNuevo,
+  mensajeAlerta,
+  agregar = false
+}) {
   //CONTEXT LOAD
   const userI = useContext(userContext);
   const configReq = {
-    headers: {Authorization: `Bearer ${userI.token}`},
+    headers: {Authorization: `Bearer ${userI.token}`}
   };
   //DEFINICION DE ESTADOS
   const [personaId, setpersonaId] = useState("");
@@ -48,7 +53,7 @@ function UsuariosNuevo({onNuevoDone, onCerrarModalNuevo, mensajeAlerta}) {
       var roots = res.data.data.map(function (row) {
         return {
           value: row.personaId,
-          label: "[" + row.personaId + "] " + row.nombre,
+          label: "[" + row.personaId + "] " + row.nombre
         };
       });
       return roots;
@@ -81,7 +86,7 @@ function UsuariosNuevo({onNuevoDone, onCerrarModalNuevo, mensajeAlerta}) {
         estadoId: estadoId,
         personaId: personaId,
         puestoId: puestoId == "" || puestoId == 0 ? null : puestoId,
-        rolId: rolId == "" || rolId == 0 ? null : rolId,
+        rolId: rolId == "" || rolId == 0 ? null : rolId
       };
 
       const res = await axios.post(`${config.urlApi}/usuario`, data, configReq);
@@ -135,7 +140,7 @@ function UsuariosNuevo({onNuevoDone, onCerrarModalNuevo, mensajeAlerta}) {
                 setFocusOnError
                 defaultErrorMessage={{
                   required: "El campo es requerido.",
-                  minLength: "Ingresar por lo menos {minLength} caracteres",
+                  minLength: "Ingresar por lo menos {minLength} caracteres"
                 }}
               >
                 <Row>
@@ -164,7 +169,7 @@ function UsuariosNuevo({onNuevoDone, onCerrarModalNuevo, mensajeAlerta}) {
                         validator={validator.isEmail}
                         errorMessage={{
                           required: "El campo es requerido",
-                          validator: "Correo electronico invalido.",
+                          validator: "Correo electronico invalido."
                         }}
                         placeholder="Ingresar correo electronico"
                         value={email}
@@ -252,15 +257,17 @@ function UsuariosNuevo({onNuevoDone, onCerrarModalNuevo, mensajeAlerta}) {
 
                 <Row>
                   <Col className=" d-flex justify-content-center">
-                    <Button
-                      key="btnSaveEditPerson"
-                      type="submit"
-                      variant="outline-primary"
-                      size="md"
-                    >
-                      <i className="feather icon-save" />
-                      Guardar
-                    </Button>
+                    {agregar === true && (
+                      <Button
+                        key="btnSaveEditPerson"
+                        type="submit"
+                        variant="outline-primary"
+                        size="md"
+                      >
+                        <i className="feather icon-save" />
+                        Guardar
+                      </Button>
+                    )}
 
                     <Button
                       key="btnCancelEditPerson"

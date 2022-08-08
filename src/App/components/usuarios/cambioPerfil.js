@@ -11,11 +11,12 @@ function CambioPerfil({
   onCambioRolDone,
   onCerrarModalRol,
   mensajeAlerta,
+  actualizar = false
 }) {
   const user = useContext(userContext);
 
   const configReq = {
-    headers: {Authorization: `Bearer ${user.token}`},
+    headers: {Authorization: `Bearer ${user.token}`}
   };
   const [usuarioId] = useState(usuario.Usuario.usuarioId);
   const [newRol, setnewRol] = useState();
@@ -25,7 +26,7 @@ function CambioPerfil({
   const updatePass = async () => {
     try {
       const json = {
-        rolId: newRol,
+        rolId: newRol
       };
 
       const res = await axios.put(
@@ -87,7 +88,7 @@ function CambioPerfil({
       var roots = res.data.data.map(function (row) {
         return {
           value: row.rolId,
-          label: "[" + row.rolId + "] " + row.descripcion,
+          label: "[" + row.rolId + "] " + row.descripcion
         };
       });
       return roots;
@@ -102,7 +103,7 @@ function CambioPerfil({
     };
     fetchData();
 
-      setnewRol(usuario.rolId);
+    setnewRol(usuario.rolId);
     return () => {};
   }, []);
 
@@ -117,7 +118,7 @@ function CambioPerfil({
               setFocusOnError
               defaultErrorMessage={{
                 required: "El campo es requerido.",
-                minLength: "Ingresar por lo menos {minLength} caracteres",
+                minLength: "Ingresar por lo menos {minLength} caracteres"
               }}
             >
               <Row>
@@ -151,17 +152,19 @@ function CambioPerfil({
               </Row>
               <Row>
                 <Col className=" d-flex justify-content-center">
-                  <Button
-                    id="btnCambiarCon"
-                    name="btnCambiarCon"
-                    key="btnCambiarCon"
-                    variant="outline-primary"
-                    type="submit"
-                    size="md"
-                  >
-                    <i className="feather icon-save" />
-                    Guardar
-                  </Button>
+                  {actualizar === true && (
+                    <Button
+                      id="btnCambiarCon"
+                      name="btnCambiarCon"
+                      key="btnCambiarCon"
+                      variant="outline-primary"
+                      type="submit"
+                      size="md"
+                    >
+                      <i className="feather icon-save" />
+                      Guardar
+                    </Button>
+                  )}
 
                   <Button
                     id="btnCloseCon"

@@ -1,6 +1,7 @@
 export default {
-  defaultPath: "/auth/login",
+  defaultPath: "/app/home",
   basename: "", // only at build time to set, like ///able-pro/react/default
+  baseApp: "/app", // only at build time to set, like ///able-pro/react/default
   layout: "vertical", // vertical, horizontal
   subLayout: "", // horizontal-2
   collapseMenu: true, // mini-menu
@@ -11,11 +12,10 @@ export default {
   headerFixedLayout: false,
   boxLayout: false,
   timeOut: 1000 * 60 * 15,
-  urlApi: "http://apicrih.oqsolutionsgt.com",
+  urlApi: "https://crihapi.qosolutionsgt.com",
   //urlApi: "http://localhost:3100",
   modulo: "1",
   maxSizeCoincidencia: 10e6,
   maxSizeSmih: 10e6,
-  maxSizeOst: 10e6,
+  maxSizeOst: 10e6
 };
- 

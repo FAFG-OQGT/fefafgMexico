@@ -1,4 +1,4 @@
-import React, {useState, useContext,useEffect} from "react";
+import React, {useState, useContext, useEffect} from "react";
 import {Card, Form, Col, Row, Button} from "react-bootstrap";
 import moment from "moment";
 import axios from "axios";
@@ -6,15 +6,17 @@ import axios from "axios";
 import userContext from "../../../context/userContext";
 import config from "../../../config";
 import Datetime from "react-datetime";
-import {
-  ValidationForm,
-  TextInput,
-} from "react-bootstrap4-form-validation";
-function PersonasNueva({onNuevoDone, onCerrarModalNuevo, mensajeAlerta}) {
+import {ValidationForm, TextInput} from "react-bootstrap4-form-validation";
+function PersonasNueva({
+  onNuevoDone,
+  onCerrarModalNuevo,
+  mensajeAlerta,
+  agregar
+}) {
   //CONTEXT LOAD
   const user = useContext(userContext);
   const configReq = {
-    headers: {Authorization: `Bearer ${user.token}`},
+    headers: {Authorization: `Bearer ${user.token}`}
   };
   //DEFINICION DE ESTADOS
 
@@ -49,11 +51,7 @@ function PersonasNueva({onNuevoDone, onCerrarModalNuevo, mensajeAlerta}) {
         telefono: telefono,
         paisId: "1"
       };
-      const res = await axios.post(
-        `${config.urlApi}/persona`,
-        data,
-        configReq
-      );
+      const res = await axios.post(`${config.urlApi}/persona`, data, configReq);
       if (res.status === 202) {
         mensajeAlerta(
           "Creacion persona",
@@ -89,27 +87,29 @@ function PersonasNueva({onNuevoDone, onCerrarModalNuevo, mensajeAlerta}) {
   };
   const handleNuevaPersona = (e) => {
     e.preventDefault();
-    createPersona()
-     
+    createPersona();
   };
 
-  
-  useEffect(() => { 
-    let boolDate = moment(fechaNacimiento).isValid()
-    if (!(boolDate))
-     setfechaNacimiento (moment())
+  useEffect(() => {
+    let boolDate = moment(fechaNacimiento).isValid();
+    if (!boolDate) setfechaNacimiento(moment());
 
-    return () => {
-    }
-  }, [fechaNacimiento])
+    return () => {};
+  }, [fechaNacimiento]);
   return (
     <div className="animated fadeIn">
       <Row>
         <Col xs="12" sm="12">
           <Card>
             <Card.Body>
-              <ValidationForm onSubmit={handleNuevaPersona} setFocusOnError
-              defaultErrorMessage={{required:"El campo es requerido.",minLength:"Ingresar por lo menos {minLength} caracteres"}}>
+              <ValidationForm
+                onSubmit={handleNuevaPersona}
+                setFocusOnError
+                defaultErrorMessage={{
+                  required: "El campo es requerido.",
+                  minLength: "Ingresar por lo menos {minLength} caracteres"
+                }}
+              >
                 <Row>
                   <Col xs="6">
                     <Form.Group>
@@ -236,16 +236,17 @@ function PersonasNueva({onNuevoDone, onCerrarModalNuevo, mensajeAlerta}) {
 
                 <Row>
                   <Col className=" d-flex justify-content-center">
-                    <Button
-                      key="btnSaveEditPerson"
-                      type="submit"
-                      variant="outline-primary"
-                      size="md"
-                    >
-                      <i className="feather icon-save" />
-                      Guardar
-                    </Button>
-
+                    {agregar === true && (
+                      <Button
+                        key="btnSaveEditPerson"
+                        type="submit"
+                        variant="outline-primary"
+                        size="md"
+                      >
+                        <i className="feather icon-save" />
+                        Guardar
+                      </Button>
+                    )}
                     <Button
                       key="btnCancelEditPerson"
                       onClick={handleCloseNuevaPersona}

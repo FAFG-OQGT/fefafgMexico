@@ -14,7 +14,12 @@ const getBadge = (status) => {
   return status === 2 ? "danger" : status === 1 ? "success" : "primary";
 };
 
-function PersonasList(props) {
+function PersonasList({
+  onabrirModalEdit,
+  reset,
+  setresetList,
+  actualizar = false
+}) {
   const user = useContext(userContext);
   const [data, setData] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
@@ -33,43 +38,43 @@ function PersonasList(props) {
             className="btn-icon"
             variant="outline-primary"
             size="sm"
-            onClick={(e) => props.onabrirModalEdit(row.original)}
+            onClick={(e) => onabrirModalEdit(row.original)}
           >
             <i className="feather icon-edit" />{" "}
           </Button>
-        ),
+        )
       },
       {
         Header: "P. Nombre",
-        accessor: "nombre1",
+        accessor: "nombre1"
       },
       {
         Header: "S. Nombre",
-        accessor: "nombre2",
+        accessor: "nombre2"
       },
       {
         Header: "P. Apellido",
-        accessor: "apellido1",
+        accessor: "apellido1"
       },
       {
         Header: "S. Apellido",
-        accessor: "apellido2",
+        accessor: "apellido2"
       },
       {
         Header: "Nacimiento",
         accessor: (d) => {
           return moment(d.fechaNacimiento).utc().format("DD-MM-YYYY");
-        },
+        }
       },
       {
         Header: "Genero",
         accessor: (d) => {
           return d.generoId === 1 ? "Masculino" : "Femenino";
-        },
+        }
       },
       {
         Header: "Telefono",
-        accessor: "telefono",
+        accessor: "telefono"
       },
       {
         Header: "Estado",
@@ -80,13 +85,13 @@ function PersonasList(props) {
               {value === 2 ? "Inactivo" : value === 1 ? "Activo" : "--"}
             </Badge>
           </div>
-        ),
-      },
+        )
+      }
     ],
     [data]
   );
   const configReq = {
-    headers: {Authorization: `Bearer ${user.token}`},
+    headers: {Authorization: `Bearer ${user.token}`}
   };
   const fetchPersonas = async (pageSize, pageIndex, searchValue) => {
     if (searchValue === undefined) searchValue = "";
@@ -130,12 +135,12 @@ function PersonasList(props) {
   }, []);
 
   useEffect(() => {
-    if (props.reset) {
+    if (reset) {
       fetchPersonas(10, 0, "");
-      props.setresetList(false);
+      setresetList(false);
     }
     return () => {};
-  }, [props.reset]);
+  }, [reset]);
 
   return (
     <div className="animated fadeIn">
@@ -150,8 +155,7 @@ function PersonasList(props) {
               pageCount={pageCount}
               className="animated fadeIn table-sm"
               totalRegis={totalRegisters}
-              reset={props.reset}
-
+              reset={reset}
             />
           </Col>
         </Row>

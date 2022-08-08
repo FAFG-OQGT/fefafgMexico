@@ -11,14 +11,13 @@ import PreviewReportePdf from "../../../../App/components/ReportePdf/PreviewRepo
 import VictimaDetalle from "../../../../App/components/Victima/VictimaDetalle";
 import OsamentaDetalle from "../../../../App/components/Osamenta/OsamentaDetalle";
 
-import MensajeAlerta from "../../../../App/components/MensajeAlerta/MensajeAlerta"
+import MensajeAlerta from "../../../../App/components/MensajeAlerta/MensajeAlerta";
 
 import userContext from "../../../../context/userContext";
 
 //css
 import "./identificados.css";
-
- 
+import {apiFetchAccesoXObjeto} from "../../../../utils/fetchCatalogos";
 
 function Identificados(props) {
   const userI = useContext(userContext);
@@ -29,15 +28,13 @@ function Identificados(props) {
 
   const [modalVictima, setmodalVictima] = useState(false);
 
-  const [modalArchivosIdentificado, setmodalArchivosIdentificado] = useState(
-    false
-  );
+  const [modalArchivosIdentificado, setmodalArchivosIdentificado] =
+    useState(false);
 
   const [modal, setmodal] = useState(false);
 
-  const [modalAgregarIdentificado, setmodalAgregarIdentificado] = useState(
-    false
-  );
+  const [modalAgregarIdentificado, setmodalAgregarIdentificado] =
+    useState(false);
 
   const [modalPrintReporte, setmodalPrintReporte] = useState(false);
   const [dataSelect, setDataSelect] = React.useState({});
@@ -86,16 +83,27 @@ function Identificados(props) {
     }
   }, [onedit]);
 
-  
-  const [permisoAgregar, setpermisoAgregar] = useState(false);
+  const [accesos, setAccesos] = useState({
+    actualizar: false,
+    ver: false,
+    agregar: false,
+    eliminar: false,
+    verArchivo: false,
+    agregarArchivo: false,
+    eliminarArchivo: false,
+    descargarArchivo: false
+  });
+  const fetchAccesos = async () => {
+    var data = await apiFetchAccesoXObjeto(userI.token, userI.usuarioId, 11);
+    var Raccesos = data[0];
+    setAccesos(Raccesos.accesos);
+  };
 
   useEffect(() => {
-    if (userI.usuarioId < 9) {
-      setpermisoAgregar(true)
-    }
-    return () => {
-    }
-  }, [])
+    fetchAccesos();
+
+    return () => {};
+  }, []);
   return (
     <div className="animated fadeIn" id="containerIdentificados">
       <Aux>
@@ -103,7 +111,6 @@ function Identificados(props) {
           <Col>
             <MainCard title="Identificados SmIh" isOption>
               <Col xl={12}>
-                 
                 <IdentificadosList
                   onabrirModal={onabrirModal}
                   reset={resetList}
@@ -169,17 +176,18 @@ function Identificados(props) {
             ></IdentificadosAddSmih>
           )}
 
-          {modalArchivosIdentificado && (
+          {modalArchivosIdentificado && accesos && accesos.verArchivo && (
             <div>
               <ArchivosListPrincipal
                 IdentificadoId={dataSelect.identificadoSmihId}
                 coincidenciaId={dataSelect.coincidenciaId}
                 preview={false}
                 mensajeAlerta={MensajeAlerta}
+                descargaArchivo={accesos.descargarArchivo}
+                eliminarArchivo={accesos.eliminarArchivo}
               ></ArchivosListPrincipal>
             </div>
           )}
-
           {modalPrintReporte && (
             <div>
               <PreviewReportePdf

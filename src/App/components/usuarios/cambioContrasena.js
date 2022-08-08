@@ -1,24 +1,21 @@
-import React, {useState,useContext} from "react";
+import React, {useState, useContext} from "react";
 import {Card, Form, Col, Row, Button} from "react-bootstrap";
 import config from "../../../config";
 import axios from "axios";
 
-import {
-  ValidationForm,
-  TextInput
-} from "react-bootstrap4-form-validation";
+import {ValidationForm, TextInput} from "react-bootstrap4-form-validation";
 import userContext from "../../../context/userContext";
-
 
 function CambioContrasena({
   usuario,
   onCambioConDone,
   onCerrarModalCambio,
   mensajeAlerta,
+  actualizar = false
 }) {
   const user = useContext(userContext);
   const configReq = {
-    headers: {Authorization: `Bearer ${user.token}`},
+    headers: {Authorization: `Bearer ${user.token}`}
   };
 
   const [usuarioId] = useState(usuario.usuarioId);
@@ -28,30 +25,23 @@ function CambioContrasena({
 
   const [confNewPass, setconfNewPass] = useState("");
 
-  const updatePass= async () => {
+  const updatePass = async () => {
     try {
       const json = {
         usuarioId: usuarioId,
         passNew: newPass,
         confirm: confNewPass,
-        password: currentPass,
+        password: currentPass
       };
       const res = await axios.put(
-        `${
-          config.urlApi
-        }/auth/changePass`,
-        json
-        ,
+        `${config.urlApi}/auth/changePass`,
+        json,
         configReq
       );
-        if (res.status === 201) {
-          mensajeAlerta(
-            "Cambio contrasena",
-            res.data.data,
-            "success"
-          );
-          onCambioConDone(true);
-        }
+      if (res.status === 201) {
+        mensajeAlerta("Cambio contrasena", res.data.data, "success");
+        onCambioConDone(true);
+      }
     } catch (error) {
       if (error.response.status === 400) {
         if (error.response.data.error) {
@@ -84,10 +74,8 @@ function CambioContrasena({
   };
   const handleCambioCon = (e, formData, inputs) => {
     e.preventDefault();
-    
+
     updatePass();
-      
- 
   };
 
   const handleErrorSubmit = (e, formData, errorInputs) => {
@@ -95,18 +83,21 @@ function CambioContrasena({
   };
 
   const matchPassword = (value) => {
-
     return value && value === newPass;
-};
+  };
   return (
     <Row>
       <Col xs="12" sm="12">
         <Card>
           <Card.Body>
-            <ValidationForm onSubmit={handleCambioCon}
+            <ValidationForm
+              onSubmit={handleCambioCon}
               onErrorSubmit={handleErrorSubmit}
               setFocusOnError
-              defaultErrorMessage={{required:"El campo es requerido.",minLength:"Ingresar por lo menos {minLength} caracteres"}}
+              defaultErrorMessage={{
+                required: "El campo es requerido.",
+                minLength: "Ingresar por lo menos {minLength} caracteres"
+              }}
             >
               <Row>
                 <Col xs="12">
@@ -118,7 +109,7 @@ function CambioContrasena({
                       id="currentPass"
                       placeholder="Contrasena Actual"
                       required
-                      minLength ={3}
+                      minLength={3}
                       type="password"
                       value={currentPass}
                       onChange={(e) => setcurrentPass(e.target.value)}
@@ -149,31 +140,33 @@ function CambioContrasena({
                       value={confNewPass}
                       required
                       onChange={(e) => setconfNewPass(e.target.value)}
-                      
                       validator={matchPassword}
-                      errorMessage={{required:"Es necesario que confirme la contrasena", validator: "Contrasenas no coinciden"}}
+                      errorMessage={{
+                        required: "Es necesario que confirme la contrasena",
+                        validator: "Contrasenas no coinciden"
+                      }}
                     />
                   </Form.Group>
                 </Col>
               </Row>
               <Row>
                 <Col className=" d-flex justify-content-center">
-                  <Button
-                    id="btnCambiarCon"
-                    name = "btnCambiarCon"
-                    key="btnCambiarCon"
-                    variant="outline-primary"
-                    type="submit"
-                                          
-                    size="md" 
-                  >
-                    <i className="feather icon-save" />
-                    Guardar
-                  </Button>
-
+                  {actualizar === true && (
+                    <Button
+                      id="btnCambiarCon"
+                      name="btnCambiarCon"
+                      key="btnCambiarCon"
+                      variant="outline-primary"
+                      type="submit"
+                      size="md"
+                    >
+                      <i className="feather icon-save" />
+                      Guardar
+                    </Button>
+                  )}
                   <Button
                     id="btnCloseCon"
-                    name = "btnCloseCon"
+                    name="btnCloseCon"
                     key="btnCloseCon"
                     variant="outline-danger"
                     onClick={handleCloseCambioConUsuario}

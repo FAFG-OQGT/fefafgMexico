@@ -5,23 +5,28 @@ import userContext from "../../../context/userContext";
 import config from "../../../config";
 import {apiCatalogo} from "../../../utils/fetchCatalogos";
 import moment from "moment";
- 
+
 import Datetime from "react-datetime";
 import {renderInputFecha, validDate} from "../Utils/fechas";
 
 import {
   ValidationForm,
   TextInput,
-  SelectGroup,
+  SelectGroup
 } from "react-bootstrap4-form-validation";
 
 import "./VictimaEdit.css";
 
-function VictimaAdd({onAddDone, oncerrarModal, mensajeAlerta}) {
+function VictimaAdd({
+  onAddDone,
+  oncerrarModal,
+  mensajeAlerta,
+  agregar = false
+}) {
   //CONTEXT LOAD
   const user = useContext(userContext);
   const configReq = {
-    headers: {Authorization: `Bearer ${user.token}`},
+    headers: {Authorization: `Bearer ${user.token}`}
   };
   //DEFINICION DE ESTADOS
   const [comboDepto, setcomboDepto] = useState();
@@ -75,7 +80,7 @@ function VictimaAdd({onAddDone, oncerrarModal, mensajeAlerta}) {
         noDocumento: noDocumento,
         tipoDocumentoId: tipoDocumentoId === "" ? null : tipoDocumentoId,
 
-        usuarioIngresoId: user.usuarioId,
+        usuarioIngresoId: user.usuarioId
       };
       const res = await axios.post(`${config.urlApi}/victima`, data, configReq);
 
@@ -196,7 +201,7 @@ function VictimaAdd({onAddDone, oncerrarModal, mensajeAlerta}) {
                 setFocusOnError={true}
                 defaultErrorMessage={{
                   required: "El campo es requerido.",
-                  minLength: "Ingresar por lo menos {minLength} caracteres",
+                  minLength: "Ingresar por lo menos {minLength} caracteres"
                 }}
               >
                 <Row>
@@ -297,7 +302,7 @@ function VictimaAdd({onAddDone, oncerrarModal, mensajeAlerta}) {
                         dateFormat="DD/MM/YYYY"
                         timeFormat={false}
                         inputProps={{
-                          placeholder: "Fecha nacimiento",
+                          placeholder: "Fecha nacimiento"
                         }}
                         value={fechaNacimientoVictima}
                         onChange={(e) => {
@@ -577,17 +582,18 @@ function VictimaAdd({onAddDone, oncerrarModal, mensajeAlerta}) {
                 </Row>
                 <Row>
                   <Col className=" d-flex justify-content-center">
-                    <Button
-                      key="btnSave"
-                      name="btnSave"
-                      type="submit"
-                      variant="outline-primary"
-                      size="md"
-                    >
-                      <i className="feather icon-save" />
-                      Guardar
-                    </Button>
-
+                    {agregar === true && (
+                      <Button
+                        key="btnSave"
+                        name="btnSave"
+                        type="submit"
+                        variant="outline-primary"
+                        size="md"
+                      >
+                        <i className="feather icon-save" />
+                        Guardar
+                      </Button>
+                    )}
                     <Button
                       key="btnCancel"
                       name="btnCancel"

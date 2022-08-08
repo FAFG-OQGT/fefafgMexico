@@ -2,7 +2,7 @@ import axios from "axios";
 import config from "../config";
 
 const configReq = (token) => {
-  return {headers: {Authorization: `Bearer ${token}`}};
+  return { headers: { Authorization: `Bearer ${token}` } };
 };
 
 const apiFetchPersonas = async (token) => {
@@ -20,7 +20,24 @@ const apiFetchPersonas = async (token) => {
     });
     return roots;
   } catch (error) {
-    return {value: "", label: "[0] - -"};
+    return { value: "", label: "[0] - -" };
+  }
+};
+
+const apiFetchAccesoXObjeto = async (token, usuarioId, objetoId) => {
+  try {
+    const res = await axios.get(
+      `${config.urlApi}/usuario/accesoXId?objetoId=${objetoId}&usuarioId=${usuarioId}`,
+      configReq(token)
+    );
+
+    var resultado = {};
+    if (res.data)
+      if (res.data.data)
+        resultado = res.data.data.accesos;
+    return resultado;
+  } catch (error) {
+    return null;
   }
 };
 
@@ -31,7 +48,7 @@ const apiFetchVictimas = async (token) => {
       `${config.urlApi}/victima`,
       configReq(token)
     );
-    
+
     var roots = res.data.data.rows.map(function (row) {
       return {
         value: row.victimaId,
@@ -41,29 +58,29 @@ const apiFetchVictimas = async (token) => {
     });
     return roots;
   } catch (error) {
-    return {value: "", label: "[0] - -"};
+    return { value: "", label: "[0] - -" };
   }
 };
 
 
 
-const apiFetchOsamentas= async (token) => {
+const apiFetchOsamentas = async (token) => {
   try {
     const res = await axios.get(
       `${config.urlApi}/osamenta`,
       configReq(token)
     );
-    
+
     var roots = res.data.data.rows.map(function (row) {
       return {
         value: row.osamentaId,
-        label: `[${row.osamentaId}] CRIH-${row.casoId}-${row.fosaDet}-${row.osamentaDet}`,
+        label: `[${row.osamentaId}] FAFG-${row.casoId}-${row.fosaDet}-${row.osamentaDet}`,
         data: row
       };
     });
     return roots;
   } catch (error) {
-    return {value: "", label: "[0] - -"};
+    return { value: "", label: "[0] - -" };
   }
 };
 
@@ -75,11 +92,11 @@ const apiCatalogo = async (catalogo, token) => {
       `${config.urlApi}/catalogo/${catalogo}`,
       configReq(token)
     );
-      
+
     return res.data;
   } catch (error) {
     return error;
   }
 };
 
-export {apiFetchPersonas, apiCatalogo,apiFetchVictimas,apiFetchOsamentas};
+export { apiFetchPersonas, apiCatalogo, apiFetchVictimas, apiFetchOsamentas, apiFetchAccesoXObjeto };

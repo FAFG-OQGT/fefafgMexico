@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, {useState, useEffect, useContext} from "react";
 
 //Controles bootstrap
 import {
@@ -8,23 +8,23 @@ import {
   Form,
   Collapse,
   Card,
-  InputGroup,
+  InputGroup
 } from "react-bootstrap";
 import axios from "axios";
 import config from "../../../../config";
-import { renderInputFecha, validDate } from "../../Utils/fechas";
+import {renderInputFecha, validDate} from "../../Utils/fechas";
 
 import OsamentaSelect from "../../Osamenta/OsamentaSelect";
 import VictimaSelect from "../../Victima/VictimaSelect";
 import ArchivosAdd from "../../Identificados/Smih/Archivos/ArchivosAdd";
 import ArchivosList from "../../Identificados/Smih/Archivos/ArchivosList";
-import VictimaDetalle from "../../Victima/VictimaDetalle"
-import OsamentaDetalle from "../../Osamenta/OsamentaDetalle"
+import VictimaDetalle from "../../Victima/VictimaDetalle";
+import OsamentaDetalle from "../../Osamenta/OsamentaDetalle";
 
 import {
   ValidationForm,
   TextInput,
-  SelectGroup,
+  SelectGroup
 } from "react-bootstrap4-form-validation";
 import Datetime from "react-datetime";
 //context
@@ -36,14 +36,33 @@ import "./IdentificadosEditSmih.css";
 
 import MensajeAlerta from "../../MensajeAlerta/MensajeAlerta";
 
-import { apiCatalogo } from "../../../../utils/fetchCatalogos";
+import {
+  apiCatalogo,
+  apiFetchAccesoXObjeto
+} from "../../../../utils/fetchCatalogos";
 
 function IdentificadosEditSmih(props) {
   const [data] = useState(props.data ? props.data : null);
 
   const userI = useContext(userContext);
   const configReq = {
-    headers: { Authorization: `Bearer ${userI.token}` },
+    headers: {Authorization: `Bearer ${userI.token}`}
+  };
+
+  const [accesos, setAccesos] = useState({
+    actualizar: false,
+    ver: false,
+    agregar: false,
+    eliminar: false,
+    verArchivo: false,
+    agregarArchivo: false,
+    eliminarArchivo: false,
+    descargarArchivo: false
+  });
+  const fetchAccesos = async () => {
+    var data = await apiFetchAccesoXObjeto(userI.token, userI.usuarioId, 11);
+    var Raccesos = data[0];
+    setAccesos(Raccesos.accesos);
   };
 
   //collapse
@@ -287,7 +306,7 @@ function IdentificadosEditSmih(props) {
         observaciones: observaciones,
 
         estadoId: 1,
-        usuarioIngresoId: userI.usuarioId,
+        usuarioIngresoId: userI.usuarioId
       };
 
       const res = await axios.put(
@@ -338,7 +357,7 @@ function IdentificadosEditSmih(props) {
       "tipoCasoDidId",
       "sexoId",
       "grupoEtarioId",
-      "grupoEtnolinguisticoId",
+      "grupoEtnolinguisticoId"
     ];
 
     var errorControls1 = Object.keys(errorInputs).filter((key) =>
@@ -357,7 +376,7 @@ function IdentificadosEditSmih(props) {
       "fechaReporteDid",
       "fechaInhumacion",
       "fechaAnalisisOst",
-      "fechaReporteGenetica",
+      "fechaReporteGenetica"
     ];
     var errorControls5 = Object.keys(errorInputs).filter((key) =>
       listControls5.includes(key)
@@ -393,7 +412,7 @@ function IdentificadosEditSmih(props) {
       "rangoMinimoPM",
       "rangoMaximoPM",
       "valorEdadPM",
-      "valorEdadAM",
+      "valorEdadAM"
     ];
     var errorControls6 = Object.keys(errorInputs).filter((key) =>
       listControls6.includes(key)
@@ -483,12 +502,9 @@ function IdentificadosEditSmih(props) {
     }
   };
 
-
-  const [permisoAgregar, setpermisoAgregar] = useState(false);
   useEffect(() => {
-    if (userI.usuarioId < 9) {
-      setpermisoAgregar(true)
-    }
+    fetchAccesos();
+
     fetchCatalogo("departamento");
     fetchCatalogo("municipio");
     fetchCatalogo("tipoCasoDid");
@@ -500,7 +516,7 @@ function IdentificadosEditSmih(props) {
     fetchCatalogo("regionAnatomica");
     fetchCatalogo("causaMuerte");
     fetchCatalogo("datosOdont");
-    return () => { };
+    return () => {};
   }, []);
 
   const fetchCatalogo = async (catalogo) => {
@@ -532,7 +548,7 @@ function IdentificadosEditSmih(props) {
         onErrorSubmit={handleErrorSubmit}
         defaultErrorMessage={{
           required: "El campo es requerido.",
-          minLength: "Ingresar por lo menos {minLength} caracteres",
+          minLength: "Ingresar por lo menos {minLength} caracteres"
         }}
       >
         <Row>
@@ -609,13 +625,13 @@ function IdentificadosEditSmih(props) {
                         </option>
                         {!(combotipoCasoDid === undefined)
                           ? combotipoCasoDid.map((fbb) => (
-                            <option
-                              key={fbb.tipoCasoDidId}
-                              value={fbb.tipoCasoDidId}
-                            >
-                              {fbb.descripcion}
-                            </option>
-                          ))
+                              <option
+                                key={fbb.tipoCasoDidId}
+                                value={fbb.tipoCasoDidId}
+                              >
+                                {fbb.descripcion}
+                              </option>
+                            ))
                           : null}
                       </SelectGroup>
                     </Form.Group>
@@ -637,10 +653,10 @@ function IdentificadosEditSmih(props) {
                         </option>
                         {!(combosexo === undefined)
                           ? combosexo.map((fbb) => (
-                            <option key={fbb.generoId} value={fbb.generoId}>
-                              {fbb.descripcion}
-                            </option>
-                          ))
+                              <option key={fbb.generoId} value={fbb.generoId}>
+                                {fbb.descripcion}
+                              </option>
+                            ))
                           : null}
                       </SelectGroup>
                     </Form.Group>
@@ -666,13 +682,13 @@ function IdentificadosEditSmih(props) {
                         </option>
                         {!(combogrupoEtario === undefined)
                           ? combogrupoEtario.map((fbb) => (
-                            <option
-                              key={fbb.grupoEtarioId}
-                              value={fbb.grupoEtarioId}
-                            >
-                              {fbb.descripcion}
-                            </option>
-                          ))
+                              <option
+                                key={fbb.grupoEtarioId}
+                                value={fbb.grupoEtarioId}
+                              >
+                                {fbb.descripcion}
+                              </option>
+                            ))
                           : null}
                       </SelectGroup>
                     </Form.Group>
@@ -698,13 +714,13 @@ function IdentificadosEditSmih(props) {
                         </option>
                         {!(combogrupoEtnolinguistico === undefined)
                           ? combogrupoEtnolinguistico.map((fbb) => (
-                            <option
-                              key={fbb.grupoEtnolinguisticoId}
-                              value={fbb.grupoEtnolinguisticoId}
-                            >
-                              {fbb.descripcion}
-                            </option>
-                          ))
+                              <option
+                                key={fbb.grupoEtnolinguisticoId}
+                                value={fbb.grupoEtnolinguisticoId}
+                              >
+                                {fbb.descripcion}
+                              </option>
+                            ))
                           : null}
                       </SelectGroup>
                     </Form.Group>
@@ -757,7 +773,6 @@ function IdentificadosEditSmih(props) {
                     ></OsamentaSelect>
                   </Row>
                 )}
-
 
                 {osamentaId && (
                   <OsamentaDetalle
@@ -812,7 +827,6 @@ function IdentificadosEditSmih(props) {
                     ></VictimaSelect>
                   </Row>
                 )}
-
                 {victimaId && (
                   <VictimaDetalle
                     victimaId={victimaId}
@@ -856,7 +870,7 @@ function IdentificadosEditSmih(props) {
                         dateFormat="DD/MM/YYYY"
                         timeFormat={false}
                         inputProps={{
-                          placeholder: "Fecha Dictamen ",
+                          placeholder: "Fecha Dictamen "
                         }}
                         value={fechaDictamen}
                         onChange={(e) => {
@@ -877,7 +891,7 @@ function IdentificadosEditSmih(props) {
                         dateFormat="DD/MM/YYYY"
                         timeFormat={false}
                         inputProps={{
-                          placeholder: "Fecha Fam. Informados ",
+                          placeholder: "Fecha Fam. Informados "
                         }}
                         value={fechaInfoFamilia}
                         onChange={(e) => {
@@ -898,7 +912,7 @@ function IdentificadosEditSmih(props) {
                         dateFormat="DD/MM/YYYY"
                         timeFormat={false}
                         inputProps={{
-                          placeholder: "Fecha Reporte Did ",
+                          placeholder: "Fecha Reporte Did "
                         }}
                         value={fechaReporteDid}
                         onChange={(e) => {
@@ -921,7 +935,7 @@ function IdentificadosEditSmih(props) {
                         dateFormat="DD/MM/YYYY"
                         timeFormat={false}
                         inputProps={{
-                          placeholder: "Fecha inhumación ",
+                          placeholder: "Fecha inhumación "
                         }}
                         value={fechaInhumacion}
                         onChange={(e) => {
@@ -943,7 +957,7 @@ function IdentificadosEditSmih(props) {
                         dateFormat="DD/MM/YYYY"
                         timeFormat={false}
                         inputProps={{
-                          placeholder: "Fecha Analisis Osteologico ",
+                          placeholder: "Fecha Analisis Osteologico "
                         }}
                         value={fechaAnalisisOst}
                         onChange={(e) => {
@@ -965,7 +979,7 @@ function IdentificadosEditSmih(props) {
                         timeFormat={false}
                         inputProps={{
                           placeholder: "Fecha Confirmacion ",
-                          requerido: true,
+                          requerido: true
                         }}
                         value={fechaConfirmacion}
                         onChange={(e) => {
@@ -989,7 +1003,7 @@ function IdentificadosEditSmih(props) {
                         dateFormat="DD/MM/YYYY"
                         timeFormat={false}
                         inputProps={{
-                          placeholder: "Fecha Genetica ",
+                          placeholder: "Fecha Genetica "
                         }}
                         value={fechaReporteGenetica}
                         onChange={(e) => {
@@ -1060,13 +1074,13 @@ function IdentificadosEditSmih(props) {
                         </option>
                         {!(comboDepartamento === undefined)
                           ? comboDepartamento.map((fbb) => (
-                            <option
-                              key={fbb.departamentoId}
-                              value={fbb.departamentoId}
-                            >
-                              {fbb.descripcion}
-                            </option>
-                          ))
+                              <option
+                                key={fbb.departamentoId}
+                                value={fbb.departamentoId}
+                              >
+                                {fbb.descripcion}
+                              </option>
+                            ))
                           : null}
                       </SelectGroup>
                     </Form.Group>
@@ -1093,18 +1107,18 @@ function IdentificadosEditSmih(props) {
                         </option>
                         {!(comboMunicipio === undefined)
                           ? comboMunicipio
-                            .filter(
-                              (filt) =>
-                                filt.departamentoId == desaparicionDeptoId
-                            )
-                            .map((fbb) => (
-                              <option
-                                key={fbb.municipioId}
-                                value={fbb.municipioId}
-                              >
-                                {fbb.descripcion}
-                              </option>
-                            ))
+                              .filter(
+                                (filt) =>
+                                  filt.departamentoId == desaparicionDeptoId
+                              )
+                              .map((fbb) => (
+                                <option
+                                  key={fbb.municipioId}
+                                  value={fbb.municipioId}
+                                >
+                                  {fbb.descripcion}
+                                </option>
+                              ))
                           : null}
                       </SelectGroup>
                     </Form.Group>
@@ -1139,7 +1153,7 @@ function IdentificadosEditSmih(props) {
                         type="number"
                         required
                         validator={validaDia}
-                        errorMessage={{ validator: "Ingrese dia correcto." }}
+                        errorMessage={{validator: "Ingrese dia correcto."}}
                         className="form-control text-center"
                         value={desaparicionDia}
                         onChange={(e) => setdesaparicionDia(e.target.value)}
@@ -1155,7 +1169,7 @@ function IdentificadosEditSmih(props) {
                         type="number"
                         required
                         validator={validaMes}
-                        errorMessage={{ validator: "Ingrese mes correcto." }}
+                        errorMessage={{validator: "Ingrese mes correcto."}}
                         className="form-control text-center"
                         value={desaparicionMes}
                         onChange={(e) => setdesaparicionMes(e.target.value)}
@@ -1173,7 +1187,7 @@ function IdentificadosEditSmih(props) {
                         className="form-control text-center"
                         value={desaparicionAnio}
                         validator={validaAnio}
-                        errorMessage={{ validator: "Ingrese año correcto(####)" }}
+                        errorMessage={{validator: "Ingrese año correcto(####)"}}
                         onChange={(e) => setdesaparicionAnio(e.target.value)}
                       />
                     </Form.Group>
@@ -1234,13 +1248,13 @@ function IdentificadosEditSmih(props) {
                         </option>
                         {!(combovalorEdad === undefined)
                           ? combovalorEdad.map((fbb) => (
-                            <option
-                              key={fbb.valorEdadId}
-                              value={fbb.valorEdadId}
-                            >
-                              {fbb.descripcion}
-                            </option>
-                          ))
+                              <option
+                                key={fbb.valorEdadId}
+                                value={fbb.valorEdadId}
+                              >
+                                {fbb.descripcion}
+                              </option>
+                            ))
                           : null}
                       </SelectGroup>
                     </Form.Group>
@@ -1271,7 +1285,7 @@ function IdentificadosEditSmih(props) {
                         dateFormat="DD/MM/YYYY"
                         timeFormat={false}
                         inputProps={{
-                          placeholder: "Fecha Antemortem ",
+                          placeholder: "Fecha Antemortem "
                         }}
                         value={fechaEntrevistaAM}
                         onChange={(e) => {
@@ -1336,13 +1350,13 @@ function IdentificadosEditSmih(props) {
                         </option>
                         {!(combovalorEdad === undefined)
                           ? combovalorEdad.map((fbb) => (
-                            <option
-                              key={fbb.valorEdadId}
-                              value={fbb.valorEdadId}
-                            >
-                              {fbb.descripcion}
-                            </option>
-                          ))
+                              <option
+                                key={fbb.valorEdadId}
+                                value={fbb.valorEdadId}
+                              >
+                                {fbb.descripcion}
+                              </option>
+                            ))
                           : null}
                       </SelectGroup>
                     </Form.Group>
@@ -1389,13 +1403,13 @@ function IdentificadosEditSmih(props) {
                         </option>
                         {!(combotraumaCir === undefined)
                           ? combotraumaCir.map((fbb) => (
-                            <option
-                              key={fbb.traumaCircId}
-                              value={fbb.traumaCircId}
-                            >
-                              {fbb.descripcion}
-                            </option>
-                          ))
+                              <option
+                                key={fbb.traumaCircId}
+                                value={fbb.traumaCircId}
+                              >
+                                {fbb.descripcion}
+                              </option>
+                            ))
                           : null}
                       </SelectGroup>
                     </Form.Group>
@@ -1420,13 +1434,13 @@ function IdentificadosEditSmih(props) {
                         </option>
                         {!(comboregionAnatomicaId === undefined)
                           ? comboregionAnatomicaId.map((fbb) => (
-                            <option
-                              key={fbb.regionAnatomicaId}
-                              value={fbb.regionAnatomicaId}
-                            >
-                              {fbb.descripcion}
-                            </option>
-                          ))
+                              <option
+                                key={fbb.regionAnatomicaId}
+                                value={fbb.regionAnatomicaId}
+                              >
+                                {fbb.descripcion}
+                              </option>
+                            ))
                           : null}
                       </SelectGroup>
                     </Form.Group>
@@ -1452,13 +1466,13 @@ function IdentificadosEditSmih(props) {
                         </option>
                         {!(combocausaMuerte === undefined)
                           ? combocausaMuerte.map((fbb) => (
-                            <option
-                              key={fbb.causaMuerteId}
-                              value={fbb.causaMuerteId}
-                            >
-                              {fbb.descripcion}
-                            </option>
-                          ))
+                              <option
+                                key={fbb.causaMuerteId}
+                                value={fbb.causaMuerteId}
+                              >
+                                {fbb.descripcion}
+                              </option>
+                            ))
                           : null}
                       </SelectGroup>
                     </Form.Group>
@@ -1481,13 +1495,13 @@ function IdentificadosEditSmih(props) {
                         </option>
                         {!(combodatosOdont === undefined)
                           ? combodatosOdont.map((fbb) => (
-                            <option
-                              key={fbb.datosOdontId}
-                              value={fbb.datosOdontId}
-                            >
-                              {fbb.descripcion}
-                            </option>
-                          ))
+                              <option
+                                key={fbb.datosOdontId}
+                                value={fbb.datosOdontId}
+                              >
+                                {fbb.descripcion}
+                              </option>
+                            ))
                           : null}
                       </SelectGroup>
                     </Form.Group>
@@ -1548,31 +1562,38 @@ function IdentificadosEditSmih(props) {
             <div id="basic-collapse" className="col-12">
               <Card.Body>
                 <Row>
-                  <Col className="row-eq-height">
-                    <ArchivosAdd
-                      IdentificadoId={identificadoSmihId}
-                      coincidenciaId={coincidenciaId}
-                      mensajeAlerta={MensajeAlerta}
-                      onAddDoneFile={setResetListFiles}
-                    ></ArchivosAdd>
-                  </Col>
-                  <Col>
-                    {identificadoSmihId > 0 && (
-                      <ArchivosList
+                  {accesos && accesos.agregarArchivo === true && (
+                    <Col className="row-eq-height">
+                      <ArchivosAdd
                         IdentificadoId={identificadoSmihId}
                         coincidenciaId={coincidenciaId}
-                        reset={resetListFiles}
-                        setreset={setResetListFiles}
                         mensajeAlerta={MensajeAlerta}
-                      ></ArchivosList>
-                    )}
-                  </Col>
+                        onAddDoneFile={setResetListFiles}
+                        permisoAgregar={accesos.agregarArchivo}
+                      ></ArchivosAdd>
+                    </Col>
+                  )}
+                  {accesos && accesos.verArchivo === true && (
+                    <Col>
+                      {identificadoSmihId > 0 && (
+                        <ArchivosList
+                          IdentificadoId={identificadoSmihId}
+                          coincidenciaId={coincidenciaId}
+                          reset={resetListFiles}
+                          setreset={setResetListFiles}
+                          mensajeAlerta={MensajeAlerta}
+                          descargaArchivo={accesos.descargarArchivo}
+                          eliminarArchivo={accesos.eliminarArchivo}
+                        ></ArchivosList>
+                      )}
+                    </Col>
+                  )}
                 </Row>
               </Card.Body>
             </div>
           </Collapse>
         </Row>
-        {permisoAgregar && (
+        {accesos && accesos.actualizar === true && (
           <Row>
             <Col className=" d-flex justify-content-center">
               <Button
@@ -1583,10 +1604,11 @@ function IdentificadosEditSmih(props) {
                 size="md"
               >
                 <i className="feather icon-save" />
-              Guardar
-            </Button>
+                Guardar
+              </Button>
             </Col>
-          </Row>)}
+          </Row>
+        )}
       </ValidationForm>
     </Col>
   );

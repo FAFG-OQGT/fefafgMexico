@@ -5,7 +5,7 @@ import {
   Button,
   Badge,
   OverlayTrigger,
-  Tooltip,
+  Tooltip
 } from "react-bootstrap";
 import config from "../../../config";
 import axios from "axios";
@@ -19,7 +19,15 @@ const getBadge = (status) => {
   return status === 2 ? "danger" : status === 1 ? "success" : "primary";
 };
 
-function UsuariosList(props) {
+function UsuariosList({
+  onabrirModalEdit,
+  onabrirModalCambio,
+  onabrirModalCambioRol,
+  mensajeAlerta,
+  reset,
+  setresetList,
+  actualizar
+}) {
   const userC = useContext(userContext);
   const [data, setData] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
@@ -28,7 +36,7 @@ function UsuariosList(props) {
   const [totalRegisters, settotalRegisters] = useState(0);
 
   const configReq = {
-    headers: {Authorization: `Bearer ${userC.token}`},
+    headers: {Authorization: `Bearer ${userC.token}`}
   };
   const columns = React.useMemo(
     () => [
@@ -46,21 +54,21 @@ function UsuariosList(props) {
                 className="btn-icon"
                 variant="outline-primary"
                 size="sm"
-                onClick={(e) => props.onabrirModalEdit(row.original.Usuario)}
+                onClick={(e) => onabrirModalEdit(row.original.Usuario)}
               >
                 <i className="feather icon-edit" />{" "}
               </Button>
             </OverlayTrigger>
           </div>
-        ),
+        )
       },
       {
         Header: "Usuario",
-        accessor: "Usuario.usuario",
+        accessor: "Usuario.usuario"
       },
       {
         Header: "Correo",
-        accessor: "Usuario.email",
+        accessor: "Usuario.email"
       },
       {
         Header: "Puesto",
@@ -72,7 +80,7 @@ function UsuariosList(props) {
               d.Usuario.Puesto === null ? "" : d.Usuario.Puesto.descripcion;
           }
           return puesto;
-        },
+        }
       },
       {
         Header: "Estado",
@@ -83,7 +91,7 @@ function UsuariosList(props) {
               {value === 2 ? "Inactivo" : value === 1 ? "Activo" : "--"}
             </Badge>
           </div>
-        ),
+        )
       },
       {
         Header: "",
@@ -99,7 +107,7 @@ function UsuariosList(props) {
                 className="btn-icon"
                 variant="outline-danger"
                 size="sm"
-                onClick={(e) => props.onabrirModalCambio(row.original.Usuario)}
+                onClick={(e) => onabrirModalCambio(row.original.Usuario)}
               >
                 <i className="feather icon-lock" />{" "}
               </Button>
@@ -113,14 +121,14 @@ function UsuariosList(props) {
                 className="btn-icon"
                 variant="outline-dark"
                 size="sm"
-                onClick={(e) => props.onabrirModalCambioRol(row.original)}
+                onClick={(e) => onabrirModalCambioRol(row.original)}
               >
                 <i className="feather icon-shield" />{" "}
               </Button>
             </OverlayTrigger>
           </div>
-        ),
-      },
+        )
+      }
     ],
     []
   );
@@ -144,20 +152,20 @@ function UsuariosList(props) {
       if (error.response.status === 400) {
         if (error.response.data.error) {
           const dataError = error.response.data;
-          props.mensajeAlerta(
+          mensajeAlerta(
             "Error",
             `${dataError.codigo} - ${dataError.data}`,
             "error"
           );
           console.log(`${dataError.codigo} - ${dataError.data}`);
         } else {
-          props.mensajeAlerta("Error", error.response.statusText, "error");
+          mensajeAlerta("Error", error.response.statusText, "error");
           console.log(
             `${error.response.status} - ${error.response.statusText}`
           );
         }
       } else {
-        props.mensajeAlerta("Error", error.response.statusText, "error");
+        mensajeAlerta("Error", error.response.statusText, "error");
         console.log(`${error.response.status} - ${error.response.statusText}`);
       }
     }
@@ -173,12 +181,12 @@ function UsuariosList(props) {
   }, []);
 
   useEffect(() => {
-    if (props.reset) {
+    if (reset) {
       fetchUsuarios(10, 0, "", userC.token);
-      props.setresetList(false);
+      setresetList(false);
     }
     return () => {};
-  }, [props.reset]);
+  }, [reset]);
   useEffect(() => {
     return () => {};
   }, [data]);
@@ -196,7 +204,7 @@ function UsuariosList(props) {
               pageCount={pageCount}
               className="animated fadeIn"
               totalRegis={totalRegisters}
-              reset={props.reset}
+              reset={reset}
             />
           </Col>
         </Row>

@@ -5,20 +5,18 @@ import axios from "axios";
 import userContext from "../../../context/userContext";
 import config from "../../../config";
 import Datetime from "react-datetime";
-import {
-  ValidationForm,
-  TextInput,
-} from "react-bootstrap4-form-validation";
+import {ValidationForm, TextInput} from "react-bootstrap4-form-validation";
 function PersonasEdit({
   persona,
   onEditarDone,
   onCerrarModalEdita,
   mensajeAlerta,
+  actualizar
 }) {
   //CONTEXT LOAD
   const user = useContext(userContext);
   const configReq = {
-    headers: {Authorization: `Bearer ${user.token}`},
+    headers: {Authorization: `Bearer ${user.token}`}
   };
   //DEFINICION DE ESTADOS
   const [personaId] = useState(persona.personaId);
@@ -56,13 +54,13 @@ function PersonasEdit({
         generoId: genero,
         personaId: personaId,
         estadoId: estadoId,
-        telefono: telefono,
+        telefono: telefono
       };
       const res = await axios.put(
         `${config.urlApi}/persona/${data.personaId}`,
         data,
         configReq
-      ); 
+      );
 
       if (res.status === 201) {
         mensajeAlerta(
@@ -121,7 +119,7 @@ function PersonasEdit({
                 setFocusOnError={true}
                 defaultErrorMessage={{
                   required: "El campo es requerido.",
-                  minLength: "Ingresar por lo menos {minLength} caracteres",
+                  minLength: "Ingresar por lo menos {minLength} caracteres"
                 }}
               >
                 <Row>
@@ -258,16 +256,17 @@ function PersonasEdit({
 
                 <Row>
                   <Col className=" d-flex justify-content-center">
-                    <Button
-                      key="btnSaveEditPerson"
-                      type="submit"
-                      variant="outline-primary"
-                      size="md"
-                    >
-                      <i className="feather icon-save" />
-                      Guardar
-                    </Button>
-
+                    {actualizar === true && (
+                      <Button
+                        key="btnSaveEditPerson"
+                        type="submit"
+                        variant="outline-primary"
+                        size="md"
+                      >
+                        <i className="feather icon-save" />
+                        Guardar
+                      </Button>
+                    )}
                     <Button
                       key="btnCancelEditPerson"
                       onClick={handleCloseEditPerson}

@@ -6,9 +6,10 @@ import userContext from "../../context/userContext";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
- import MensajeAlerta from "../../App/components/MensajeAlerta/MensajeAlerta"
+import MensajeAlerta from "../../App/components/MensajeAlerta/MensajeAlerta";
 import Aux from "../../hoc/_Aux/index";
- 
+import {apiFetchAccesoXObjeto} from "../../utils/fetchCatalogos";
+
 function UserPassView(props) {
   const sweetConfirmHandler = () => {
     const MySwal = withReactContent(Swal);
@@ -16,14 +17,25 @@ function UserPassView(props) {
       title: "Su contraseña ha cambiado!",
       text: "Inicie sesión nuevamente.",
       type: "success",
-      showCloseButton: true,
+      showCloseButton: true
     }).then(() => {
-      localStorage.removeItem("userLogged");
+      sessionStorage.removeItem("userLogged");
       props.history.push("/auth/login");
     });
   };
 
+  const [accesos, setAccesos] = useState({
+    actualizar: false
+  });
+
   const user = useContext(userContext);
+  const fetchAccesos = async () => {
+    var data = await apiFetchAccesoXObjeto(user.token, user.usuarioId, 5);
+
+    var Raccesos = data[0];
+    setAccesos(Raccesos.accesos);
+  };
+
   const [onCambioCon, setoncambioCon] = useState(false);
 
   const onCambioConDone = (val) => setoncambioCon(val);
@@ -31,7 +43,10 @@ function UserPassView(props) {
   const onCerrarModalCambio = () => {
     return false;
   };
-
+  useEffect(() => {
+    fetchAccesos();
+    return () => {};
+  }, []);
   useEffect(() => {
     if (onCambioCon) {
       sweetConfirmHandler();
@@ -43,7 +58,7 @@ function UserPassView(props) {
     <Aux>
       <Row>
         <Col>
-          <Card title={`Bienvenido ${user.nombre}`} isOption>
+          <Card title={`Bienvenido ${user.username}`} isOption>
             <Col xl={12}>
               <Row>
                 <Col>
@@ -52,6 +67,7 @@ function UserPassView(props) {
                     onCambioConDone={onCambioConDone}
                     onCerrarModalCambio={onCerrarModalCambio}
                     mensajeAlerta={MensajeAlerta}
+                    actualizar={accesos.actualizar}
                   />
                 </Col>
               </Row>

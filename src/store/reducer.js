@@ -6,6 +6,9 @@ const initialState = {
     isTrigger: [], //for active default menu, set blank for horizontal
     ...config,
     isFullScreen: false, // static can't change
+    userInfo:null,
+    logged: false,
+    token:""
 };
 
 const reducer = (state = initialState, action) => {
@@ -67,8 +70,8 @@ const reducer = (state = initialState, action) => {
                     isTrigger: trigger,
                 };
             }
-            return {...state};
-        case actionTypes.FULL_SCREEN :
+            return { ...state };
+        case actionTypes.FULL_SCREEN:
             return {
                 ...state,
                 isFullScreen: !state.isFullScreen
@@ -138,11 +141,51 @@ const reducer = (state = initialState, action) => {
                 headerFixedLayout: initialState.headerFixedLayout,
                 boxLayout: initialState.boxLayout
             };
-            case actionTypes.LOGGED_IN:
-                return {
-                    ...state,
-                    loggedIn: true
-                };
+        case actionTypes.LOGGED_IN:
+            return {
+                ...state,
+                loggedIn: true
+            };
+        case actionTypes.LOGIN:
+            return {
+                ...state,
+                token: action.payload.token || '',
+                userInfo: action.payload.userInfo || {},
+                menu: action.payload.menu || [],
+                accesos: action.payload.accesos || [],
+                logged: action.payload.logged || false,
+                forzar_cambio_password: action.payload.userInfo?.forzar_cambio_password || false
+            }
+        case actionTypes.ACTUALIZAR_PERMISOS_MENU:
+            return {
+                ...state,
+                menu: action.payload.menu || [],
+                accesos: action.payload.accesos || []
+            }
+        case actionTypes.CAMBIO_PASSWORD:
+            return {
+                ...state,
+                forzar_cambio_password: false
+            }
+        case actionTypes.LOGOUT:
+            return {
+                ...state,
+                token: '',
+                userInfo: {},
+                menu: [],
+                accesos: [],
+                logged: false,
+                forzar_cambio_password: false
+            }
+        case actionTypes.UPDATE_USER_INFO:
+            return {
+                ...state,
+                userInfo: action.payload.userInfo || {},
+                menu: action.payload.menu || [],
+                accesos: action.payload.accesos || [],
+                logged: action.payload.logged || false,
+                forzar_cambio_password: action.payload.userInfo?.forzar_cambio_password || false
+            }
         default:
             return state;
     }

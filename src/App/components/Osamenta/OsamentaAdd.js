@@ -13,13 +13,18 @@ import CoordinateInput, {dmsToDecimal} from "react-coordinate-input";
 import {
   ValidationForm,
   TextInput,
-  SelectGroup,
+  SelectGroup
 } from "react-bootstrap4-form-validation";
-function OsamentaAdd({onAddDone, oncerrarModal, mensajeAlerta}) {
+function OsamentaAdd({
+  onAddDone,
+  oncerrarModal,
+  mensajeAlerta,
+  agregar = false
+}) {
   //CONTEXT LOAD
   const user = useContext(userContext);
   const configReq = {
-    headers: {Authorization: `Bearer ${user.token}`},
+    headers: {Authorization: `Bearer ${user.token}`}
   };
   //DEFINICION DE ESTADOS
   const [comboDepto, setcomboDepto] = useState();
@@ -68,7 +73,7 @@ function OsamentaAdd({onAddDone, oncerrarModal, mensajeAlerta}) {
           : null,
         coordenadasExhumacion: coordenadasExhumacion,
         estadoId: 1,
-        usuarioIngresoId: user.usuarioId,
+        usuarioIngresoId: user.usuarioId
       };
       const res = await axios.post(
         `${config.urlApi}/osamenta`,
@@ -129,8 +134,6 @@ function OsamentaAdd({onAddDone, oncerrarModal, mensajeAlerta}) {
     return () => {};
   }, []);
 
-
-
   const handleAdd = (e) => {
     e.preventDefault();
     createOsamenta();
@@ -147,7 +150,7 @@ function OsamentaAdd({onAddDone, oncerrarModal, mensajeAlerta}) {
                 setFocusOnError={true}
                 defaultErrorMessage={{
                   required: "El campo es requerido.",
-                  minLength: "Ingresar por lo menos {minLength} caracteres",
+                  minLength: "Ingresar por lo menos {minLength} caracteres"
                 }}
               >
                 <Row>
@@ -170,7 +173,7 @@ function OsamentaAdd({onAddDone, oncerrarModal, mensajeAlerta}) {
                         }
                         errorMessage={{
                           required: "Ingrese valor numerico.",
-                          validator: "Ingrese un numero mayor a 0.",
+                          validator: "Ingrese un numero mayor a 0."
                         }}
                         value={casoId}
                         onChange={(e) => setcasoId(e.target.value)}
@@ -232,7 +235,7 @@ function OsamentaAdd({onAddDone, oncerrarModal, mensajeAlerta}) {
                         dateFormat="DD/MM/YYYY"
                         timeFormat={false}
                         inputProps={{
-                          placeholder: "Fecha Ingreso a laboratorio",
+                          placeholder: "Fecha Ingreso a laboratorio"
                         }}
                         value={fechaIngresoLab}
                         onChange={(e) => {
@@ -254,7 +257,7 @@ function OsamentaAdd({onAddDone, oncerrarModal, mensajeAlerta}) {
                         dateFormat="DD/MM/YYYY"
                         timeFormat={false}
                         inputProps={{
-                          placeholder: "Fecha Ingreso M-FISys",
+                          placeholder: "Fecha Ingreso M-FISys"
                         }}
                         value={fechaIngresoMFiSys}
                         onChange={(e) => {
@@ -309,7 +312,7 @@ function OsamentaAdd({onAddDone, oncerrarModal, mensajeAlerta}) {
                         dateFormat="DD/MM/YYYY"
                         timeFormat={false}
                         inputProps={{
-                          placeholder: "Fecha de exhumacion",
+                          placeholder: "Fecha de exhumacion"
                         }}
                         value={fechaExhumacion}
                         onChange={(e) => {
@@ -328,7 +331,6 @@ function OsamentaAdd({onAddDone, oncerrarModal, mensajeAlerta}) {
                         id="coordenadasExhumacion"
                         placeholder="Coordenadas de exhumacion"
                         onChange={(value, {unmaskedValue, dd, dms}) => {
-          
                           setcoordenadasExhumacion(unmaskedValue);
                         }}
                         className="form-control"
@@ -424,17 +426,18 @@ function OsamentaAdd({onAddDone, oncerrarModal, mensajeAlerta}) {
 
                 <Row>
                   <Col className=" d-flex justify-content-center">
-                    <Button
-                      key="btnSaveEditPerson"
-                      name="btnSaveEditPerson"
-                      type="submit"
-                      variant="outline-primary"
-                      size="md"
-                    >
-                      <i className="feather icon-save" />
-                      Guardar
-                    </Button>
-
+                    {agregar === true && (
+                      <Button
+                        key="btnSaveEditPerson"
+                        name="btnSaveEditPerson"
+                        type="submit"
+                        variant="outline-primary"
+                        size="md"
+                      >
+                        <i className="feather icon-save" />
+                        Guardar
+                      </Button>
+                    )}
                     <Button
                       key="btnCancelEditPerson"
                       name="btnCancelEditPerson"

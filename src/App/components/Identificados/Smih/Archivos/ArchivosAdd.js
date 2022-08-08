@@ -1,23 +1,24 @@
-import React, { useState, useContext, useEffect } from "react";
-import { Row, Col, Form, Card, Button } from "react-bootstrap";
+import React, {useState, useContext, useEffect} from "react";
+import {Row, Col, Form, Card, Button} from "react-bootstrap";
 import userContext from "../../../../../context/userContext";
 import config from "../../../../../config";
 import Swal from "sweetalert2";
 import axios from "axios";
-import { SelectGroup } from "react-bootstrap4-form-validation";
-import { apiCatalogo } from "../../../../../utils/fetchCatalogos";
+import {SelectGroup} from "react-bootstrap4-form-validation";
+import {apiCatalogo} from "../../../../../utils/fetchCatalogos";
 function ArchivosAdd({
   IdentificadoId,
   coincidenciaId,
   mensajeAlerta,
   onAddDoneFile,
+  permisoAgregar
 }) {
   const [loading, setloading] = useState(false);
 
   const userf = useContext(userContext);
 
   const configReq = {
-    headers: { Authorization: `Bearer ${userf.token}` },
+    headers: {Authorization: `Bearer ${userf.token}`}
   };
 
   const [documentoid, setdocumentoid] = useState();
@@ -65,10 +66,18 @@ function ArchivosAdd({
       var re = /(?:\.([^.]+))?$/;
       var ext = re.exec(file.name)[1];
       var nombreNuevo = documentoText.replace(/\s/g, "");
-      nombreNuevo = nombreNuevo
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "");
-      data.append("File", file, file.name);
+      nombreNuevo.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+      nombreNuevo =
+        nombreNuevo +
+        "_C" +
+        coincidenciaId +
+        "_IS" +
+        IdentificadoId +
+        "." +
+        ext;
+      data.append("File", file, nombreNuevo);
+      //data.append("File", file,nombreNuevo+'_IS'+IdentificadoId.toString() + "." + ext);
       data.append("coincidenciaId", coincidenciaId);
       data.append("documentoId", documentoid);
       data.append("usuarioIngresoId", userf.usuarioId);
@@ -139,16 +148,13 @@ function ArchivosAdd({
 
     if (catalogo == "documentoIdentificadoSmih") setcombodocumento(result.data);
     if (catalogo == "repoDoc") setcomborepoDoc(result.data);
-  };
-  const [permisoAgregar, setpermisoAgregar] = useState(false);
+  }; 
   useEffect(() => {
-    if (userf.usuarioId < 9) {
-      setpermisoAgregar(true)
-    }
+ 
     fetchCatalogo("repoDoc");
     fetchCatalogo("documentoIdentificadoSmih");
 
-    return () => { };
+    return () => {};
   }, []);
 
   return (
@@ -173,10 +179,10 @@ function ArchivosAdd({
                   </option>
                   {!(comborepoDoc === undefined)
                     ? comborepoDoc.map((fbb) => (
-                      <option key={fbb.repoDocId} value={fbb.repoDocId}>
-                        {fbb.descripcion}
-                      </option>
-                    ))
+                        <option key={fbb.repoDocId} value={fbb.repoDocId}>
+                          {fbb.descripcion}
+                        </option>
+                      ))
                     : null}
                 </SelectGroup>
               </Form.Group>
@@ -199,12 +205,12 @@ function ArchivosAdd({
                   </option>
                   {!(combodocumento === undefined)
                     ? combodocumento
-                      .filter((filt) => filt.repoDocId == repoDocId)
-                      .map((fbb) => (
-                        <option key={fbb.documentoId} value={fbb.documentoId}>
-                          {fbb.descripcion}
-                        </option>
-                      ))
+                        .filter((filt) => filt.repoDocId == repoDocId)
+                        .map((fbb) => (
+                          <option key={fbb.documentoId} value={fbb.documentoId}>
+                            {fbb.descripcion}
+                          </option>
+                        ))
                     : null}
                 </SelectGroup>
               </Form.Group>

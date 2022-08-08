@@ -7,11 +7,14 @@ import MainCard from "../../../App/components/MainCard";
 import {Link} from "react-router-dom";
 import CoincidenciaCasoEdit from "../../../App/components/CoincidenciaCaso/CoincidenciaCasoEdit";
 
+import config from "../../../config";
 function CoincidenciasCaso(props) {
   //VIEW OR PAGE STATES
 
   const [titulo, setTitulo] = useState("");
-  const [dataTemp, setdataTemp] = useState((props.location.query)?props.location.query.dataCaso:null);
+  const [dataTemp, setdataTemp] = useState(
+    props.location.query ? props.location.query.dataCaso : null
+  );
 
   useEffect(() => {
     if (!(props.location.query === undefined)) {
@@ -26,20 +29,18 @@ function CoincidenciasCaso(props) {
     return () => {};
   }, []);
 
-  const onEditDone =(valor) => {
-    if (valor==true){
-      props.history.push("/coincidencias");
-
+  const onEditDone = (valor) => {
+    if (valor == true) {
+      props.history.push(config.baseApp + "/coincidencias");
     }
-  }
- 
-useEffect(() => {
-  if (dataTemp===null)
-  props.history.push("/coincidencias");
+  };
 
-  return () => {
-  }
-}, [dataTemp])
+  useEffect(() => {
+    if (dataTemp === null)
+      props.history.push(config.baseApp + "/coincidencias");
+
+    return () => {};
+  }, [dataTemp]);
   return (
     <div className="animated fadeIn" id="containerCoincidenciaCaso">
       <Aux>
@@ -53,7 +54,7 @@ useEffect(() => {
                       to={
                         !(props.location.query === undefined)
                           ? props.location.query.backUrl
-                          : "/coincidencias"
+                          : config.baseApp + "/coincidencias"
                       }
                     >
                       <Button
@@ -70,7 +71,7 @@ useEffect(() => {
                 <Row>
                   {!(dataTemp == null) && (
                     <CoincidenciaCasoEdit
-                      onEditDone ={onEditDone}
+                      onEditDone={onEditDone}
                       dataCaso={dataTemp}
                     ></CoincidenciaCasoEdit>
                   )}

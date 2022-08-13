@@ -8,7 +8,7 @@ import {
   Form,
   Collapse,
   Card,
-  InputGroup,
+  InputGroup
 } from "react-bootstrap";
 import axios from "axios";
 import config from "../../../config";
@@ -18,7 +18,7 @@ import VictimaSelect from "../../../App/components/Victima/VictimaSelect";
 import {
   ValidationForm,
   TextInput,
-  SelectGroup,
+  SelectGroup
 } from "react-bootstrap4-form-validation";
 import Datetime from "react-datetime";
 //context
@@ -28,15 +28,33 @@ import moment from "moment";
 
 import "./CoincidenciaCasoEdit.css";
 
-import {apiCatalogo} from "../../../utils/fetchCatalogos";
+import {
+  apiCatalogo,
+  apiFetchAccesoXObjeto
+} from "../../../utils/fetchCatalogos";
 import {renderInputFecha, validDate} from "../Utils/fechas";
 
 function CoincidenciaCasoAdd(props) {
   const userI = useContext(userContext);
   const configReq = {
-    headers: {Authorization: `Bearer ${userI.token}`},
+    headers: {Authorization: `Bearer ${userI.token}`}
   };
 
+  const [accesos, setAccesos] = useState({
+    actualizar: false,
+    ver: false,
+    agregar: false,
+    eliminar: false,
+    verArchivo: false,
+    agregarArchivo: false,
+    eliminarArchivo: false,
+    descargarArchivo: false
+  });
+  const fetchAccesos = async () => {
+    var data = await apiFetchAccesoXObjeto(userI.token, userI.usuarioId, 9);
+    var Raccesos = data[0];
+    setAccesos(Raccesos.accesos);
+  };
   //collapse
   const [collapseCC1, setcollapseCC1] = useState(true);
   const [collapseCC2, setcollapseCC2] = useState(false);
@@ -51,6 +69,7 @@ function CoincidenciaCasoAdd(props) {
 
   //CLINCIDENCIAS STATES
 
+  const [responsableId, setresponsableId] = useState(null);
   const [marcadoresStr, setmarcadoresStr] = useState(null);
 
   const [calidadPerfilId, setcalidadPerfilId] = useState(null);
@@ -82,11 +101,12 @@ function CoincidenciaCasoAdd(props) {
   const [combotipoCasoDid, setcombotipoCasoDid] = useState();
   const [combotipoContexto, setcombotipoContexto] = useState();
   const [combocalidadPerfil, setcombocalidadPerfil] = useState();
+  const [comboResponsable, setcomboResponsable] = useState();
 
   const handleCambioCaso = (e, formData, inputs) => {
     e.preventDefault();
     let banderaOsaVic = 0;
-    if ((osamentaId === 0) || (osamentaId === null)) {
+    if (osamentaId === 0 || osamentaId === null) {
       setcollapseCC2Alert(true);
       setcollapseCC2(true);
       banderaOsaVic = banderaOsaVic + 1;
@@ -95,7 +115,7 @@ function CoincidenciaCasoAdd(props) {
       setcollapseCC2(false);
     }
 
-    if ((victimaId === 0) || (victimaId === null)){
+    if (victimaId === 0 || victimaId === null) {
       banderaOsaVic = banderaOsaVic + 1;
       setcollapseCC3Alert(true);
       setcollapseCC3(true);
@@ -115,31 +135,32 @@ function CoincidenciaCasoAdd(props) {
     }
   };
   const create = async () => {
-    
-    let lriConv="";
+    let lriConv = "";
 
-    if (lri.includes("e+",0)){
-      lriConv=lri;
-    }else{
-      if (!(isNaN(parseInt(lri)))){
-        lriConv=parseInt(lri).toExponential(2)
-      }else{
+    if (lri.includes("e+", 0)) {
+      lriConv = lri;
+    } else {
+      if (!isNaN(parseInt(lri))) {
+        lriConv = parseInt(lri).toExponential(2);
+      } else {
         props.mensajeAlerta(
           "Actualizacion coincidencia",
           "Ingrese un valor para LR valido. ",
           "error"
         );
-        return
+        return;
       }
     }
 
- 
     try {
       var dataCoincidencia = {
         fechaCoincidencia: !(fechaCoincidencia === "")
           ? moment(fechaCoincidencia).format("YYYY-MM-DD")
           : null,
         marcadoresStr: marcadoresStr,
+        responsableId:
+          responsableId === "" || responsableId == "0" ? null : responsableId,
+
         calidadPerfilId:
           calidadPerfilId === "" || calidadPerfilId == "0"
             ? null
@@ -152,14 +173,13 @@ function CoincidenciaCasoAdd(props) {
           : lri,
         apriori: apriori,
         posterior: posterior,
-        baseInfoId: baseInfoId === "" || baseInfoId == "0"
-        ? null
-        : baseInfoId,
+        baseInfoId: baseInfoId === "" || baseInfoId == "0" ? null : baseInfoId,
         programaIdentId: programaIdentId,
         estadoCoincidenciaId: estadoCoincidenciaId,
-        estadoInvestigacionId: estadoInvestigacionId === "" || estadoInvestigacionId == "0"
-        ? null
-        : estadoInvestigacionId,
+        estadoInvestigacionId:
+          estadoInvestigacionId === "" || estadoInvestigacionId == "0"
+            ? null
+            : estadoInvestigacionId,
         cromosomaYId: cromosomaYId,
         fechaNotificacionDid: !(fechaNotificacionDid === "")
           ? moment(fechaNotificacionDid).format("YYYY-MM-DD")
@@ -172,7 +192,7 @@ function CoincidenciaCasoAdd(props) {
           tipoCasoDidId === "" || tipoCasoDidId === 0 ? null : tipoCasoDidId,
         tipoContextoId:
           tipoContextoId === "" || tipoContextoId === 0 ? null : tipoContextoId,
-        usuarioIngresoId: userI.usuarioId,
+        usuarioIngresoId: userI.usuarioId
       };
 
       const res = await axios.post(
@@ -219,7 +239,7 @@ function CoincidenciaCasoAdd(props) {
     var listControls1 = [
       "fechaCoincidencia",
       "marcadoresStr",
-      "calidadPerfilId",
+      "calidadPerfilId"
     ];
     var errorControls1 = Object.keys(errorInputs).filter((key) =>
       listControls1.includes(key)
@@ -251,7 +271,7 @@ function CoincidenciaCasoAdd(props) {
       "cromosomaYId",
       "estadoInvestigacionId",
       "tipoCasoDidId",
-      "tipoContextoId",
+      "tipoContextoId"
     ];
     var errorControls6 = Object.keys(errorInputs).filter((key) =>
       listControls6.includes(key)
@@ -294,6 +314,7 @@ function CoincidenciaCasoAdd(props) {
     if (catalogo == "tipoContexto") setcombotipoContexto(result.data);
     if (catalogo == "tipoContexto") setcombotipoContexto(result.data);
     if (catalogo == "calidadPerfil") setcombocalidadPerfil(result.data);
+    if (catalogo == "responsablesSOD") setcomboResponsable(result.data);
   };
 
   const onSelectOsamenta = (osamenta_elemento) => {
@@ -311,6 +332,8 @@ function CoincidenciaCasoAdd(props) {
   };
 
   useEffect(() => {
+    fetchAccesos();
+    fetchCatalogo("responsablesSOD");
     fetchCatalogo("baseInfo");
     fetchCatalogo("programaIdent");
     fetchCatalogo("estadoCoincidencia");
@@ -332,7 +355,7 @@ function CoincidenciaCasoAdd(props) {
         onErrorSubmit={handleErrorSubmit}
         defaultErrorMessage={{
           required: "El campo es requerido.",
-          minLength: "Ingresar por lo menos {minLength} caracteres",
+          minLength: "Ingresar por lo menos {minLength} caracteres"
         }}
       >
         <Row>
@@ -368,7 +391,7 @@ function CoincidenciaCasoAdd(props) {
                         timeFormat={false}
                         inputProps={{
                           placeholder: "Fecha coincidencia",
-                          requerido: true,
+                          requerido: true
                         }}
                         value={fechaCoincidencia}
                         onChange={(e) => {
@@ -428,6 +451,38 @@ function CoincidenciaCasoAdd(props) {
                       </SelectGroup>
                     </Form.Group>
                   </Col>
+                </Row>{" "}
+                <Row>
+                  <Col sm>
+                    <Form.Group>
+                      <Form.Label>Responsable</Form.Label>
+                      <SelectGroup
+                        name="responsableId"
+                        id="responsableId"
+                        value={
+                          !(responsableId === undefined) ? responsableId : ""
+                        }
+                        onChange={(e) => {
+                          setresponsableId(e.target.value);
+                        }}
+                      >
+                        <option key="" value="">
+                          ---Seleccione una opcion---
+                        </option>
+                        {!(comboResponsable === undefined)
+                          ? comboResponsable.map((fbb) => (
+                              <option
+                                key={fbb.responsableId}
+                                value={fbb.responsableId}
+                              >
+                                {fbb.responsable}
+                              </option>
+                            ))
+                          : null}
+                      </SelectGroup>
+                    </Form.Group>
+                  </Col>
+                  <Col></Col>
                 </Row>
               </Card.Body>
             </div>
@@ -666,7 +721,7 @@ function CoincidenciaCasoAdd(props) {
                         timeFormat={false}
                         inputProps={{
                           placeholder: "Fecha Notificacion DID",
-                          requerido: true,
+                          requerido: true
                         }}
                         value={fechaNotificacionDid}
                         onChange={(e) => {
@@ -688,7 +743,7 @@ function CoincidenciaCasoAdd(props) {
                         timeFormat={false}
                         inputProps={{
                           placeholder: "Fecha Confirmacion/Exclusion",
-                          requerido: true,
+                          requerido: true
                         }}
                         required
                         value={fechaConfExc}

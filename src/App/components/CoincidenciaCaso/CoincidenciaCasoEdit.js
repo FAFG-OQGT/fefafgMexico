@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, {useState, useEffect, useContext} from "react";
 
 //Controles bootstrap
 import {
@@ -9,28 +9,28 @@ import {
   Collapse,
   Card,
   InputGroup,
-  Modal,
+  Modal
 } from "react-bootstrap";
 import axios from "axios";
 import config from "../../../config";
 import VictimaDetalle from "../Victima/VictimaDetalle";
-import OsamentaDetalle from "../Osamenta/OsamentaDetalle"
+import OsamentaDetalle from "../Osamenta/OsamentaDetalle";
 
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import { renderInputFecha, validDate } from "../Utils/fechas";
+import {renderInputFecha, validDate} from "../Utils/fechas";
 
 import {
   ValidationForm,
   TextInput,
-  SelectGroup,
+  SelectGroup
 } from "react-bootstrap4-form-validation";
 import Datetime from "react-datetime";
 //context
 import userContext from "../../../context/userContext";
 //plugins
 import moment from "moment";
-import { apiFetch } from "../../../utils/fetchGraphs";
+import {apiFetch} from "../../../utils/fetchGraphs";
 
 import "./CoincidenciaCasoEdit.css";
 
@@ -45,15 +45,33 @@ import ArchivosList from "../Coincidencias/Archivos/ArchivosList";
 import ArchivosAdd from "../Coincidencias/Archivos/ArchivosAdd";
 import MensajeAlerta from "../MensajeAlerta/MensajeAlerta";
 
-import { apiCatalogo } from "../../../utils/fetchCatalogos";
+import {
+  apiCatalogo,
+  apiFetchAccesoXObjeto
+} from "../../../utils/fetchCatalogos";
 
 function CoincidenciaCasoEdit(props) {
   const userI = useContext(userContext);
   const configReq = {
-    headers: { Authorization: `Bearer ${userI.token}` },
+    headers: {Authorization: `Bearer ${userI.token}`}
   };
   const [dataCaso] = useState(props.dataCaso ? props.dataCaso : null);
 
+  const [accesos, setAccesos] = useState({
+    actualizar: false,
+    ver: false,
+    agregar: false,
+    eliminar: false,
+    verArchivo: false,
+    agregarArchivo: false,
+    eliminarArchivo: false,
+    descargarArchivo: false
+  });
+  const fetchAccesos = async () => {
+    var data = await apiFetchAccesoXObjeto(userI.token, userI.usuarioId, 9);
+    var Raccesos = data[0];
+    setAccesos(Raccesos.accesos);
+  };
   //collapse
   const [modalToken, setmodalToken] = useState(false);
   const [collapseCC1, setcollapseCC1] = useState(true);
@@ -79,7 +97,7 @@ function CoincidenciaCasoEdit(props) {
 
   //CLINCIDENCIAS STATES
   const [coincidenciaId, setcoincidenciaId] = useState(0);
-
+  const [responsableId, setresponsableId] = useState(null);
   const [marcadoresStr, setmarcadoresStr] = useState(0);
 
   const [calidadPerfilId, setcalidadPerfilId] = useState(0);
@@ -119,6 +137,7 @@ function CoincidenciaCasoEdit(props) {
   const [combotipoCasoDid, setcombotipoCasoDid] = useState();
   const [combotipoContexto, setcombotipoContexto] = useState();
   const [combocalidadPerfil, setcombocalidadPerfil] = useState();
+  const [comboResponsable, setcomboResponsable] = useState();
   const [token, setToken] = useState("");
   const [banderaIdentificado, setbanderaIdentificado] = useState(false);
 
@@ -181,7 +200,7 @@ function CoincidenciaCasoEdit(props) {
       text: "Se procedera a crear el identificado. ",
       type: "warning",
       showCloseButton: true,
-      showCancelButton: true,
+      showCancelButton: true
     }).then((willDelete) => {
       if (willDelete.value) {
         if (token === "" || token === null) {
@@ -197,7 +216,7 @@ function CoincidenciaCasoEdit(props) {
   const sendMail = async () => {
     try {
       var data = {
-        usuarioIngresoId: userI.usuarioId,
+        usuarioIngresoId: userI.usuarioId
       };
       const res = await axios.post(
         `${config.urlApi}/IdentificadoSmih`,
@@ -259,6 +278,8 @@ function CoincidenciaCasoEdit(props) {
           calidadPerfilId === "" || calidadPerfilId === 0
             ? null
             : calidadPerfilId,
+        responsableId:
+          responsableId === "" || responsableId === 0 ? null : responsableId,
         fechaCoincidencia: !(fechaCoincidencia === "")
           ? moment(fechaCoincidencia).format("YYYY-MM-DD")
           : null,
@@ -285,7 +306,7 @@ function CoincidenciaCasoEdit(props) {
         estadoId: 1,
         usuarioIngresoId: userI.usuarioId,
 
-        token: token,
+        token: token
       };
       const res = await axios.put(
         `${config.urlApi}/coincidencia/${data.coincidenciaId}`,
@@ -297,8 +318,8 @@ function CoincidenciaCasoEdit(props) {
         MensajeAlerta(
           "Actualizacion coincidencia",
           "Se ha actualizado la coincidencia con id [" +
-          data.coincidenciaId +
-          "]. ",
+            data.coincidenciaId +
+            "]. ",
           "success"
         );
         if (creaSmih) createSmih();
@@ -345,7 +366,7 @@ function CoincidenciaCasoEdit(props) {
           tipoContextoId === "" || tipoContextoId === 0 ? null : tipoContextoId,
         estadoId: 1,
         usuarioIngresoId: userI.usuarioId,
-        token: token,
+        token: token
       };
 
       const res = await axios.post(
@@ -358,8 +379,8 @@ function CoincidenciaCasoEdit(props) {
         MensajeAlerta(
           "Creacion de identificado",
           "Se ha creado el identificado Smih con id [" +
-          res.data.data.identificadoSmihId +
-          "]. ",
+            res.data.data.identificadoSmihId +
+            "]. ",
           "success"
         );
       }
@@ -401,7 +422,7 @@ function CoincidenciaCasoEdit(props) {
     var listControls1 = [
       "fechaCoincidencia",
       "marcadoresStr",
-      "calidadPerfilId",
+      "calidadPerfilId"
     ];
     var errorControls1 = Object.keys(errorInputs).filter((key) =>
       listControls1.includes(key)
@@ -433,7 +454,7 @@ function CoincidenciaCasoEdit(props) {
       "cromosomaYId",
       "estadoInvestigacionId",
       "tipoCasoDidId",
-      "tipoContextoId",
+      "tipoContextoId"
     ];
     var errorControls6 = Object.keys(errorInputs).filter((key) =>
       listControls6.includes(key)
@@ -475,6 +496,7 @@ function CoincidenciaCasoEdit(props) {
     if (catalogo == "tipoCasoDid") setcombotipoCasoDid(result.data);
     if (catalogo == "tipoContexto") setcombotipoContexto(result.data);
     if (catalogo == "calidadPerfil") setcombocalidadPerfil(result.data);
+    if (catalogo == "responsablesSOD") setcomboResponsable(result.data);
   };
 
   const onSelectOsamenta = (osamenta_elemento) => {
@@ -498,13 +520,7 @@ function CoincidenciaCasoEdit(props) {
 
   const [permisoAgregar, setpermisoAgregar] = useState(false);
   useEffect(() => {
-
-
-    if (userI.usuarioId < 9) {
-      setpermisoAgregar(true)
-    }
-
-
+    fetchAccesos();
     if (!(props.dataCaso === null)) {
       fetchCatalogo("baseInfo");
       fetchCatalogo("programaIdent");
@@ -514,12 +530,14 @@ function CoincidenciaCasoEdit(props) {
       fetchCatalogo("tipoCasoDid");
       fetchCatalogo("tipoContexto");
       fetchCatalogo("calidadPerfil");
+      fetchCatalogo("responsablesSOD");
       setcoincidenciaId(dataCaso.coincidenciaId);
       fetchData(
         `Coincidencia/flag/${dataCaso.coincidenciaId}`,
         setbanderaIdentificado
       );
       setmarcadoresStr(dataCaso.marcadoresStr);
+      setresponsableId(dataCaso.responsableId);
       setcalidadPerfilId(dataCaso.calidadPerfilId);
 
       setfechaCoincidencia(
@@ -561,13 +579,9 @@ function CoincidenciaCasoEdit(props) {
       );
       setdonanteCoincidencia(dataCaso.DonanteCoincidencia);
       setcasoOsamenta(dataCaso.Osamenta.casoId);
-
-
     }
-    return () => { };
+    return () => {};
   }, []);
-
-
 
   return (
     <Col>
@@ -578,7 +592,7 @@ function CoincidenciaCasoEdit(props) {
         onErrorSubmit={handleErrorSubmit}
         defaultErrorMessage={{
           required: "El campo es requerido.",
-          minLength: "Ingresar por lo menos {minLength} caracteres",
+          minLength: "Ingresar por lo menos {minLength} caracteres"
         }}
       >
         <Row>
@@ -628,7 +642,7 @@ function CoincidenciaCasoEdit(props) {
                         timeFormat={false}
                         inputProps={{
                           placeholder: "Fecha Coincidencia ",
-                          requerido: true,
+                          requerido: true
                         }}
                         value={fechaCoincidencia}
                         onChange={(e) => {
@@ -678,17 +692,50 @@ function CoincidenciaCasoEdit(props) {
                         </option>
                         {!(combocalidadPerfil === undefined)
                           ? combocalidadPerfil.map((fbb) => (
-                            <option
-                              key={fbb.calidadPerfilId}
-                              value={fbb.calidadPerfilId}
-                            >
-                              {fbb.descripcion}
-                            </option>
-                          ))
+                              <option
+                                key={fbb.calidadPerfilId}
+                                value={fbb.calidadPerfilId}
+                              >
+                                {fbb.descripcion}
+                              </option>
+                            ))
                           : null}
                       </SelectGroup>
                     </Form.Group>
                   </Col>
+                </Row>
+
+                <Row>
+                  <Col sm>
+                    <Form.Group>
+                      <Form.Label>Responsable</Form.Label>
+                      <SelectGroup
+                        name="responsableId"
+                        id="responsableId"
+                        value={
+                          !(responsableId === undefined) ? responsableId : ""
+                        }
+                        onChange={(e) => {
+                          setresponsableId(e.target.value);
+                        }}
+                      >
+                        <option key="" value="">
+                          ---Seleccione una opcion---
+                        </option>
+                        {!(comboResponsable === undefined)
+                          ? comboResponsable.map((fbb) => (
+                              <option
+                                key={fbb.responsableId}
+                                value={fbb.responsableId}
+                              >
+                                {fbb.responsable}
+                              </option>
+                            ))
+                          : null}
+                      </SelectGroup>
+                    </Form.Group>
+                  </Col>
+                  <Col></Col>
                 </Row>
               </Card.Body>
             </div>
@@ -738,7 +785,6 @@ function CoincidenciaCasoEdit(props) {
                     ></OsamentaSelect>
                   </Row>
                 )}
-
 
                 {osamentaId && (
                   <OsamentaDetalle
@@ -950,13 +996,13 @@ function CoincidenciaCasoEdit(props) {
                         </option>
                         {!(comboBaseInfo === undefined)
                           ? comboBaseInfo.map((fbb) => (
-                            <option
-                              key={fbb.baseInfoId}
-                              value={fbb.baseInfoId}
-                            >
-                              {fbb.descripcion}
-                            </option>
-                          ))
+                              <option
+                                key={fbb.baseInfoId}
+                                value={fbb.baseInfoId}
+                              >
+                                {fbb.descripcion}
+                              </option>
+                            ))
                           : null}
                       </SelectGroup>
                     </Form.Group>
@@ -982,13 +1028,13 @@ function CoincidenciaCasoEdit(props) {
                         </option>
                         {!(comboprogramaIdent === undefined)
                           ? comboprogramaIdent.map((fbb) => (
-                            <option
-                              key={fbb.programaIdentId}
-                              value={fbb.programaIdentId}
-                            >
-                              {fbb.descripcion}
-                            </option>
-                          ))
+                              <option
+                                key={fbb.programaIdentId}
+                                value={fbb.programaIdentId}
+                              >
+                                {fbb.descripcion}
+                              </option>
+                            ))
                           : null}
                       </SelectGroup>
                     </Form.Group>
@@ -1006,7 +1052,7 @@ function CoincidenciaCasoEdit(props) {
                         timeFormat={false}
                         inputProps={{
                           placeholder: "Fecha Notificacion DID ",
-                          requerido: true,
+                          requerido: true
                         }}
                         value={fechaNotificacionDid}
                         onChange={(e) => {
@@ -1028,7 +1074,7 @@ function CoincidenciaCasoEdit(props) {
                         timeFormat={false}
                         inputProps={{
                           placeholder: "Fecha Confirmacion/Exclusion",
-                          requerido: true,
+                          requerido: true
                         }}
                         value={fechaConfExc}
                         onChange={(e) => {
@@ -1062,13 +1108,13 @@ function CoincidenciaCasoEdit(props) {
                         </option>
                         {!(comboestadoCoincidencia === undefined)
                           ? comboestadoCoincidencia.map((fbb) => (
-                            <option
-                              key={fbb.estadoCoincidenciaId}
-                              value={fbb.estadoCoincidenciaId}
-                            >
-                              {fbb.descripcion}
-                            </option>
-                          ))
+                              <option
+                                key={fbb.estadoCoincidenciaId}
+                                value={fbb.estadoCoincidenciaId}
+                              >
+                                {fbb.descripcion}
+                              </option>
+                            ))
                           : null}
                       </SelectGroup>
                     </Form.Group>
@@ -1091,13 +1137,13 @@ function CoincidenciaCasoEdit(props) {
                         </option>
                         {!(combocromosomaY === undefined)
                           ? combocromosomaY.map((fbb) => (
-                            <option
-                              key={fbb.cromosomaYId}
-                              value={fbb.cromosomaYId}
-                            >
-                              {fbb.descripcion}
-                            </option>
-                          ))
+                              <option
+                                key={fbb.cromosomaYId}
+                                value={fbb.cromosomaYId}
+                              >
+                                {fbb.descripcion}
+                              </option>
+                            ))
                           : null}
                       </SelectGroup>
                     </Form.Group>
@@ -1124,13 +1170,13 @@ function CoincidenciaCasoEdit(props) {
                         </option>
                         {!(comboestadoInvestigacion === undefined)
                           ? comboestadoInvestigacion.map((fbb) => (
-                            <option
-                              key={fbb.estadoInvestigacionId}
-                              value={fbb.estadoInvestigacionId}
-                            >
-                              {fbb.descripcion}
-                            </option>
-                          ))
+                              <option
+                                key={fbb.estadoInvestigacionId}
+                                value={fbb.estadoInvestigacionId}
+                              >
+                                {fbb.descripcion}
+                              </option>
+                            ))
                           : null}
                       </SelectGroup>
                     </Form.Group>
@@ -1154,13 +1200,13 @@ function CoincidenciaCasoEdit(props) {
                         </option>
                         {!(combotipoCasoDid === undefined)
                           ? combotipoCasoDid.map((fbb) => (
-                            <option
-                              key={fbb.tipoCasoDidId}
-                              value={fbb.tipoCasoDidId}
-                            >
-                              {fbb.descripcion}
-                            </option>
-                          ))
+                              <option
+                                key={fbb.tipoCasoDidId}
+                                value={fbb.tipoCasoDidId}
+                              >
+                                {fbb.descripcion}
+                              </option>
+                            ))
                           : null}
                       </SelectGroup>
                     </Form.Group>
@@ -1185,13 +1231,13 @@ function CoincidenciaCasoEdit(props) {
                         </option>
                         {!(combotipoContexto === undefined)
                           ? combotipoContexto.map((fbb) => (
-                            <option
-                              key={fbb.tipoContextoId}
-                              value={fbb.tipoContextoId}
-                            >
-                              {fbb.descripcion}
-                            </option>
-                          ))
+                              <option
+                                key={fbb.tipoContextoId}
+                                value={fbb.tipoContextoId}
+                              >
+                                {fbb.descripcion}
+                              </option>
+                            ))
                           : null}
                       </SelectGroup>
                     </Form.Group>
@@ -1314,29 +1360,36 @@ function CoincidenciaCasoEdit(props) {
             <div id="basic-collapse" className="col-12">
               <Card.Body>
                 <Row>
-                  <Col className="row-eq-height">
-                    <ArchivosAdd
-                      CoincidenciaId={coincidenciaId}
-                      mensajeAlerta={MensajeAlerta}
-                      onAddDoneFile={setResetListFiles}
-                    ></ArchivosAdd>
-                  </Col>
-                  <Col>
-                    {coincidenciaId > 0 && (
-                      <ArchivosList
+                  {accesos && accesos.agregarArchivo === true && (
+                    <Col className="row-eq-height">
+                      <ArchivosAdd
                         CoincidenciaId={coincidenciaId}
-                        reset={resetListFiles}
-                        setreset={setResetListFiles}
                         mensajeAlerta={MensajeAlerta}
-                      ></ArchivosList>
-                    )}
-                  </Col>
+                        onAddDoneFile={setResetListFiles}
+                        permisoAgregar={accesos.agregarArchivo}
+                      ></ArchivosAdd>
+                    </Col>
+                  )}
+                  {accesos && accesos.verArchivo === true && (
+                    <Col>
+                      {coincidenciaId > 0 && (
+                        <ArchivosList
+                          CoincidenciaId={coincidenciaId}
+                          reset={resetListFiles}
+                          setreset={setResetListFiles}
+                          mensajeAlerta={MensajeAlerta}
+                          descargaArchivo={accesos.descargarArchivo}
+                          eliminarArchivo={accesos.eliminarArchivo}
+                        ></ArchivosList>
+                      )}
+                    </Col>
+                  )}
                 </Row>
               </Card.Body>
             </div>
           </Collapse>
         </Row>
-        {permisoAgregar && (
+        {accesos && accesos.actualizar === true && (
           <Row>
             <Col className=" d-flex justify-content-center">
               <Button
@@ -1347,8 +1400,8 @@ function CoincidenciaCasoEdit(props) {
                 size="md"
               >
                 <i className="feather icon-save" />
-              Guardar
-            </Button>
+                Guardar
+              </Button>
             </Col>
           </Row>
         )}

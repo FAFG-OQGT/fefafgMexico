@@ -404,12 +404,12 @@ function VictimaEdit({
                   {" "}
                   <Col>
                     <Form.Group>
-                      <Form.Label>Aldea Resi.</Form.Label>
+                      <Form.Label>Lugar Resi.</Form.Label>
                       <TextInput
                         type="text"
                         id="residenciaAldea"
                         name="residenciaAldea"
-                        placeholder="Aldea"
+                        placeholder="Lugar"
                         value={residenciaAldea}
                         onChange={(e) => {
                           setresidenciaAldea(e.target.value);
@@ -588,12 +588,12 @@ function VictimaEdit({
                 <Row>
                   <Col>
                     <Form.Group>
-                      <Form.Label>Aldea</Form.Label>
+                      <Form.Label>Lugar</Form.Label>
                       <TextInput
                         type="text"
                         id="lugarHechoAldea"
                         name="lugarHechoAldea"
-                        placeholder="Aldea del hecho"
+                        placeholder="Lugar del hecho"
                         value={lugarHechoAldea}
                         onChange={(e) => {
                           setlugarHechoAldea(e.target.value);

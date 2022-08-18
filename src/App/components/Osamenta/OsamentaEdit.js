@@ -418,12 +418,12 @@ function OsamentaEdit({
                 <Row>
                   <Col>
                     <Form.Group>
-                      <Form.Label>Aldea</Form.Label>
+                      <Form.Label>Lugar</Form.Label>
                       <TextInput
                         type="text"
                         id="exhumacionAldea"
                         name="exhumacionAldea"
-                        placeholder="Aldea del exhumacion"
+                        placeholder="Lugar de exhumacion"
                         value={exhumacionAldea}
                         onChange={(e) => {
                           setexhumacionAldea(e.target.value);
@@ -435,7 +435,7 @@ function OsamentaEdit({
                 <Row>
                   <Col>
                     <Form.Group>
-                      <Form.Label>Departamento</Form.Label>
+                      <Form.Label>Estado</Form.Label>
                       <SelectGroup
                         name="exhumacionDeptoId"
                         id="exhumacionDeptoId"

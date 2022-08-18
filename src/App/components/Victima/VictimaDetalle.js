@@ -223,7 +223,7 @@ function VictimaDetalle(props) {
                 </Col>
                 <Col xs>
                   <Form.Group>
-                    <Form.Label>Aldea</Form.Label>
+                    <Form.Label>Lugar</Form.Label>
                     <Form.Control
                       type="text"
                       id="VDresidenciaAldea"
@@ -321,7 +321,7 @@ function VictimaDetalle(props) {
                 </Col>
                 <Col>
                   <Form.Group>
-                    <Form.Label>Aldea</Form.Label>
+                    <Form.Label>Lugar</Form.Label>
                     <Form.Control
                       type="text"
                       id="VDlugarHechoAldea"

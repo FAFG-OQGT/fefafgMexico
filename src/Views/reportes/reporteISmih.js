@@ -1657,7 +1657,7 @@ function ReporteISmih(props) {
                                   <Col sm>
                                     <Form.Group>
                                       <Form.Label>
-                                        Aldea Desaparición
+                                      Lugar Desaparición
                                       </Form.Label>
                                       <Form.Control
                                         size="sm"
@@ -1668,7 +1668,7 @@ function ReporteISmih(props) {
                                           setdesaparicionAldea(e.target.value);
                                         }}
                                         id="desaparicionAldea"
-                                        placeholder="Aldea Desaparición"
+                                        placeholder="Lugar Desaparición"
                                         className="rowFiltros-control"
                                       />
                                     </Form.Group>
@@ -1871,7 +1871,7 @@ function ReporteISmih(props) {
                                   </Col>
                                   <Col sm>
                                     <Form.Group>
-                                      <Form.Label>Aldea Residencia</Form.Label>
+                                      <Form.Label>Lugar Residencia</Form.Label>
                                       <Form.Control
                                         size="sm"
                                         type="text"
@@ -1881,7 +1881,7 @@ function ReporteISmih(props) {
                                           setresidenciaAldea(e.target.value);
                                         }}
                                         id="residenciaAldea"
-                                        placeholder="Aldea Residencia"
+                                        placeholder="Lugar Residencia"
                                         className="rowFiltros-control"
                                       />
                                     </Form.Group>
@@ -2030,7 +2030,7 @@ function ReporteISmih(props) {
                                   </Col>
                                   <Col sm>
                                     <Form.Group>
-                                      <Form.Label>Aldea Exhumación</Form.Label>
+                                      <Form.Label>Lugar Exhumación</Form.Label>
                                       <Form.Control
                                         size="sm"
                                         type="text"
@@ -2040,7 +2040,7 @@ function ReporteISmih(props) {
                                           setexhumacionAldea(e.target.value);
                                         }}
                                         id="exhumacionAldea"
-                                        placeholder="Aldea Exhumación"
+                                        placeholder="Lugar Exhumación"
                                         className="rowFiltros-control"
                                       />
                                     </Form.Group>

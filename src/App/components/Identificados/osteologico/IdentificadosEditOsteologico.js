@@ -887,11 +887,11 @@ function IdentificadosEditOsteologico(props) {
                 <Row>
                   <Col sm>
                     <Form.Group>
-                      <Form.Label>Aldea</Form.Label>
+                      <Form.Label>Lugar</Form.Label>
                       <TextInput
                         name="desaparicionAldea"
                         id="desaparicionAldea"
-                        placeholder="Aldea"
+                        placeholder="Lugar"
                         type="text"
                         required
                         className="form-control text-center"

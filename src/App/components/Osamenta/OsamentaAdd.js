@@ -339,12 +339,12 @@ function OsamentaAdd({
                   </Col>
                   <Col>
                     <Form.Group>
-                      <Form.Label>Aldea</Form.Label>
+                      <Form.Label>Lugar</Form.Label>
                       <TextInput
                         type="text"
                         id="exhumacionAldea"
                         name="exhumacionAldea"
-                        placeholder="Aldea del exhumacion"
+                        placeholder="Lugar de exhumacion"
                         value={exhumacionAldea}
                         onChange={(e) => {
                           setexhumacionAldea(e.target.value);

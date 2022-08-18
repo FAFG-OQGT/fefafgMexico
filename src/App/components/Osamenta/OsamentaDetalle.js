@@ -265,12 +265,12 @@ function OsamentaDetalle(props) {
               <Row>
                 <Col>
                   <Form.Group>
-                    <Form.Label>Aldea</Form.Label>
+                    <Form.Label>Lugar</Form.Label>
                     <Form.Control
                       type="text"
                       id="ODexhumacionAldea"
                       name="ODexhumacionAldea"
-                      placeholder="Aldea del exhumacion"
+                      placeholder="Lugar de exhumacion"
                       required
                       value={exhumacionAldea}
                       readOnly

@@ -8,7 +8,7 @@ import {
   Form,
   Collapse,
   Card,
-  InputGroup
+  InputGroup,
 } from "react-bootstrap";
 import axios from "axios";
 import config from "../../../../config";
@@ -24,7 +24,7 @@ import OsamentaDetalle from "../../Osamenta/OsamentaDetalle";
 import {
   ValidationForm,
   TextInput,
-  SelectGroup
+  SelectGroup,
 } from "react-bootstrap4-form-validation";
 import Datetime from "react-datetime";
 //context
@@ -38,7 +38,7 @@ import MensajeAlerta from "../../MensajeAlerta/MensajeAlerta";
 
 import {
   apiCatalogo,
-  apiFetchAccesoXObjeto
+  apiFetchAccesoXObjeto,
 } from "../../../../utils/fetchCatalogos";
 
 function IdentificadosEditSmih(props) {
@@ -46,7 +46,7 @@ function IdentificadosEditSmih(props) {
 
   const userI = useContext(userContext);
   const configReq = {
-    headers: {Authorization: `Bearer ${userI.token}`}
+    headers: {Authorization: `Bearer ${userI.token}`},
   };
 
   const [accesos, setAccesos] = useState({
@@ -57,7 +57,7 @@ function IdentificadosEditSmih(props) {
     verArchivo: false,
     agregarArchivo: false,
     eliminarArchivo: false,
-    descargarArchivo: false
+    descargarArchivo: false,
   });
   const fetchAccesos = async () => {
     var data = await apiFetchAccesoXObjeto(userI.token, userI.usuarioId, 11);
@@ -114,6 +114,15 @@ function IdentificadosEditSmih(props) {
   const [victimaId, setvictimaId] = useState(data.victimaId);
   const [victimaDescripcion, setvictimaDescripcion] = useState(
     `${data.Victima.codigoVictima}-${data.Victima.nombreVictima}`
+  );
+  const [entregado, setentregado] = useState(
+    data.entregado === 0
+      ? "NO"
+      : data.entregado === 1
+      ? "SI"
+      : data.entregado === null
+      ? ""
+      : ""
   );
   //COINCIDENCIA
   const [coincidenciaId] = useState(data.coincidenciaId);
@@ -247,6 +256,7 @@ function IdentificadosEditSmih(props) {
         sexoId: sexoId,
         grupoEtarioId: grupoEtarioId,
         grupoEtnolinguisticoId: grupoEtnolinguisticoId,
+        entregado: entregado === "SI" ? 1 : entregado === "NO" ? 0 : null,
         sesionIdentificacion: sesionIdentificacion,
         tipoCasoDidId: tipoCasoDidId,
         coincidenciaId: coincidenciaId,
@@ -306,7 +316,7 @@ function IdentificadosEditSmih(props) {
         observaciones: observaciones,
 
         estadoId: 1,
-        usuarioIngresoId: userI.usuarioId
+        usuarioIngresoId: userI.usuarioId,
       };
 
       const res = await axios.put(
@@ -357,7 +367,8 @@ function IdentificadosEditSmih(props) {
       "tipoCasoDidId",
       "sexoId",
       "grupoEtarioId",
-      "grupoEtnolinguisticoId"
+      "grupoEtnolinguisticoId",
+      "entregado",
     ];
 
     var errorControls1 = Object.keys(errorInputs).filter((key) =>
@@ -376,7 +387,7 @@ function IdentificadosEditSmih(props) {
       "fechaReporteDid",
       "fechaInhumacion",
       "fechaAnalisisOst",
-      "fechaReporteGenetica"
+      "fechaReporteGenetica",
     ];
     var errorControls5 = Object.keys(errorInputs).filter((key) =>
       listControls5.includes(key)
@@ -412,7 +423,7 @@ function IdentificadosEditSmih(props) {
       "rangoMinimoPM",
       "rangoMaximoPM",
       "valorEdadPM",
-      "valorEdadAM"
+      "valorEdadAM",
     ];
     var errorControls6 = Object.keys(errorInputs).filter((key) =>
       listControls6.includes(key)
@@ -548,7 +559,7 @@ function IdentificadosEditSmih(props) {
         onErrorSubmit={handleErrorSubmit}
         defaultErrorMessage={{
           required: "El campo es requerido.",
-          minLength: "Ingresar por lo menos {minLength} caracteres"
+          minLength: "Ingresar por lo menos {minLength} caracteres",
         }}
       >
         <Row>
@@ -725,6 +736,32 @@ function IdentificadosEditSmih(props) {
                       </SelectGroup>
                     </Form.Group>
                   </Col>
+                  <Col sm>
+                    <Form.Group>
+                      <Form.Label>Entregado</Form.Label>
+                      <SelectGroup
+                        name="entregado"
+                        id="entregado"
+                        required
+                        value={!(entregado === undefined) ? entregado : ""}
+                        onChange={(e) => {
+                          setentregado(e.target.value);
+                        }}
+                      >
+                        <option key="" value="">
+                          ---Seleccione una opcion---
+                        </option>
+
+                        <option key="SI" value="SI">
+                          SI
+                        </option>
+
+                        <option key="NO" value="NO">
+                          NO
+                        </option>
+                      </SelectGroup>
+                    </Form.Group>
+                  </Col>
                 </Row>
               </Card.Body>
             </div>
@@ -870,7 +907,7 @@ function IdentificadosEditSmih(props) {
                         dateFormat="DD/MM/YYYY"
                         timeFormat={false}
                         inputProps={{
-                          placeholder: "Fecha Dictamen "
+                          placeholder: "Fecha Dictamen ",
                         }}
                         value={fechaDictamen}
                         onChange={(e) => {
@@ -891,7 +928,7 @@ function IdentificadosEditSmih(props) {
                         dateFormat="DD/MM/YYYY"
                         timeFormat={false}
                         inputProps={{
-                          placeholder: "Fecha Fam. Informados "
+                          placeholder: "Fecha Fam. Informados ",
                         }}
                         value={fechaInfoFamilia}
                         onChange={(e) => {
@@ -912,7 +949,7 @@ function IdentificadosEditSmih(props) {
                         dateFormat="DD/MM/YYYY"
                         timeFormat={false}
                         inputProps={{
-                          placeholder: "Fecha Reporte Did "
+                          placeholder: "Fecha Reporte Did ",
                         }}
                         value={fechaReporteDid}
                         onChange={(e) => {
@@ -935,7 +972,7 @@ function IdentificadosEditSmih(props) {
                         dateFormat="DD/MM/YYYY"
                         timeFormat={false}
                         inputProps={{
-                          placeholder: "Fecha inhumación "
+                          placeholder: "Fecha inhumación ",
                         }}
                         value={fechaInhumacion}
                         onChange={(e) => {
@@ -957,7 +994,7 @@ function IdentificadosEditSmih(props) {
                         dateFormat="DD/MM/YYYY"
                         timeFormat={false}
                         inputProps={{
-                          placeholder: "Fecha Analisis Osteologico "
+                          placeholder: "Fecha Analisis Osteologico ",
                         }}
                         value={fechaAnalisisOst}
                         onChange={(e) => {
@@ -979,7 +1016,7 @@ function IdentificadosEditSmih(props) {
                         timeFormat={false}
                         inputProps={{
                           placeholder: "Fecha Confirmacion ",
-                          requerido: true
+                          requerido: true,
                         }}
                         value={fechaConfirmacion}
                         onChange={(e) => {
@@ -1003,7 +1040,7 @@ function IdentificadosEditSmih(props) {
                         dateFormat="DD/MM/YYYY"
                         timeFormat={false}
                         inputProps={{
-                          placeholder: "Fecha Genetica "
+                          placeholder: "Fecha Genetica ",
                         }}
                         value={fechaReporteGenetica}
                         onChange={(e) => {
@@ -1285,7 +1322,7 @@ function IdentificadosEditSmih(props) {
                         dateFormat="DD/MM/YYYY"
                         timeFormat={false}
                         inputProps={{
-                          placeholder: "Fecha Antemortem "
+                          placeholder: "Fecha Antemortem ",
                         }}
                         value={fechaEntrevistaAM}
                         onChange={(e) => {

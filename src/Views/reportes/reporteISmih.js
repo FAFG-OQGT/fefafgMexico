@@ -42,7 +42,7 @@ function ReporteISmih(props) {
     );
   };
 
-  const filename = "reporteISmih" 
+  const filename = "reporteISmih";
 
   const user = useContext(userContext);
   const [data, setData] = React.useState([]);
@@ -61,6 +61,7 @@ function ReporteISmih(props) {
   const [lr, setlr] = useState("");
   const [posterior, setposterior] = useState("");
   const [sexoId, setsexoId] = React.useState(-1);
+  const [entregado, setentregado] = useState(-1);
   const [grupoEtarioId, setgrupoEtarioId] = useState(-1);
   const [combogrupoEtario, setcombogrupoEtario] = useState();
   const [grupoEtnolinguisticoId, setgrupoEtnolinguisticoId] = useState(-1);
@@ -149,6 +150,7 @@ function ReporteISmih(props) {
     setsexoId(-1);
     setgrupoEtarioId(-1);
     setgrupoEtnolinguisticoId(-1);
+    setentregado(-1);
     settraumaCircId(-1);
     setregionAnatomicaId(-1);
     setcausaMuerteId(-1);
@@ -496,6 +498,7 @@ function ReporteISmih(props) {
         grupoEtarioId: grupoEtarioId,
         grupoEtnolinguisticoId: grupoEtnolinguisticoId,
         tipoCasoDidId: tipoCasoDidId,
+        entregado: entregado,
         edadAMIni:
           edadAMIni == null || edadAMIni == "" || edadAMIni == undefined
             ? -1
@@ -665,6 +668,7 @@ function ReporteISmih(props) {
         grupoEtarioId: grupoEtarioId,
         grupoEtnolinguisticoId: grupoEtnolinguisticoId,
         tipoCasoDidId: tipoCasoDidId,
+        entregado: entregado,
         edadAMIni:
           edadAMIni == null || edadAMIni == "" || edadAMIni == undefined
             ? -1
@@ -943,6 +947,16 @@ function ReporteISmih(props) {
             },
           },
           {
+            Header: "Entregado",
+            accessor: (d) => {
+              if (d.entregado === null) {
+                return "---";
+              } else {
+                return d.entregado === 1 ? "SI" : d.entregado === 0 ? "NO" : "";
+              }
+            },
+          },
+          {
             Header: "Progreso",
             className: "vertical-align:middle",
             accessor: (row) => {
@@ -976,6 +990,7 @@ function ReporteISmih(props) {
         dataTemp.push({
           IdentificadoSmihId: row.identificadoSmihId,
           SesionIdentificacion: row.sesionIdentificacion,
+          entregrado: row.entregado === 1 ? "SI" : entregado === 0 ? "NO" : "",
           Osamenta: `CRIH-${row.Osamenta.casoId}-${row.Osamenta.fosaDet}-${row.Osamenta.osamentaDet}`,
           CodigoVictima: row.Victima.codigoVictima,
           NombreVictima: row.Victima.nombreVictima,
@@ -1657,7 +1672,7 @@ function ReporteISmih(props) {
                                   <Col sm>
                                     <Form.Group>
                                       <Form.Label>
-                                      Lugar Desaparición
+                                        Lugar Desaparición
                                       </Form.Label>
                                       <Form.Control
                                         size="sm"
@@ -1676,7 +1691,7 @@ function ReporteISmih(props) {
                                   <Col sm>
                                     <Form.Group>
                                       <Form.Label>
-                                      Estado Desaparición
+                                        Estado Desaparición
                                       </Form.Label>
                                       <Form.Control
                                         as="select"
@@ -1808,6 +1823,38 @@ function ReporteISmih(props) {
                                     </Form.Group>
                                   </Col>
                                 </Row>
+                                <Row className="rowFiltros rowFiltros-primary">
+                                  <Col sm>
+                                    <Form.Group>
+                                      <Form.Label>Entregado</Form.Label>
+                                      <Form.Control
+                                        as="select"
+                                        name="entregado"
+                                        id="entregado"
+                                        className="rowFiltros-control"
+                                        required
+                                        value={
+                                          !(entregado === undefined)
+                                            ? entregado
+                                            : ""
+                                        }
+                                        onChange={(e) => {
+                                          setentregado(e.target.value);
+                                        }}
+                                      >
+                                        <option key="-1" value="-1">
+                                          ---Seleccione una opcion---
+                                        </option>
+                                        <option key="0" value="0">
+                                          NO
+                                        </option>
+                                        <option key="1" value="1">
+                                          SI
+                                        </option>
+                                      </Form.Control>
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
                               </div>
                             </Collapse>
                           </Row>
@@ -1888,9 +1935,7 @@ function ReporteISmih(props) {
                                   </Col>
                                   <Col sm>
                                     <Form.Group>
-                                      <Form.Label>
-                                      Estado Residencia
-                                      </Form.Label>
+                                      <Form.Label>Estado Residencia</Form.Label>
                                       <Form.Control
                                         as="select"
                                         name="residenciaDeptoId
@@ -2047,9 +2092,7 @@ function ReporteISmih(props) {
                                   </Col>
                                   <Col sm>
                                     <Form.Group>
-                                      <Form.Label>
-                                      Estado Exhumación
-                                      </Form.Label>
+                                      <Form.Label>Estado Exhumación</Form.Label>
                                       <Form.Control
                                         as="select"
                                         name="exhumacionDeptoId"

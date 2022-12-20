@@ -12,10 +12,10 @@ export default {
   headerFixedLayout: false,
   boxLayout: false,
   timeOut: 1000 * 60 * 15,
-    urlApi: "https://crihapi.qosolutionsgt.com",
+  urlApi: "https://crihapi.qosolutionsgt.com",
   //urlApi: "http://localhost:3100",
   modulo: "1",
   maxSizeCoincidencia: 10e6,
   maxSizeSmih: 10e6,
-  maxSizeOst: 10e6
+  maxSizeOst: 10e6,
 };

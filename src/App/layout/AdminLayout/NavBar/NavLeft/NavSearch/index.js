@@ -82,7 +82,6 @@ function NavSearch() {
         configReq
       )
       .then((response) => {
-        console.log(response.data.data.rows);
         setdataVictima(response.data.data.rows);
       });
   };

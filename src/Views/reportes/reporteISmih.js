@@ -990,7 +990,7 @@ function ReporteISmih(props) {
         dataTemp.push({
           IdentificadoSmihId: row.identificadoSmihId,
           SesionIdentificacion: row.sesionIdentificacion,
-          entregrado: row.entregado === 1 ? "SI" : entregado === 0 ? "NO" : "",
+          entregrado: row.entregado === 1 ? "SI" : row.entregado === 0 ? "NO" : "",
           Osamenta: `CRIH-${row.Osamenta.casoId}-${row.Osamenta.fosaDet}-${row.Osamenta.osamentaDet}`,
           CodigoVictima: row.Victima.codigoVictima,
           NombreVictima: row.Victima.nombreVictima,

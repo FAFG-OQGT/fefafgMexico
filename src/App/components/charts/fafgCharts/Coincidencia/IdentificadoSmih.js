@@ -114,13 +114,13 @@ export const IdentificadoSmih = ({ data }) => {
 
                         <GraficaGenerica
                             data={data}
-                            titulo="Grupo Étnico Lingüistico"
+                            titulo="Base de datos poblacional"
                             id="graficaGrupoEtnicoLinguistico"
                             tipoReporte={types.smihGrupoEtnicoLinguistico}
                             isPie={true}
                             getOptions={getOptions}
                         />
-
+{/* 
                         <GraficaGenerica
                             data={data}
                             titulo="Trauma Circunmortem"
@@ -128,7 +128,7 @@ export const IdentificadoSmih = ({ data }) => {
                             tipoReporte={types.smihTraumaCirc}
                             isPie={true}
                             getOptions={getOptions}
-                        />
+                        /> */}
                     </Row>
                     <br></br>
                     <Row>

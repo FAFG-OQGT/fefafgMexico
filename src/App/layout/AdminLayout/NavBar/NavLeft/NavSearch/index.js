@@ -95,7 +95,6 @@ function NavSearch() {
       fetchIdentificadosSmih(3, 0, textToSearch, user.token);
       fetchCoincidencia(3, 0, textToSearch, user.token);
       fetchVictima(3, 0, textToSearch, user.token);
-      fetchIdentificadosOsteologico(3, 0, textToSearch, user.token);
     }
     return () => {};
   }, [textToSearch]);

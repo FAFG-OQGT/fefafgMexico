@@ -44,7 +44,7 @@ function Osamenta(props) {
     verFio: false,
     editarFio: false,
     verDonantes: false,
-    editarDonantes: false
+    editarDonantes: false,
   });
 
   const fetchAccesos = async () => {

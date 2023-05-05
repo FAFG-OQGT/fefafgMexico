@@ -138,10 +138,11 @@ function IdentificadosEditSmih(props) {
   const [fechaAnalisisOst, setfechaAnalisisOst] = useState(
     data.fechaAnalisisOst === null ? "" : moment(data.fechaAnalisisOst).utc()
   );
+  /* 
   const [fechaInhumacion, setfechaInhumacion] = useState(
     data.fechaInhumacion === null ? "" : moment(data.fechaInhumacion).utc()
   );
-
+ */
   const [fechaConfirmacion, setfechaConfirmacion] = useState(
     data.fechaConfirmacion === null ? "" : moment(data.fechaConfirmacion).utc()
   );
@@ -195,7 +196,9 @@ function IdentificadosEditSmih(props) {
   );
 
   //data extra
-  const [traumaCirId, settraumaCirId] = useState(data.traumaCircId);
+  const [traumaPM, settraumaPM] = useState(data.traumaPM);
+  const [traumaAntAM, settraumaAntAM] = useState(data.traumaAntAM);
+  const [traumaAntPM, settraumaAntPM] = useState(data.traumaAntPM);
   const [regionAnatomicaId, setregionAnatomicaId] = useState(
     data.regionAnatomicaId
   );
@@ -270,9 +273,9 @@ function IdentificadosEditSmih(props) {
         fechaAnalisisOst: !(fechaAnalisisOst === "")
           ? moment(fechaAnalisisOst).format("YYYY-MM-DD")
           : null,
-        fechaInhumacion: !(fechaInhumacion === "")
+        /*         fechaInhumacion: !(fechaInhumacion === "")
           ? moment(fechaInhumacion).format("YYYY-MM-DD")
-          : null,
+          : null, */
         fechaConfirmacion: !(fechaConfirmacion === "")
           ? moment(fechaConfirmacion).format("YYYY-MM-DD")
           : null,
@@ -285,8 +288,9 @@ function IdentificadosEditSmih(props) {
         fechaEntrevistaAM: !(fechaEntrevistaAM === "")
           ? moment(fechaEntrevistaAM).format("YYYY-MM-DD")
           : null,
-        traumaCircId:
-          traumaCirId === "" || traumaCirId === 0 ? null : traumaCirId,
+        traumaPM: traumaPM === "" || traumaPM === 0 ? null : traumaPM,
+        traumaAntAM: traumaAntAM,
+        traumaAntPM: traumaAntPM,
         causaMuerteId:
           causaMuerteId === "" || causaMuerteId === 0 ? null : causaMuerteId,
         datosOdontId:
@@ -385,7 +389,7 @@ function IdentificadosEditSmih(props) {
       "fechaDictamen",
       "fechaInfoFamilia",
       "fechaReporteDid",
-      "fechaInhumacion",
+      /*       "fechaInhumacion", */
       "fechaAnalisisOst",
       "fechaReporteGenetica",
     ];
@@ -522,8 +526,7 @@ function IdentificadosEditSmih(props) {
     fetchCatalogo("valorEdad");
     fetchCatalogo("grupoEtnolinguistico");
     fetchCatalogo("genero");
-    fetchCatalogo("grupoEtario");
-    fetchCatalogo("traumaCirc");
+    fetchCatalogo("grupoEtario"); 
     fetchCatalogo("regionAnatomica");
     fetchCatalogo("causaMuerte");
     fetchCatalogo("datosOdont");
@@ -543,8 +546,7 @@ function IdentificadosEditSmih(props) {
       setcombogrupoEtnolinguistico(result.data);
     if (catalogo === "genero") setcombosexo(result.data);
 
-    if (catalogo === "grupoEtario") setcombogrupoEtario(result.data);
-    if (catalogo === "traumaCirc") setcombotraumaCir(result.data);
+    if (catalogo === "grupoEtario") setcombogrupoEtario(result.data); 
     if (catalogo === "regionAnatomica") setcomboregionAnatomicaId(result.data);
     if (catalogo === "causaMuerte") setcombocausaMuerte(result.data);
     if (catalogo === "datosOdont") setcombodatosOdont(result.data);
@@ -962,7 +964,7 @@ function IdentificadosEditSmih(props) {
                   </Col>
                 </Row>
                 <Row className="">
-                  <Col sm>
+                  {/*           <Col sm>
                     <Form.Group>
                       <Form.Label>Fecha Inhumación</Form.Label>
                       <Datetime
@@ -983,7 +985,7 @@ function IdentificadosEditSmih(props) {
                       />
                     </Form.Group>
                   </Col>
-
+ */}
                   <Col sm>
                     <Form.Group>
                       <Form.Label>Fecha A. Osteologico</Form.Label>
@@ -1314,7 +1316,7 @@ function IdentificadosEditSmih(props) {
                   </Col>
                   <Col sm>
                     <Form.Group>
-                      <Form.Label>Fecha AM</Form.Label>
+                      <Form.Label>Fecha Nacimiento</Form.Label>
                       <Datetime
                         id="fechaEntrevistaAm"
                         name="fechaEntrevistaAm"
@@ -1322,7 +1324,7 @@ function IdentificadosEditSmih(props) {
                         dateFormat="DD/MM/YYYY"
                         timeFormat={false}
                         inputProps={{
-                          placeholder: "Fecha Antemortem ",
+                          placeholder: "Fecha Nacimiento ",
                         }}
                         value={fechaEntrevistaAM}
                         onChange={(e) => {
@@ -1426,29 +1428,16 @@ function IdentificadosEditSmih(props) {
                 <Row>
                   <Col sm>
                     <Form.Group>
-                      <Form.Label>Trauma CM</Form.Label>
-                      <SelectGroup
-                        name="traumaCirId"
-                        id="traumaCirId"
-                        value={!(traumaCirId === undefined) ? traumaCirId : ""}
-                        onChange={(e) => {
-                          settraumaCirId(e.target.value);
-                        }}
-                      >
-                        <option key="" value="">
-                          ---Seleccione una opcion---
-                        </option>
-                        {!(combotraumaCir === undefined)
-                          ? combotraumaCir.map((fbb) => (
-                              <option
-                                key={fbb.traumaCircId}
-                                value={fbb.traumaCircId}
-                              >
-                                {fbb.descripcion}
-                              </option>
-                            ))
-                          : null}
-                      </SelectGroup>
+                      <Form.Label>Trauma Perimortem</Form.Label>
+                      <TextInput
+                        name="traumaPM"
+                        id="traumaPM"
+                        placeholder="Trauma Perimortem"
+                        type="text"
+                        className="form-control text-center"
+                        value={traumaPM}
+                        onChange={(e) => settraumaPM(e.target.value)}
+                      />
                     </Form.Group>
                   </Col>
                   <Col sm>
@@ -1541,6 +1530,36 @@ function IdentificadosEditSmih(props) {
                             ))
                           : null}
                       </SelectGroup>
+                    </Form.Group>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col sm>
+                    <Form.Group>
+                      <Form.Label>Trauma AM</Form.Label>
+                      <TextInput
+                        name="traumaAntAM"
+                        id="traumaAntAM"
+                        placeholder="Trauma Ante Mortem"
+                        type="text"
+                        className="form-control text-center"
+                        value={traumaAntAM}
+                        onChange={(e) => settraumaAntAM(e.target.value)}
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col sm>
+                    <Form.Group>
+                      <Form.Label>Trauma PM</Form.Label>
+                      <TextInput
+                        name="traumaAntPM"
+                        id="traumaAntPM"
+                        placeholder="Trauma Post Mortem"
+                        type="text"
+                        className="form-control text-center"
+                        value={traumaAntPM}
+                        onChange={(e) => settraumaAntPM(e.target.value)}
+                      />
                     </Form.Group>
                   </Col>
                 </Row>

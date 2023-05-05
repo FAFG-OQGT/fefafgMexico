@@ -7,12 +7,11 @@ import config from "../../../config";
 import Datetime from "react-datetime";
 import {apiCatalogo} from "../../../utils/fetchCatalogos";
 import "./OsamentaEdit.css";
-import CoordinateInput from "react-coordinate-input";
 import {renderInputFecha, validDate} from "../Utils/fechas";
 import {
   ValidationForm,
   TextInput,
-  SelectGroup
+  SelectGroup,
 } from "react-bootstrap4-form-validation";
 function OsamentaEdit({
   osamenta,
@@ -20,12 +19,12 @@ function OsamentaEdit({
   oncerrarModal,
   mensajeAlerta,
   osamentaIdUpdate,
-  actualizar = false
+  actualizar = false,
 }) {
   //CONTEXT LOAD
   const user = useContext(userContext);
   const configReq = {
-    headers: {Authorization: `Bearer ${user.token}`}
+    headers: {Authorization: `Bearer ${user.token}`},
   }; //DEFINICION DE ESTADOS
   const [comboDepto, setcomboDepto] = useState();
   const [comboMunicipio, setcomboMunicipio] = useState();
@@ -139,7 +138,7 @@ function OsamentaEdit({
           ? moment(fechaExhumacion).format("YYYY-MM-DD")
           : null,
         coordenadasExhumacion: coordenadasExhumacion,
-        estadoId: estadoId
+        estadoId: estadoId,
       };
       const res = await axios.put(
         `${config.urlApi}/osamenta/${data.osamentaId}`,
@@ -193,6 +192,7 @@ function OsamentaEdit({
   };
 
   useEffect(() => {
+    fetch();
     fetchCatalogo("sexoAdn");
     fetchCatalogo("departamento");
     fetchCatalogo("municipio");
@@ -215,7 +215,7 @@ function OsamentaEdit({
                 setFocusOnError={true}
                 defaultErrorMessage={{
                   required: "El campo es requerido.",
-                  minLength: "Ingresar por lo menos {minLength} caracteres"
+                  minLength: "Ingresar por lo menos {minLength} caracteres",
                 }}
               >
                 <Row>
@@ -238,7 +238,7 @@ function OsamentaEdit({
                         }
                         errorMessage={{
                           required: "Ingrese valor numerico.",
-                          validator: "Ingrese un numero mayor a 0."
+                          validator: "Ingrese un numero mayor a 0.",
                         }}
                         value={casoId}
                         onChange={(e) => setcasoId(e.target.value)}
@@ -300,7 +300,7 @@ function OsamentaEdit({
                         dateFormat="DD/MM/YYYY"
                         timeFormat={false}
                         inputProps={{
-                          placeholder: "Fecha Ingreso a laboratorio"
+                          placeholder: "Fecha Ingreso a laboratorio",
                         }}
                         value={fechaIngresoLab}
                         onChange={(e) => {
@@ -321,7 +321,7 @@ function OsamentaEdit({
                         dateFormat="DD/MM/YYYY"
                         timeFormat={false}
                         inputProps={{
-                          placeholder: "Fecha Ingreso M-FISys"
+                          placeholder: "Fecha Ingreso M-FISys",
                         }}
                         value={fechaIngresoMFiSys}
                         onChange={(e) => {
@@ -388,7 +388,7 @@ function OsamentaEdit({
                         dateFormat="DD/MM/YYYY"
                         timeFormat={false}
                         inputProps={{
-                          placeholder: "Fecha de exhumacion"
+                          placeholder: "Fecha de exhumacion",
                         }}
                         value={fechaExhumacion}
                         onChange={(e) => {
@@ -402,15 +402,15 @@ function OsamentaEdit({
                   <Col>
                     <Form.Group>
                       <Form.Label>Coordenada</Form.Label>
-
-                      <CoordinateInput
-                        value={coordenadasExhumacion}
+                      <TextInput
+                        type="text"
                         id="coordenadasExhumacion"
-                        placeholder="Coordenadas de exhumacion"
-                        onChange={(value, {unmaskedValue, dd, dms}) => {
-                          setcoordenadasExhumacion(unmaskedValue);
+                        name="coordenadasExhumacion"
+                        placeholder="Coordenadas"
+                        value={coordenadasExhumacion}
+                        onChange={(e) => {
+                          setcoordenadasExhumacion(e.target.value);
                         }}
-                        className="form-control"
                       />
                     </Form.Group>
                   </Col>

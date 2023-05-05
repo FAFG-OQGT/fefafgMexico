@@ -115,7 +115,7 @@ export const IdentificadoOst = ({ data }) => {
 
                         <GraficaGenerica
                             data={data}
-                            titulo="Grupo Étnico Lingüistico"
+                            titulo="Base de datos poblacional"
                             id="graficaGrupoEtnicoLinguistico"
                             tipoReporte={types.ostGrupoEtnicoLinguistico}
                             isPie={true}

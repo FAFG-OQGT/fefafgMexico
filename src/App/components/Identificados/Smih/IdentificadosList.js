@@ -96,13 +96,13 @@ function IdentificadosList(props) {
       conteoVacio = conteoVacio + 1;
     }
 
-    if (
+ /*    if (
       row.fechaInhumacion == null ||
       row.fechaInhumacion === "" ||
       row.fechaInhumacion === "null"
     ) {
       conteoVacio = conteoVacio + 1;
-    }
+    } */
     if (
       row.desaparicionAldea == null ||
       row.desaparicionAldea === "" ||
@@ -214,9 +214,9 @@ function IdentificadosList(props) {
       conteoVacio = conteoVacio + 1;
     }
     if (
-      row.traumaCircId == null ||
-      row.traumaCircId === "" ||
-      row.traumaCircId === "null"
+      row.traumaPM == null ||
+      row.traumaPM === "" ||
+      row.traumaPM === "null"
     ) {
       conteoVacio = conteoVacio + 1;
     }
@@ -368,7 +368,7 @@ function IdentificadosList(props) {
               }
             }
           },
-          {
+/*           {
             Header: "F. Inhumación",
             accessor: (d) => {
               if (d.fechaInhumacion === null) {
@@ -377,9 +377,9 @@ function IdentificadosList(props) {
                 return moment(d.fechaInhumacion).utc().format("DD-MM-YYYY");
               }
             }
-          },
+          }, */
           {
-            Header: "F. Antemortem",
+            Header: "F. Nacimiento",
             accessor: (d) => {
               if (d.fechaEntrevistaAM === null) {
                 return "---";

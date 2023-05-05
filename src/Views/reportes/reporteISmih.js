@@ -66,7 +66,7 @@ function ReporteISmih(props) {
   const [combogrupoEtario, setcombogrupoEtario] = useState();
   const [grupoEtnolinguisticoId, setgrupoEtnolinguisticoId] = useState(-1);
   const [combogrupoEtnolinguistico, setcombogrupoEtnolinguistico] = useState();
-  const [traumaCircId, settraumaCircId] = useState(-1);
+  const [traumaPM, settraumaPM] = useState(-1);
   const [combotraumaCir, setcombotraumaCir] = useState();
   const [regionAnatomicaId, setregionAnatomicaId] = useState(-1);
   const [comboregionAnatomicaId, setcomboregionAnatomicaId] = useState();
@@ -151,7 +151,7 @@ function ReporteISmih(props) {
     setgrupoEtarioId(-1);
     setgrupoEtnolinguisticoId(-1);
     setentregado(-1);
-    settraumaCircId(-1);
+    settraumaPM(-1);
     setregionAnatomicaId(-1);
     setcausaMuerteId(-1);
     setdatosOdontId(-1);
@@ -401,9 +401,9 @@ function ReporteISmih(props) {
       conteoVacio = conteoVacio + 1;
     }
     if (
-      row.traumaCircId == null ||
-      row.traumaCircId === "" ||
-      row.traumaCircId === "null"
+      row.traumaPM == null ||
+      row.traumaPM === "" ||
+      row.traumaPM === "null"
     ) {
       conteoVacio = conteoVacio + 1;
     }
@@ -521,7 +521,7 @@ function ReporteISmih(props) {
             ? -1
             : parseInt(rangoMaximoPM),
         valorEdadPM: valorEdadPM,
-        traumaCircId: traumaCircId,
+        traumaPM: traumaPM,
         datosOdontId: datosOdontId,
         regionAnatomicaId: regionAnatomicaId,
         causaMuerteId: causaMuerteId,
@@ -691,7 +691,7 @@ function ReporteISmih(props) {
             ? -1
             : parseInt(rangoMaximoPM),
         valorEdadPM: valorEdadPM,
-        traumaCircId: traumaCircId,
+        traumaPM: traumaPM,
         datosOdontId: datosOdontId,
         regionAnatomicaId: regionAnatomicaId,
         causaMuerteId: causaMuerteId,
@@ -816,8 +816,7 @@ function ReporteISmih(props) {
     if (catalogo == "genero") setcombogeneroId(result.data);
     if (catalogo == "grupoEtnolinguistico")
       setcombogrupoEtnolinguistico(result.data);
-    if (catalogo == "grupoEtario") setcombogrupoEtario(result.data);
-    if (catalogo === "traumaCirc") setcombotraumaCir(result.data);
+    if (catalogo == "grupoEtario") setcombogrupoEtario(result.data); 
     if (catalogo === "regionAnatomica") setcomboregionAnatomicaId(result.data);
     if (catalogo === "causaMuerte") setcombocausaMuerte(result.data);
     if (catalogo === "datosOdont") setcombodatosOdont(result.data);
@@ -831,8 +830,7 @@ function ReporteISmih(props) {
       fetchCatalogo("tipoCasoDid");
       fetchCatalogo("genero");
       fetchCatalogo("grupoEtario");
-      fetchCatalogo("grupoEtnolinguistico");
-      fetchCatalogo("traumaCirc");
+      fetchCatalogo("grupoEtnolinguistico"); 
       fetchCatalogo("regionAnatomica");
       fetchCatalogo("causaMuerte");
       fetchCatalogo("datosOdont");
@@ -895,7 +893,7 @@ function ReporteISmih(props) {
             },
           },
           {
-            Header: "F. Antemortem",
+            Header: "F. Nacimiento",
             accessor: (d) => {
               if (d.fechaEntrevistaAM === null) {
                 return "---";
@@ -1033,10 +1031,7 @@ function ReporteISmih(props) {
           ValorPM: !(row.ValorPM === "" || row.ValorPM === null)
             ? row.ValorPM.descripcion
             : "",
-          AnotacionPM: row.anotacionPM,
-          TraumaCirc: !(row.TraumaCirc === "" || row.TraumaCirc === null)
-            ? row.TraumaCirc.descripcion
-            : "",
+          AnotacionPM: row.anotacionPM, 
           DatosOdont: !(row.DatosOdont === "" || row.DatosOdont === null)
             ? row.DatosOdont.descripcion
             : "",
@@ -1369,17 +1364,17 @@ function ReporteISmih(props) {
                                       <Form.Label>Trauma</Form.Label>
                                       <Form.Control
                                         as="select"
-                                        name="traumaCircId"
-                                        id="traumaCircId"
+                                        name="traumaPM"
+                                        id="traumaPM"
                                         className="rowFiltros-control"
                                         required
                                         value={
-                                          !(traumaCircId === undefined)
-                                            ? traumaCircId
+                                          !(traumaPM === undefined)
+                                            ? traumaPM
                                             : ""
                                         }
                                         onChange={(e) => {
-                                          settraumaCircId(e.target.value);
+                                          settraumaPM(e.target.value);
                                         }}
                                       >
                                         <option key="-1" value="-1">
@@ -1388,8 +1383,8 @@ function ReporteISmih(props) {
                                         {!(combotraumaCir === undefined)
                                           ? combotraumaCir.map((fbb) => (
                                               <option
-                                                key={fbb.traumaCircId}
-                                                value={fbb.traumaCircId}
+                                                key={fbb.traumaPM}
+                                                value={fbb.traumaPM}
                                               >
                                                 {fbb.descripcion}
                                               </option>

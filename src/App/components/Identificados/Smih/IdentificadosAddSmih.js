@@ -131,8 +131,8 @@ function IdentificadosAddSmih(props) {
 
   const [datosOdontId, setdatosOdontId] = useState();
   const [anotacionDatosOdont, setanotacionDatosOdont] = useState();
-  const [resumenHecho,setresumenHecho] = useState();
-  const [observaciones,setobservaciones] = useState();
+  const [resumenHecho, setresumenHecho] = useState();
+  const [observaciones, setobservaciones] = useState();
 
   const [combovalorEdad, setcombovalorEdad] = useState();
   const [combotraumaCir, setcombotraumaCir] = useState();
@@ -207,7 +207,7 @@ function IdentificadosAddSmih(props) {
         fechaEntrevistaAM: !(fechaEntrevistaAM === "")
           ? moment(fechaEntrevistaAM).format("YYYY-MM-DD")
           : null,
-        traumaCircId: traumaCirId,
+        /*         traumaCircId: traumaCirId, */
         datosOdontId: datosOdontId,
         regionAnatomicaId: regionAnatomicaId,
         causaMuerteId: causaMuerteId,
@@ -274,11 +274,15 @@ function IdentificadosAddSmih(props) {
     }
   };
   const handleErrorSubmit = (e, formData, errorInputs) => {
-    var listControls1 = ["fechaCoincidencia","sesionIdentificacion"    ,"osamentaFosa"
-    ,"tipoCasoDidId"
-    ,"sexoId"
-    ,"grupoEtarioId"
-    ,"grupoEtnolinguisticoId"];
+    var listControls1 = [
+      "fechaCoincidencia",
+      "sesionIdentificacion",
+      "osamentaFosa",
+      "tipoCasoDidId",
+      "sexoId",
+      "grupoEtarioId",
+      "grupoEtnolinguisticoId",
+    ];
     var errorControls1 = Object.keys(errorInputs).filter((key) =>
       listControls1.includes(key)
     );
@@ -375,8 +379,7 @@ function IdentificadosAddSmih(props) {
     fetchCatalogo("valorEdad");
     fetchCatalogo("grupoEtnolinguistico");
     fetchCatalogo("sexoAdn");
-    fetchCatalogo("grupoEtario");
-    fetchCatalogo("traumaCirc");
+    fetchCatalogo("grupoEtario");  
     fetchCatalogo("regionAnatomica");
     fetchCatalogo("causaMuerte");
     fetchCatalogo("datosOdont");
@@ -397,8 +400,7 @@ function IdentificadosAddSmih(props) {
       setcombogrupoEtnolinguistico(result.data);
     if (catalogo === "sexoAdn") setcombosexo(result.data);
 
-    if (catalogo === "grupoEtario") setcombogrupoEtario(result.data);
-    if (catalogo === "traumaCirc") setcombotraumaCir(result.data);
+    if (catalogo === "grupoEtario") setcombogrupoEtario(result.data); 
     if (catalogo === "regionAnatomica") setcomboregionAnatomicaId(result.data);
     if (catalogo === "causaMuerte") setcombocausaMuerte(result.data);
     if (catalogo === "datosOdont") setcombodatosOdont(result.data);
@@ -1262,34 +1264,8 @@ function IdentificadosAddSmih(props) {
                   </Col>
                 </Row>
                 <Row>
-                  <Col sm>
-                    <Form.Group>
-                      <Form.Label>Trauma</Form.Label>
-                      <SelectGroup
-                        name="traumaCirId"
-                        id="traumaCirId"
-                        required
-                        value={!(traumaCirId === undefined) ? traumaCirId : ""}
-                        onChange={(e) => {
-                          settraumaCirId(e.target.value);
-                        }}
-                      >
-                        <option key="" value="">
-                          ---Seleccione una opcion---
-                        </option>
-                        {!(combotraumaCir === undefined)
-                          ? combotraumaCir.map((fbb) => (
-                              <option
-                                key={fbb.traumaCircId}
-                                value={fbb.traumaCircId}
-                              >
-                                {fbb.descripcion}
-                              </option>
-                            ))
-                          : null}
-                      </SelectGroup>
-                    </Form.Group>
-                  </Col>
+              
+               
                   <Col sm>
                     <Form.Group>
                       <Form.Label>Region Anatomica</Form.Label>
@@ -1432,7 +1408,7 @@ function IdentificadosAddSmih(props) {
                         required
                         className="form-control text-center"
                         value={observaciones}
-                        onChange={(e) => setobservaciones (e.target.value)}
+                        onChange={(e) => setobservaciones(e.target.value)}
                       />
                     </Form.Group>
                   </Col>

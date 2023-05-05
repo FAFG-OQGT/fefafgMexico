@@ -9,22 +9,21 @@ import {renderInputFecha, validDate} from "../Utils/fechas";
 
 import {apiCatalogo} from "../../../utils/fetchCatalogos";
 import "./OsamentaAdd.css";
-import CoordinateInput, {dmsToDecimal} from "react-coordinate-input";
 import {
   ValidationForm,
   TextInput,
-  SelectGroup
+  SelectGroup,
 } from "react-bootstrap4-form-validation";
 function OsamentaAdd({
   onAddDone,
   oncerrarModal,
   mensajeAlerta,
-  agregar = false
+  agregar = false,
 }) {
   //CONTEXT LOAD
   const user = useContext(userContext);
   const configReq = {
-    headers: {Authorization: `Bearer ${user.token}`}
+    headers: {Authorization: `Bearer ${user.token}`},
   };
   //DEFINICION DE ESTADOS
   const [comboDepto, setcomboDepto] = useState();
@@ -73,7 +72,7 @@ function OsamentaAdd({
           : null,
         coordenadasExhumacion: coordenadasExhumacion,
         estadoId: 1,
-        usuarioIngresoId: user.usuarioId
+        usuarioIngresoId: user.usuarioId,
       };
       const res = await axios.post(
         `${config.urlApi}/osamenta`,
@@ -150,7 +149,7 @@ function OsamentaAdd({
                 setFocusOnError={true}
                 defaultErrorMessage={{
                   required: "El campo es requerido.",
-                  minLength: "Ingresar por lo menos {minLength} caracteres"
+                  minLength: "Ingresar por lo menos {minLength} caracteres",
                 }}
               >
                 <Row>
@@ -173,7 +172,7 @@ function OsamentaAdd({
                         }
                         errorMessage={{
                           required: "Ingrese valor numerico.",
-                          validator: "Ingrese un numero mayor a 0."
+                          validator: "Ingrese un numero mayor a 0.",
                         }}
                         value={casoId}
                         onChange={(e) => setcasoId(e.target.value)}
@@ -235,7 +234,7 @@ function OsamentaAdd({
                         dateFormat="DD/MM/YYYY"
                         timeFormat={false}
                         inputProps={{
-                          placeholder: "Fecha Ingreso a laboratorio"
+                          placeholder: "Fecha Ingreso a laboratorio",
                         }}
                         value={fechaIngresoLab}
                         onChange={(e) => {
@@ -257,7 +256,7 @@ function OsamentaAdd({
                         dateFormat="DD/MM/YYYY"
                         timeFormat={false}
                         inputProps={{
-                          placeholder: "Fecha Ingreso M-FISys"
+                          placeholder: "Fecha Ingreso M-FISys",
                         }}
                         value={fechaIngresoMFiSys}
                         onChange={(e) => {
@@ -312,7 +311,7 @@ function OsamentaAdd({
                         dateFormat="DD/MM/YYYY"
                         timeFormat={false}
                         inputProps={{
-                          placeholder: "Fecha de exhumacion"
+                          placeholder: "Fecha de exhumacion",
                         }}
                         value={fechaExhumacion}
                         onChange={(e) => {
@@ -326,14 +325,16 @@ function OsamentaAdd({
                   <Col>
                     <Form.Group>
                       <Form.Label>Coordenada</Form.Label>
-                      <CoordinateInput
-                        value={coordenadasExhumacion}
+
+                      <TextInput
+                        type="text"
                         id="coordenadasExhumacion"
-                        placeholder="Coordenadas de exhumacion"
-                        onChange={(value, {unmaskedValue, dd, dms}) => {
-                          setcoordenadasExhumacion(unmaskedValue);
+                        name="coordenadasExhumacion"
+                        placeholder="Coordenadas"
+                        value={coordenadasExhumacion}
+                        onChange={(e) => {
+                          setcoordenadasExhumacion(e.target.value);
                         }}
-                        className="form-control"
                       />
                     </Form.Group>
                   </Col>
